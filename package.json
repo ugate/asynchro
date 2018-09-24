@@ -1,0 +1,33 @@
+{
+  "name": "asynchro",
+  "version": "1.0.0",
+  "description": "Micro async lib for parallel/series/background functions using built-in ES async/await",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "lab -t 100 -v"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ugate/asynchro.git"
+  },
+  "keywords": [
+    "async",
+    "await",
+    "parallel",
+    "series",
+    "background"
+  ],
+  "author": "ugate",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ugate/asynchro/issues"
+  },
+  "homepage": "https://github.com/ugate/asynchro#readme",
+  "devDependencies": {
+    "code": "^5.2.0",
+    "lab": "^16.1.0"
+  }
+}
