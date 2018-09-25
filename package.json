@@ -18,7 +18,9 @@
     "await",
     "parallel",
     "series",
-    "background"
+    "background",
+    "concurrent",
+    "sequential"
   ],
   "author": "ugate",
   "license": "MIT",
