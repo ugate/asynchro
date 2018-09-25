@@ -1,5 +1,8 @@
 'use strict';
 
+// generate jsdoc:
+// "node_modules/.bin/jsdoc" -c jsdoc-conf.json
+
 const { expect } = require('code');
 exports.expect = expect;
 exports.Lab = require('lab');

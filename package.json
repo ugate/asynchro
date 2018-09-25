@@ -30,7 +30,9 @@
   "homepage": "https://github.com/ugate/asynchro#readme",
   "devDependencies": {
     "code": "^5.2.0",
-    "lab": "^16.1.0"
+    "jsdoc": "^3.5.5",
+    "lab": "^16.1.0",
+    "minami": "^1.2.3"
   },
   "files": [
     "/index.js"
