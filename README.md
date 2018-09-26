@@ -6,28 +6,32 @@ Micro `async` lib for __parallel__/__series__/__background__ functions using bui
 ### Turn _vanilla_ `async/await` boilerplate code like this...
 ```js
 async function myWorkflow() {
-  const rslt = { result: {}, errors: [] }, promises = {};
+  const rslt = { result: {}, errors: [] }, promises = {}, log = console.log;
   try {
     rslt.one = await mySeriesFunc1('val1', 2, 3);
   } catch (err) {
+    if (log) log('Error at one', err);
     rslt.errors.push(err);
     return rslt;
   }
   try {
     rslt.two = await mySeriesFunc2(1, 2);
   } catch (err) {
+    if (log) log('Error at two', err);
     rslt.errors.push(err);
     return rslt;
   }
   try {
     promises.three = myParallelFunc1({ a: 1, b: 2, c: 3 });
   } catch (err) {
+    if (log) log('Error at three', err);
     rslt.errors.push(err);
     return rslt;
   }
   try {
     promises.four = myParallelFunc2();
   } catch (err) {
+    if (log) log('Error at four', err);
     rslt.errors.push(err);
     return rslt;
   }
@@ -35,6 +39,7 @@ async function myWorkflow() {
   try {
     rslt.six = await mySeriesFunc3(true, false);
   } catch (err) {
+    if (log) log('Error at six', err);
     rslt.errors.push(err);
     return rslt;
   }
@@ -44,19 +49,19 @@ async function myWorkflow() {
     try {
       rslt[name] = await promises[name];
     } catch (err) {
+      if (log) log(`Error at ${name}`, err);
       rslt.errors.push(err);
       return rslt;
     }
   }
-  return rslt; // success
+  return rslt;
 }
 ```
 
-... into this:
+### ... into this:
 ```js
 async function myWorkflow() {
-  // 2nd arg to Asynchro constructor is throw rule (default: false)
-  const ax = new Asynchro({});
+  const ax = new Asynchro({}, false, console.log);
   ax.series('one', mySeriesFunc1, 'val1', 2, 3);
   ax.series('two', mySeriesFunc2, 1, 2);
   ax.parallel('three', myParallelFunc1, { a: 1, b: 2, c: 3 });
