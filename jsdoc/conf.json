@@ -1,0 +1,36 @@
+{
+  "source": {
+    "include": ["index.js", "README.md"],
+    "includePattern": ".js$",
+    "excludePattern": "(node_modules/|docs)"
+  },
+  "plugins": [
+    "plugins/markdown"
+  ],
+  "tags": {
+    "allowUnknownTags": true,
+    "dictionaries": ["jsdoc"]
+  },
+  "opts": {
+    "destination": "./docs/",
+    "encoding": "utf8",
+    "private": true,
+    "recurse": true,
+    "template": "./jsdoc"
+  },
+  "templates": {
+    "cleverLinks": false,
+    "monospaceLinks": true,
+    "showInheritedInNav": true,
+    "default": {
+      "useLongnameInNav": false,
+      "layoutFile": "./jsdoc/tmpl/layout.tmpl",
+      "staticFiles": {
+        "include": [
+          "./node_modules/minami/static",
+          "./jsdoc/static"
+        ]
+      }
+    }
+  }
+}

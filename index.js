@@ -5,7 +5,6 @@ const ERROR_TYPES_SYSTEM = Object.freeze([ EvalError, RangeError, ReferenceError
 /**
  * &#8669; Management for multiple `async function`/`await` tasks that can be ran in **series/sequential** and/or **parallel/concurrent**
  * order in relation to one another
- * @module asynchro
  */
 class Asynchro {
 // TODO : ESM use... export class Asynchro {
@@ -19,17 +18,17 @@ class Asynchro {
    * - `Object` an object containing the following properties:
    * - - `invert` true to catch errors when matches are made, false/omit to throw errors when matches are made
    * - - `matches` An array that contains any of the following:
-   * - - - `system` A string value equal to "system" that will match when an error is a type within {@link Asynchro#systemErrorTypes}
+   * - - - `system` A string value equal to "system" that will match when an error is a type within {@link Asynchro.systemErrorTypes}
    * - - - `Object` An object that contains property names/values that will be matched against property name/values in the caught error.
    * When invert is true, all names/values on the caught error must match the names/values on the object in order to be 
-   * **caught/captured** in {@link Asynchro#errors}. When invert is false/omitted, all names/values on the caught error must match
+   * **caught/captured** in {@link Asynchro.errors}. When invert is false/omitted, all names/values on the caught error must match
    * all of the names/values on the object in order to be **rethrown**.
    * - `system` a single `matches` string (invert defaults to false)
    * 
    * Re-thrown errors will set `Error.cause` to the originally thrown error.
    * @param {Function} [log] `function(tagArray, object)` that will log process output (omit to prevent logging)
    * @param {Function} [includeErrorMsgCheck] a `function(name, operation, error)` that will return true when the error message should be
-   * included in the final {@link Asynchro#messages} output (defaults to false)
+   * included in the final {@link Asynchro.messages} output (defaults to false)
    */
   constructor(result, throws, log, includeErrorMsgCheck) {
     const asy = internal(this);
@@ -42,7 +41,7 @@ class Asynchro {
 
   /**
    * Queues an `async function` to run in **series** relative to other functions in the queue
-   * @param {String} [name] the name given for the task where the result will be stored as a property of the {@link Asynchro#result} object
+   * @param {String} [name] the name given for the task where the result will be stored as a property of the {@link Asynchro.result} object
    * (omit to prevent results from being set from function return value - a name/ID will be generated and returned)
    * @param {Function} fn the function to queue for asynchronicity
    * @param {...*} args aguments that will be passed into the queued function
@@ -55,7 +54,7 @@ class Asynchro {
 
   /**
    * Queues an `async function` to run in **parallel** relative to other functions in the queue
-   * @param {String} [name] the name given for the task where the result will be stored as a property of the {@link Asynchro#result} object
+   * @param {String} [name] the name given for the task where the result will be stored as a property of the {@link Asynchro.result} object
    * (omit to prevent results from being set from function return value - a name/ID will be generated and returned)
    * @param {Function} fn the function to queue for asynchronicity
    * @param {...*} args aguments that will be passed into the queued function
@@ -69,7 +68,7 @@ class Asynchro {
   /**
    * Queues an `async function` to run in the **background** (i.e. the queue wont wait for the results and will not be captured).
    * Thrown errors within the scope of specified `throws` flag(s) will be thrown and will stop further execution of the queue.
-   * @param {String} [name] the name given for the task that can be used in conjunction with {@link Asynchro#verify}
+   * @param {String} [name] the name given for the task that can be used in conjunction with {@link Asynchro.verify}
    * (no results will be set from the function's return value - omit will cause the name/ID will be generated and returned)
    * @param {(Boolean|Object|String)} [throws] one of the following values (supersedes any `throws` parameters passed during construction):
    * - `true` to throw any errors and instantly stop any further execution
@@ -77,10 +76,10 @@ class Asynchro {
    * - `Object` an object containing the following properties:
    * - - `invert` true to catch errors when matches are made, false/omit to throw errors when matches are made
    * - - `matches` An array that contains any of the following:
-   * - - - `system` A string value equal to "system" that will match when an error is a type within {@link Asynchro#systemErrorTypes}
+   * - - - `system` A string value equal to "system" that will match when an error is a type within {@link Asynchro.systemErrorTypes}
    * - - - `Object` An object that contains property names/values that will be matched against property name/values in the caught error.
    * When invert is true, all names/values on the caught error must match the names/values on the object in order to be 
-   * **caught/captured** in {@link Asynchro#errors}. When invert is false/omitted, all names/values on the caught error must match
+   * **caught/captured** in {@link Asynchro.errors}. When invert is false/omitted, all names/values on the caught error must match
    * all of the names/values on the object in order to be **rethrown**.
    * - `system` a single `matches` string (invert defaults to false)
    * 
@@ -97,7 +96,7 @@ class Asynchro {
   /**
    * Queues an `async function` to run in **series** relative to other functions in the queue while overriding the `throws` option set during
    * construction.
-   * @param {String} [name] the name given for the task where the result will be stored as a property of the {@link Asynchro#result} object
+   * @param {String} [name] the name given for the task where the result will be stored as a property of the {@link Asynchro.result} object
    * (omit to prevent results from being set from function return value - a name/ID will be generated and returned)
    * @param {(Boolean|Object|String)} [throws] one of the following values (supersedes any `throws` parameters passed during construction):
    * - `true` to throw any errors and instantly stop any further execution
@@ -105,10 +104,10 @@ class Asynchro {
    * - `Object` an object containing the following properties:
    * - - `invert` true to catch errors when matches are made, false/omit to throw errors when matches are made
    * - - `matches` An array that contains any of the following:
-   * - - - `system` A string value equal to "system" that will match when an error is a type within {@link Asynchro#systemErrorTypes}
+   * - - - `system` A string value equal to "system" that will match when an error is a type within {@link Asynchro.systemErrorTypes}
    * - - - `Object` An object that contains property names/values that will be matched against property name/values in the caught error.
    * When invert is true, all names/values on the caught error must match the names/values on the object in order to be 
-   * **caught/captured** in {@link Asynchro#errors}. When invert is false/omitted, all names/values on the caught error must match
+   * **caught/captured** in {@link Asynchro.errors}. When invert is false/omitted, all names/values on the caught error must match
    * all of the names/values on the object in order to be **rethrown**.
    * - `system` a single `matches` string (invert defaults to false)
    * 
@@ -124,7 +123,7 @@ class Asynchro {
   /**
    * Queues an `async function` to run in **parallel** relative to other functions in the queue while overriding the `throws` option set during
    * construction.
-   * @param {String} [name] the name given for the task where the result will be stored as a property of the {@link Asynchro#result} object
+   * @param {String} [name] the name given for the task where the result will be stored as a property of the {@link Asynchro.result} object
    * (omit to prevent results from being set from function return value - a name/ID will be generated and returned)
    * @param {(Boolean|Object|String)} [throws] one of the following values (supersedes any `throws` parameters passed during construction):
    * - `true` to throw any errors and instantly stop any further execution
@@ -132,10 +131,10 @@ class Asynchro {
    * - `Object` an object containing the following properties:
    * - - `invert` true to catch errors when matches are made, false/omit to throw errors when matches are made
    * - - `matches` An array that contains any of the following:
-   * - - - `system` A string value equal to "system" that will match when an error is a type within {@link Asynchro#systemErrorTypes}
+   * - - - `system` A string value equal to "system" that will match when an error is a type within {@link Asynchro.systemErrorTypes}
    * - - - `Object` An object that contains property names/values that will be matched against property name/values in the caught error.
    * When invert is true, all names/values on the caught error must match the names/values on the object in order to be 
-   * **caught/captured** in {@link Asynchro#errors}. When invert is false/omitted, all names/values on the caught error must match
+   * **caught/captured** in {@link Asynchro.errors}. When invert is false/omitted, all names/values on the caught error must match
    * all of the names/values on the object in order to be **rethrown**.
    * - `system` a single `matches` string (invert defaults to false)
    * 
@@ -156,25 +155,25 @@ class Asynchro {
    * @param {String} name either the name designated as the property name or the `Function.name` from the function used when calling `parallel` or `series`
    * @param {Function} fn an `async function` that will accept a single object argument that contains the follwing properties:
    * 1. `error` A _mutable_ error object that occurred during execution of the queued task (changes to this value will be reflected in the final
-   * {@link Asynchro#result} or re-thrown depending on the rules/`throws` set for re-throwing/catching defined on the corresponding queued task).
+   * {@link Asynchro.result} or re-thrown depending on the rules/`throws` set for re-throwing/catching defined on the corresponding queued task).
    * Setting the _error_ will have the same effect as throwing an Error from within the _verify_ function.
    * 2. `result` A _mutable_ result value returned from the queued task execution (changes to this value will be reflected in the final
-   * {@link Asynchro#result}).
+   * {@link Asynchro.result}).
    * 3. `isPending` An _immutable_ boolean value indicating the task has not yet returned from `await`. The value will always be `false` for **series**
    * tasks since they `await` before calling the _verify_. When a **parallel** task is called, but not yet returned from `await` the value will be `true`.
    * In the subsequent **parallel** call to the _verify_ function the value will be `false` since `await` has completed. When **background** tasks are
    * called the value will always be `true` since they will never `await` on the task to complete.
    * 4. `isParallel` An _immutable_ boolean value indicating if the task was ran in **parallel** or **series**
    * 5. `isBackground` An _immutable_ boolean value indicating if the task was ran in the **background** (i.e. calls the task without `await`)
-   * 6. `name` An _immutable_ string value reflecting the original name passed into {@link Asynchro#verify}
-   * 7. `operation` An _immutable_ string value reflecting the original function name of the function passed into {@link Asynchro#verify}
-   * 8. `message` A write-only _mutable_ string value that will override the default message that will be added to {@link Asynchro#messages}
+   * 6. `name` An _immutable_ string value reflecting the original name passed into {@link Asynchro.verify}
+   * 7. `operation` An _immutable_ string value reflecting the original function name of the function passed into {@link Asynchro.verify}
+   * 8. `message` A write-only _mutable_ string value that will override the default message that will be added to {@link Asynchro.messages}
    * 
    * The return value should be one of the following:
-   * 1. `false` will stop execution of pending tasks that have been queued and {@link Asynchro#status} will be set to {@link Asynchro#STOPPED}.
-   * 2. Another `Asynchro` instance that will cause the current queue to stop while the new queue will take over via `await` {@link Asynchro#run}.
-   * {@link Asynchro#status} will be set to {@link Asynchro#TRANSFERRED} with any {@link Asynchro#messages} and/or {@link Asynchro#errors}
-   * being appended to the new queue instance. Also, {@link Asynchro#result} will be merged into the new queue instance.
+   * 1. `false` will stop execution of pending tasks that have been queued and {@link Asynchro.status} will be set to {@link Asynchro.STOPPED}.
+   * 2. Another `Asynchro` instance that will cause the current queue to stop while the new queue will take over via `await` {@link Asynchro.run}.
+   * {@link Asynchro.status} will be set to {@link Asynchro.TRANSFERRED} with any {@link Asynchro.messages} and/or {@link Asynchro.errors}
+   * being appended to the new queue instance. Also, {@link Asynchro.result} will be merged into the new queue instance.
    * 3. Any other value will have no impact.
    * 
    * The _verify_ `this` reference will point to the {@link Asynchro} instance
@@ -190,10 +189,10 @@ class Asynchro {
   }
 
   /**
-   * Registers a handler function that will be executed once {@link Asynchro#run} has completed. Only one handler is allowed per instance
+   * Registers a handler function that will be executed once {@link Asynchro.run} has completed. Only one handler is allowed per instance
    * and will overwrite any end handler that has been previously been set.
    * @param {Function} fn a _synchronous_ `function` that will accept a single argument that will be either set to a new {@link Asynchro} instance when
-   * execution is being transferred to a new queue (i.e. {@link Asynchro#status} is set to {@link Asynchro#TRANSFERRED}) or omitted when it's not.
+   * execution is being transferred to a new queue (i.e. {@link Asynchro.status} is set to {@link Asynchro.TRANSFERRED}) or omitted when it's not.
    * `this` will reference the current {@link Asynchro} instance. Any errors that occur within the function will be thrown.
    */
   set endHandler(fn) {
@@ -204,11 +203,11 @@ class Asynchro {
 
   /**
    * A one-time execution run of all queued asynchronous functions in insertion order with parallel/concurrent running simultaneously and series
-   * tasks running in succession. Any queued {@link Asynchro#background} tasks will continue to run after {@link Asynchro#run} completes,
-   * possibly accumulating additional {@link Asynchro#errors} as those tasks complete (see {@link Asynchro#backgroundWaiter} to wait for
+   * tasks running in succession. Any queued {@link Asynchro.background} tasks will continue to run after {@link Asynchro.run} completes,
+   * possibly accumulating additional {@link Asynchro.errors} as those tasks complete (see {@link Asynchro.backgroundWaiter} to wait for
    * any background tasks to finish completing).
    * @async
-   * @returns {Object} the result from {@link Asynchro#result}
+   * @returns {Object} the result from {@link Asynchro.result}
    */
   async run() {
     const asy = internal(this);
@@ -260,9 +259,9 @@ class Asynchro {
    * console.log(bgResultObject.myBgTask);
    * @async
    * @param {Object} result the object where the background results will be set using a property name that matches the _name_ passed into 
-   * the original call to {@link Asynchro#background} that queued the _background_ function
+   * the original call to {@link Asynchro.background} that queued the _background_ function
    * @returns {Error[]} an array of errors caught due to the original `throws` rules passed into the original call to
-   * {@link Asynchro#background} that queued the _background_ function
+   * {@link Asynchro.background} that queued the _background_ function
    */
   async backgroundWaiter(result) {
     const asy = internal(this), asyw = asy.at.asyncWaiter;
@@ -290,7 +289,7 @@ class Asynchro {
    *  console.log(a); // prints out 1
    * }, ax.resultArg('one.array[0]'));
    * await ax.run();
-   * @param {String} name the name given for the task where the result will be stored as a property of the {@link Asynchro#result} object.
+   * @param {String} name the name given for the task where the result will be stored as a property of the {@link Asynchro.result} object.
    * Can use dot notation to express a path to other objects (e.g. `someObject.someOtherObject.someValue` would equate to
    * `asynchro.result.someObject.someOtherObject.someValue` once the queued task function is executed)
    * @returns {ResultArg} the {@link ResultArg}
@@ -301,7 +300,7 @@ class Asynchro {
   }
 
   /**
-   * The accumulated message(s) gathered while running queued tasks during a {@link Asynchro#run}
+   * The accumulated message(s) gathered while running queued tasks during a {@link Asynchro.run}
    * @param {String} [delimiter] the delimter to use between messages
    * @returns {String} the cumulative messages
    */
@@ -322,7 +321,7 @@ class Asynchro {
 
   /**
    * An immutable array of error type constructs that will be thrown when they are encountered during queue execution
-   * using `instanceof` on the thrown error (used by `system` values for throwing in {@link Asynchro#throwsError})
+   * using `instanceof` on the thrown error (used by `system` values for throwing in {@link Asynchro.throwsError})
    * @type {Function[]}
    */
   get systemErrorTypes() {
@@ -541,15 +540,15 @@ exports.Asynchro = Asynchro;
  * - `Object` an object containing the following properties:
  * - - `invert` true to catch errors when matches are made, false/omit to throw errors when matches are made
  * - - `matches` An array that contains any of the following:
- * - - - `system` A string value equal to "system" that will match when an error is a type within {@link Asynchro#systemErrorTypes}
+ * - - - `system` A string value equal to "system" that will match when an error is a type within {@link Asynchro.systemErrorTypes}
  * - - - `Object` An object that contains property names/values that will be matched against property name/values in the caught error.
  * When invert is true, all names/values on the caught error must match the names/values on the object in order to be 
- * **caught/captured** in {@link Asynchro#errors}. When invert is false/omitted, all names/values on the caught error must match
+ * **caught/captured** in {@link Asynchro.errors}. When invert is false/omitted, all names/values on the caught error must match
  * all of the names/values on the object in order to be **rethrown**.
  * - `system` a single `matches` string (invert defaults to false)
  * 
  * Re-thrown errors will set `Error.cause` to the originally thrown error.
- * @param {String} [name] the name given for the task where the result will be stored as a property of the {@link Asynchro#result} object
+ * @param {String} [name] the name given for the task where the result will be stored as a property of the {@link Asynchro.result} object
  * (omit to prevent results from being set from function return value - a name/ID will be generated and returned)
  * @param {Function} fn the function to queue for asynchronicity
  * @param {*} args aguments that will be passed into the queued function
@@ -690,8 +689,8 @@ async function handleAsync(asyi, itm, pends, backgrounds) {
  * @private
  * @ignore
  * @param {Object} itm the queued `async` item from {@link asynchroQueue}
- * @param {*} systemErrorTypes the {@link Asynchro#systemErrorTypes} that will be applied to the background function check
- * @param {Error[]} errors the {@link Asynchro#errors} where caught errors will be added
+ * @param {*} systemErrorTypes the {@link Asynchro.systemErrorTypes} that will be applied to the background function check
+ * @param {Error[]} errors the {@link Asynchro.errors} where caught errors will be added
  */
 function setBackgroundFunction(itm, systemErrorTypes, errors) {
   const func = itm.fn;
@@ -734,7 +733,7 @@ function defineItemMeta(it, itm, pendPromise, name) {
 }
 
 /**
- * Resolves any arguments that are set in an item that are a {@link ResultArg} to the corresponding {@link Asynchro#result}
+ * Resolves any arguments that are set in an item that are a {@link ResultArg} to the corresponding {@link Asynchro.result}
  * path resolved value
  * @private
  * @ignore
@@ -761,7 +760,7 @@ function resolveArgs(asyi, itm) {
 }
 
 /**
- * Adds a specified message to the commulative `message` on the {@link Asynchro#result} object
+ * Adds a specified message to the commulative `message` on the {@link Asynchro.result} object
  * @private
  * @ignore
  * @param {Asynchro} asyi the {@link Asynchro} instance
@@ -791,15 +790,15 @@ function appendMessage(asyi, name, operation, errorOrMessage) {
  * - `Object` an object containing the following properties:
  * - - `invert` true to catch errors when matches are made, false/omit to throw errors when matches are made
  * - - `matches` An array that contains any of the following:
- * - - - `system` A string value equal to "system" that will match when an error is a type within {@link Asynchro#systemErrorTypes}
+ * - - - `system` A string value equal to "system" that will match when an error is a type within {@link Asynchro.systemErrorTypes}
  * - - - `Object` An object that contains property names/values that will be matched against property name/values in the caught error.
  * When invert is true, all names/values on the caught error must match the names/values on the object in order to be 
- * **caught/captured** in {@link Asynchro#errors}. When invert is false/omitted, all names/values on the caught error must match
+ * **caught/captured** in {@link Asynchro.errors}. When invert is false/omitted, all names/values on the caught error must match
  * all of the names/values on the object in order to be **rethrown**.
  * - `system` a single `matches` string (invert defaults to false)
  * @param {(Error|Function)} errorOrType either an `Error` or a `Function` construct to an Error
  * @param {Boolean} [throwWhenTrue] true to actually throw the error when `errorOrType` is an actual `Error` and it is determined that the error should throw
- * @param {Function[]} systemErrorTypes value from {@link Asynchro#systemErrorTypes}
+ * @param {Function[]} systemErrorTypes value from {@link Asynchro.systemErrorTypes}
  * @returns {Boolean} returns true if the `Error` or `Function` construct to an `Error` will be thrown when encountered during an execution run
  */
 function throwsError(throws, errorOrType, throwWhenTrue, systemErrorTypes) {

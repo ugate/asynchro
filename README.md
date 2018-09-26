@@ -1,6 +1,7 @@
 # &#8669; asynchro 
 Micro `async` lib for __parallel__/__series__/__background__ functions using built-in ES `async/await` with <i style="color:orange;">__zero__</i> dependencies.
 * [API Docs](https://ugate.github.io/asynchro/asynchro/1.0.0)
+
 ## Examples:
 For demostration purposes, let's assume we have an `async` function like the following that just delays execution and either returns a result or throws an error (along with some logging).
 ```js

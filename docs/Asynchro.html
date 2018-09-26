@@ -1,18 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Asynchro - Documentation</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>asynchro - documentation</title>
 
-    <script src="scripts/prettify/prettify.js"></script>
-    <script src="scripts/prettify/lang-css.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+  <script src="scripts/prettify/prettify.js"></script>
+  <script src="scripts/prettify/lang-css.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+  <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+  <style>
+  #topNav {
+    position: fixed;
+    width: 100%;
+    height: 64px;
+    padding: 16px;
+    font-size: 32px;
+    margin-left: 250px;
+    background-color: #E0E0E0;
+  }
+  @media only screen and (max-width: 680px) and (min-width: 320px) {
+    #topNav {
+      margin-left: 0px;
+    }
+  }
+  #topNav a {
+    text-decoration: none;
+  }
+  #topNav .sep {
+    padding: 16px;
+  }
+  #topNav ~ nav ~ #main {
+    margin-top: 64px;
+  }
+  </style>
+  <script>
+    window.addEventListener('load', function(event) {
+      var readme = document.querySelector('.readme > article > h1');
+      if (readme) readme.parentElement.removeChild(readme);
+    });
+  </script>
 </head>
 <body>
 
@@ -23,16 +54,22 @@
 
 <label for="nav-trigger" class="overlay"></label>
 
+<div id="topNav">
+  <a href="index.html" id="source" title="Source Code">
+    &#8669; asynchro
+  </a>
+  <span class="sep">|</span>
+  <a href="https://github.com/ugate/asynchro#readme" id="source" title="Source Code">
+    <img height="24" width="24" src="img/github.svg" />
+  </a>
+</div>
+
 <nav>
-    <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Asynchro.html">Asynchro</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#.promisifyCallback">promisifyCallback</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#.promisifyDelay">promisifyDelay</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#.promisifyEvents">promisifyEvents</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#background">background</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#backgroundWaiter">backgroundWaiter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#messages">messages</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#parallel">parallel</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#parallelThrowOverride">parallelThrowOverride</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#resultArg">resultArg</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#run">run</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#series">series</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#seriesThrowOverride">seriesThrowOverride</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#throwsError">throwsError</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#verify">verify</a></span></li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="ResultArg.html">ResultArg</a></span></li><li class="nav-heading"><a href="global.html">Globals</a></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#appendMessage">appendMessage</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#asyncHandler">asyncHandler</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#asynchro">asynchro</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#asynchroQueue">asynchroQueue</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#defineItemMeta">defineItemMeta</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#guid">guid</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#handleAsync">handleAsync</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#merge">merge</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#resolveArgs">resolveArgs</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#setBackgroundFunction">setBackgroundFunction</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="global.html#throwsError">throwsError</a></span></li>
+  <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Asynchro.html">Asynchro</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#.promisifyCallback">promisifyCallback</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#.promisifyDelay">promisifyDelay</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#.promisifyEvents">promisifyEvents</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#background">background</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#backgroundWaiter">backgroundWaiter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#messages">messages</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#parallel">parallel</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#parallelThrowOverride">parallelThrowOverride</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#resultArg">resultArg</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#run">run</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#series">series</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#seriesThrowOverride">seriesThrowOverride</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#throwsError">throwsError</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#verify">verify</a></span></li>
 </nav>
 
 <div id="main">
-    
-    <h1 class="page-title">Asynchro</h1>
-    
-
-    
+  
 
 
 
@@ -234,7 +271,7 @@ order in relation to one another</p></div>
 </li>
 <li><ul>
 <li><ul>
-<li><code>system</code> A string value equal to &quot;system&quot; that will match when an error is a type within <a href="Asynchro.html#systemErrorTypes"><code>Asynchro#systemErrorTypes</code></a></li>
+<li><code>system</code> A string value equal to &quot;system&quot; that will match when an error is a type within <code>Asynchro.systemErrorTypes</code></li>
 </ul>
 </li>
 </ul>
@@ -243,7 +280,7 @@ order in relation to one another</p></div>
 <li><ul>
 <li><code>Object</code> An object that contains property names/values that will be matched against property name/values in the caught error.
 When invert is true, all names/values on the caught error must match the names/values on the object in order to be 
-<strong>caught/captured</strong> in <a href="Asynchro.html#errors"><code>Asynchro#errors</code></a>. When invert is false/omitted, all names/values on the caught error must match
+<strong>caught/captured</strong> in <code>Asynchro.errors</code>. When invert is false/omitted, all names/values on the caught error must match
 all of the names/values on the object in order to be <strong>rethrown</strong>.</li>
 </ul>
 </li>
@@ -324,7 +361,7 @@ all of the names/values on the object in order to be <strong>rethrown</strong>.<
 
             <td class="description last">
                 <p>a <code>function(name, operation, error)</code> that will return true when the error message should be
-included in the final <a href="Asynchro.html#messages"><code>Asynchro#messages</code></a> output (defaults to false)</p>
+included in the final <code>Asynchro.messages</code> output (defaults to false)</p>
                 
             </td>
         </tr>
@@ -966,7 +1003,7 @@ included in the final <a href="Asynchro.html#messages"><code>Asynchro#messages</
 
 
 <div class="description">
-    <p>Registers a handler function that will be executed once <a href="Asynchro.html#run"><code>Asynchro#run</code></a> has completed. Only one handler is allowed per instance
+    <p>Registers a handler function that will be executed once <code>Asynchro.run</code> has completed. Only one handler is allowed per instance
 and will overwrite any end handler that has been previously been set.</p>
 </div>
 
@@ -1254,7 +1291,7 @@ and will overwrite any end handler that has been previously been set.</p>
 
 <div class="description">
     <p>An immutable array of error type constructs that will be thrown when they are encountered during queue execution
-using <code>instanceof</code> on the thrown error (used by <code>system</code> values for throwing in <a href="Asynchro.html#throwsError"><code>Asynchro#throwsError</code></a>)</p>
+using <code>instanceof</code> on the thrown error (used by <code>system</code> values for throwing in <code>Asynchro.throwsError</code>)</p>
 </div>
 
 
@@ -2519,7 +2556,7 @@ Thrown errors within the scope of specified <code>throws</code> flag(s) will be 
             
 
             <td class="description last">
-                <p>the name given for the task that can be used in conjunction with <a href="Asynchro.html#verify"><code>Asynchro#verify</code></a>
+                <p>the name given for the task that can be used in conjunction with <code>Asynchro.verify</code>
 (no results will be set from the function's return value - omit will cause the name/ID will be generated and returned)</p>
                 
             </td>
@@ -2577,7 +2614,7 @@ Thrown errors within the scope of specified <code>throws</code> flag(s) will be 
 </li>
 <li><ul>
 <li><ul>
-<li><code>system</code> A string value equal to &quot;system&quot; that will match when an error is a type within <a href="Asynchro.html#systemErrorTypes"><code>Asynchro#systemErrorTypes</code></a></li>
+<li><code>system</code> A string value equal to &quot;system&quot; that will match when an error is a type within <code>Asynchro.systemErrorTypes</code></li>
 </ul>
 </li>
 </ul>
@@ -2586,7 +2623,7 @@ Thrown errors within the scope of specified <code>throws</code> flag(s) will be 
 <li><ul>
 <li><code>Object</code> An object that contains property names/values that will be matched against property name/values in the caught error.
 When invert is true, all names/values on the caught error must match the names/values on the object in order to be 
-<strong>caught/captured</strong> in <a href="Asynchro.html#errors"><code>Asynchro#errors</code></a>. When invert is false/omitted, all names/values on the caught error must match
+<strong>caught/captured</strong> in <code>Asynchro.errors</code>. When invert is false/omitted, all names/values on the caught error must match
 all of the names/values on the object in order to be <strong>rethrown</strong>.</li>
 </ul>
 </li>
@@ -2825,7 +2862,7 @@ all of the names/values on the object in order to be <strong>rethrown</strong>.<
 
             <td class="description last">
                 <p>the object where the background results will be set using a property name that matches the <em>name</em> passed into 
-the original call to <a href="Asynchro.html#background"><code>Asynchro#background</code></a> that queued the <em>background</em> function</p>
+the original call to <code>Asynchro.background</code> that queued the <em>background</em> function</p>
                 
             </td>
         </tr>
@@ -2867,7 +2904,7 @@ the original call to <a href="Asynchro.html#background"><code>Asynchro#backgroun
 
 <div class="param-desc">
     <p>an array of errors caught due to the original <code>throws</code> rules passed into the original call to
-<a href="Asynchro.html#background"><code>Asynchro#background</code></a> that queued the <em>background</em> function</p>
+<code>Asynchro.background</code> that queued the <em>background</em> function</p>
 </div>
 
     
@@ -2896,7 +2933,7 @@ the original call to <a href="Asynchro.html#background"><code>Asynchro#backgroun
 
 
 <div class="description">
-    <p>The accumulated message(s) gathered while running queued tasks during a <a href="Asynchro.html#run"><code>Asynchro#run</code></a></p>
+    <p>The accumulated message(s) gathered while running queued tasks during a <code>Asynchro.run</code></p>
 </div>
 
 
@@ -3177,7 +3214,7 @@ the original call to <a href="Asynchro.html#background"><code>Asynchro#backgroun
             
 
             <td class="description last">
-                <p>the name given for the task where the result will be stored as a property of the <a href="Asynchro.html#result"><code>Asynchro#result</code></a> object
+                <p>the name given for the task where the result will be stored as a property of the <code>Asynchro.result</code> object
 (omit to prevent results from being set from function return value - a name/ID will be generated and returned)</p>
                 
             </td>
@@ -3421,7 +3458,7 @@ construction.</p>
             
 
             <td class="description last">
-                <p>the name given for the task where the result will be stored as a property of the <a href="Asynchro.html#result"><code>Asynchro#result</code></a> object
+                <p>the name given for the task where the result will be stored as a property of the <code>Asynchro.result</code> object
 (omit to prevent results from being set from function return value - a name/ID will be generated and returned)</p>
                 
             </td>
@@ -3479,7 +3516,7 @@ construction.</p>
 </li>
 <li><ul>
 <li><ul>
-<li><code>system</code> A string value equal to &quot;system&quot; that will match when an error is a type within <a href="Asynchro.html#systemErrorTypes"><code>Asynchro#systemErrorTypes</code></a></li>
+<li><code>system</code> A string value equal to &quot;system&quot; that will match when an error is a type within <code>Asynchro.systemErrorTypes</code></li>
 </ul>
 </li>
 </ul>
@@ -3488,7 +3525,7 @@ construction.</p>
 <li><ul>
 <li><code>Object</code> An object that contains property names/values that will be matched against property name/values in the caught error.
 When invert is true, all names/values on the caught error must match the names/values on the object in order to be 
-<strong>caught/captured</strong> in <a href="Asynchro.html#errors"><code>Asynchro#errors</code></a>. When invert is false/omitted, all names/values on the caught error must match
+<strong>caught/captured</strong> in <code>Asynchro.errors</code>. When invert is false/omitted, all names/values on the caught error must match
 all of the names/values on the object in order to be <strong>rethrown</strong>.</li>
 </ul>
 </li>
@@ -3726,7 +3763,7 @@ all of the names/values on the object in order to be <strong>rethrown</strong>.<
             
 
             <td class="description last">
-                <p>the name given for the task where the result will be stored as a property of the <a href="Asynchro.html#result"><code>Asynchro#result</code></a> object.
+                <p>the name given for the task where the result will be stored as a property of the <code>Asynchro.result</code> object.
 Can use dot notation to express a path to other objects (e.g. <code>someObject.someOtherObject.someValue</code> would equate to
 <code>asynchro.result.someObject.someOtherObject.someValue</code> once the queued task function is executed)</p>
                 
@@ -3799,8 +3836,8 @@ Can use dot notation to express a path to other objects (e.g. <code>someObject.s
 
 <div class="description">
     <p>A one-time execution run of all queued asynchronous functions in insertion order with parallel/concurrent running simultaneously and series
-tasks running in succession. Any queued <a href="Asynchro.html#background"><code>Asynchro#background</code></a> tasks will continue to run after <a href="Asynchro.html#run"><code>Asynchro#run</code></a> completes,
-possibly accumulating additional <a href="Asynchro.html#errors"><code>Asynchro#errors</code></a> as those tasks complete (see <a href="Asynchro.html#backgroundWaiter"><code>Asynchro#backgroundWaiter</code></a> to wait for
+tasks running in succession. Any queued <code>Asynchro.background</code> tasks will continue to run after <code>Asynchro.run</code> completes,
+possibly accumulating additional <code>Asynchro.errors</code> as those tasks complete (see <code>Asynchro.backgroundWaiter</code> to wait for
 any background tasks to finish completing).</p>
 </div>
 
@@ -3887,7 +3924,7 @@ any background tasks to finish completing).</p>
 
 
 <div class="param-desc">
-    <p>the result from <a href="Asynchro.html#result"><code>Asynchro#result</code></a></p>
+    <p>the result from <code>Asynchro.result</code></p>
 </div>
 
     
@@ -4018,7 +4055,7 @@ any background tasks to finish completing).</p>
             
 
             <td class="description last">
-                <p>the name given for the task where the result will be stored as a property of the <a href="Asynchro.html#result"><code>Asynchro#result</code></a> object
+                <p>the name given for the task where the result will be stored as a property of the <code>Asynchro.result</code> object
 (omit to prevent results from being set from function return value - a name/ID will be generated and returned)</p>
                 
             </td>
@@ -4262,7 +4299,7 @@ construction.</p>
             
 
             <td class="description last">
-                <p>the name given for the task where the result will be stored as a property of the <a href="Asynchro.html#result"><code>Asynchro#result</code></a> object
+                <p>the name given for the task where the result will be stored as a property of the <code>Asynchro.result</code> object
 (omit to prevent results from being set from function return value - a name/ID will be generated and returned)</p>
                 
             </td>
@@ -4320,7 +4357,7 @@ construction.</p>
 </li>
 <li><ul>
 <li><ul>
-<li><code>system</code> A string value equal to &quot;system&quot; that will match when an error is a type within <a href="Asynchro.html#systemErrorTypes"><code>Asynchro#systemErrorTypes</code></a></li>
+<li><code>system</code> A string value equal to &quot;system&quot; that will match when an error is a type within <code>Asynchro.systemErrorTypes</code></li>
 </ul>
 </li>
 </ul>
@@ -4329,7 +4366,7 @@ construction.</p>
 <li><ul>
 <li><code>Object</code> An object that contains property names/values that will be matched against property name/values in the caught error.
 When invert is true, all names/values on the caught error must match the names/values on the object in order to be 
-<strong>caught/captured</strong> in <a href="Asynchro.html#errors"><code>Asynchro#errors</code></a>. When invert is false/omitted, all names/values on the caught error must match
+<strong>caught/captured</strong> in <code>Asynchro.errors</code>. When invert is false/omitted, all names/values on the caught error must match
 all of the names/values on the object in order to be <strong>rethrown</strong>.</li>
 </ul>
 </li>
@@ -4808,26 +4845,26 @@ times for the same name will overwrite any <em>verify</em> functions that were s
                 <p>an <code>async function</code> that will accept a single object argument that contains the follwing properties:</p>
 <ol>
 <li><code>error</code> A <em>mutable</em> error object that occurred during execution of the queued task (changes to this value will be reflected in the final
-<a href="Asynchro.html#result"><code>Asynchro#result</code></a> or re-thrown depending on the rules/<code>throws</code> set for re-throwing/catching defined on the corresponding queued task).
+<code>Asynchro.result</code> or re-thrown depending on the rules/<code>throws</code> set for re-throwing/catching defined on the corresponding queued task).
 Setting the <em>error</em> will have the same effect as throwing an Error from within the <em>verify</em> function.</li>
 <li><code>result</code> A <em>mutable</em> result value returned from the queued task execution (changes to this value will be reflected in the final
-<a href="Asynchro.html#result"><code>Asynchro#result</code></a>).</li>
+<code>Asynchro.result</code>).</li>
 <li><code>isPending</code> An <em>immutable</em> boolean value indicating the task has not yet returned from <code>await</code>. The value will always be <code>false</code> for <strong>series</strong>
 tasks since they <code>await</code> before calling the <em>verify</em>. When a <strong>parallel</strong> task is called, but not yet returned from <code>await</code> the value will be <code>true</code>.
 In the subsequent <strong>parallel</strong> call to the <em>verify</em> function the value will be <code>false</code> since <code>await</code> has completed. When <strong>background</strong> tasks are
 called the value will always be <code>true</code> since they will never <code>await</code> on the task to complete.</li>
 <li><code>isParallel</code> An <em>immutable</em> boolean value indicating if the task was ran in <strong>parallel</strong> or <strong>series</strong></li>
 <li><code>isBackground</code> An <em>immutable</em> boolean value indicating if the task was ran in the <strong>background</strong> (i.e. calls the task without <code>await</code>)</li>
-<li><code>name</code> An <em>immutable</em> string value reflecting the original name passed into <a href="Asynchro.html#verify"><code>Asynchro#verify</code></a></li>
-<li><code>operation</code> An <em>immutable</em> string value reflecting the original function name of the function passed into <a href="Asynchro.html#verify"><code>Asynchro#verify</code></a></li>
-<li><code>message</code> A write-only <em>mutable</em> string value that will override the default message that will be added to <a href="Asynchro.html#messages"><code>Asynchro#messages</code></a></li>
+<li><code>name</code> An <em>immutable</em> string value reflecting the original name passed into <code>Asynchro.verify</code></li>
+<li><code>operation</code> An <em>immutable</em> string value reflecting the original function name of the function passed into <code>Asynchro.verify</code></li>
+<li><code>message</code> A write-only <em>mutable</em> string value that will override the default message that will be added to <code>Asynchro.messages</code></li>
 </ol>
 <p>The return value should be one of the following:</p>
 <ol>
-<li><code>false</code> will stop execution of pending tasks that have been queued and <a href="Asynchro.html#status"><code>Asynchro#status</code></a> will be set to <code>Asynchro#STOPPED</code>.</li>
-<li>Another <code>Asynchro</code> instance that will cause the current queue to stop while the new queue will take over via <code>await</code> <a href="Asynchro.html#run"><code>Asynchro#run</code></a>.
-<a href="Asynchro.html#status"><code>Asynchro#status</code></a> will be set to <code>Asynchro#TRANSFERRED</code> with any <a href="Asynchro.html#messages"><code>Asynchro#messages</code></a> and/or <a href="Asynchro.html#errors"><code>Asynchro#errors</code></a>
-being appended to the new queue instance. Also, <a href="Asynchro.html#result"><code>Asynchro#result</code></a> will be merged into the new queue instance.</li>
+<li><code>false</code> will stop execution of pending tasks that have been queued and <code>Asynchro.status</code> will be set to <a href="Asynchro.html#.STOPPED"><code>Asynchro.STOPPED</code></a>.</li>
+<li>Another <code>Asynchro</code> instance that will cause the current queue to stop while the new queue will take over via <code>await</code> <code>Asynchro.run</code>.
+<code>Asynchro.status</code> will be set to <a href="Asynchro.html#.TRANSFERRED"><code>Asynchro.TRANSFERRED</code></a> with any <code>Asynchro.messages</code> and/or <code>Asynchro.errors</code>
+being appended to the new queue instance. Also, <code>Asynchro.result</code> will be merged into the new queue instance.</li>
 <li>Any other value will have no impact.</li>
 </ol>
 <p>The <em>verify</em> <code>this</code> reference will point to the <a href="Asynchro.html"><code>Asynchro</code></a> instance</p>
@@ -4875,7 +4912,8 @@ be running after a queue has been stopped/transferred by <em>verify</em>.</p>
 <br class="clear">
 
 <footer>
-    Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Tue Sep 25 2018 14:27:12 GMT-0400 (Eastern Daylight Time) using the Minami theme.
+  <b>asynchro v1.0.0</b><br/>
+  Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Sep 26 2018 15:43:10 GMT-0400 (Eastern Daylight Time).
 </footer>
 
 <script>prettyPrint();</script>
