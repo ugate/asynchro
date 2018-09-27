@@ -65,90 +65,19 @@
 </div>
 
 <div id="main">
-  
+  <section>
 
-
-
+<header>
     
+</header>
 
+<article>
+    <h2>Getting Started</h2><p>As seen in the <a href="index.html">intro examples</a>, trying to coordinate multiple <code>async</code> functions into a workflow can be convoluted and hard to follow. Parallel/Concurrent function execution requires extra steps to <code>await</code> promises returned from the previously executed async functions. In addition to this, error handling via <code>try</code>/<code>catch</code> blocks can often become a daunting process. In some instances it's desirable to catch errors, in others, throwing fatal errors is a must. And yet other cases only certain <em>types</em> of errors should be thrown. Also, async functions that need to run in the background require wrapping them within another async function in order to handle errors since <code>await</code> is not used and an error may occur during actual execution.</p>
+<p><code>Asynchro</code> was developed to address these issues and other nuances encountered when working with multiple async functions. Simplicity is the core concept that keeps <code>asynchro</code> concise and intuitive without being bombarded with extra features that will rarely, if ever, be used.</p>
+<h4><a href="tutorial-2-queue.html">The Queue &gt;&gt;</a></h4>
+</article>
 
-
-
-
-
-
-
-
-    
-
-
-    <section class="readme">
-        <article><h1>&#8669; asynchro</h1><p>Micro lib for <strong>parallel</strong>/<strong>series</strong>/<strong>background</strong> asynchronous functions using built-in ES <code>async/await</code> with <strong>zero</strong> external dependencies.</p>
-<ul>
-<li><a href="https://ugate.github.io/asynchro/tutorial-1-started.html">Tutorials</a></li>
-<li><a href="https://ugate.github.io/asynchro/Asynchro.html">API Docs</a></li>
-</ul>
-<h3>Turn <em>vanilla</em> <code>async/await</code> boilerplate code like this...</h3><pre class="prettyprint source lang-js"><code>async function myWorkflow() {
-  const rslt = { result: {}, errors: [] }, promises = {}, log = console.log;
-  try {
-    rslt.one = await mySeriesFunc1('val1', 2, 3);
-  } catch (err) {
-    if (log) log('Error at one', err);
-    rslt.errors.push(err);
-    return rslt;
-  }
-  rslt.two = await mySeriesFunc2(1, 2); // always throw errors for two
-  try {
-    promises.three = myParallelFunc1({ a: 1, b: 2, c: 3 });
-  } catch (err) {
-    if (log) log('Error at three', err);
-    rslt.errors.push(err);
-    return rslt;
-  }
-  try {
-    promises.four = myParallelFunc2();
-  } catch (err) {
-    if (log) log('Error at four', err);
-    rslt.errors.push(err);
-    return rslt;
-  }
-  promises.five = myParallelFunc3('always throw errors');
-  try {
-    rslt.six = await mySeriesFunc3(true, false);
-  } catch (err) {
-    if (log) log('Error at six', err);
-    rslt.errors.push(err);
-    return rslt;
-  }
-  for (let name in promises) {
-    // always throw five/myParallelFunc3
-    if (name === 'five') rslt.five = await promises[name];
-    try {
-      rslt[name] = await promises[name];
-    } catch (err) {
-      if (log) log(`Error at ${name}`, err);
-      rslt.errors.push(err);
-      return rslt;
-    }
-  }
-  return rslt;
-}</code></pre><h3>... into this:</h3><pre class="prettyprint source lang-js"><code>async function myWorkflow() {
-  const ax = new Asynchro({}, false, console.log);
-  ax.series('one', mySeriesFunc1, 'val1', 2, 3);
-  ax.series('two', mySeriesFunc2, 1, 2);
-  ax.parallel('three', myParallelFunc1, { a: 1, b: 2, c: 3 });
-  ax.parallel('four', myParallelFunc2);
-  ax.parallelThrowOverride('five', true, myParallelFunc3, 'always throw errors');
-  ax.series('six', mySeriesFunc3, true, false);
-  const result = await ax.run();
-  return { result, errors: ax.errors };
-}</code></pre></article>
-    </section>
-
-
-
-
-
+</section>
 
 </div>
 

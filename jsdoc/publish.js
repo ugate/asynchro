@@ -9,7 +9,7 @@ const pkg = require('../package.json');
  * @param {Tutorial} tutorials
  */
 exports.publish = function(taffyData, opts, tutorials) {
-  env.asynchro = {
+  env.meta = {
     package: pkg // package accessibility in templates
   };
   opts.template = "./node_modules/minami"; // actual template

@@ -15,7 +15,6 @@
   <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
   <style>
   #topNav {
-    position: fixed;
     width: 100%;
     height: 64px;
     padding: 16px;
@@ -34,9 +33,6 @@
   #topNav .sep {
     padding: 16px;
   }
-  #topNav ~ nav ~ #main {
-    margin-top: 64px;
-  }
   </style>
   <script>
     window.addEventListener('load', function(event) {
@@ -54,6 +50,10 @@
 
 <label for="nav-trigger" class="overlay"></label>
 
+<nav>
+  <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Tutorials</li><li class="nav-item"><a href="tutorial-1-started.html">Getting Started</a></li><li class="nav-item"><a href="tutorial-2-queue.html">The Queue</a></li><li class="nav-item"><a href="tutorial-3-verification.html">Verification</a></li><li class="nav-item"><a href="tutorial-4-branches.html">Branching</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Asynchro.html">Asynchro</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#.asyncCallback">asyncCallback</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#.extractFuncArgs">extractFuncArgs</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#.promisifyEvents">promisifyEvents</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#background">background</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#backgroundWaiter">backgroundWaiter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#messages">messages</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#parallel">parallel</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#parallelThrowOverride">parallelThrowOverride</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#resultArg">resultArg</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#run">run</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#series">series</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#seriesThrowOverride">seriesThrowOverride</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#throwsError">throwsError</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#verify">verify</a></span></li>
+</nav>
+
 <div id="topNav">
   <a href="index.html" id="source" title="Source Code">
     &#8669; asynchro
@@ -63,10 +63,6 @@
     <img height="24" width="24" src="img/github.svg" />
   </a>
 </div>
-
-<nav>
-  <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Asynchro.html">Asynchro</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#.promisifyCallback">promisifyCallback</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#.promisifyDelay">promisifyDelay</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#.promisifyEvents">promisifyEvents</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#background">background</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#backgroundWaiter">backgroundWaiter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#messages">messages</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#parallel">parallel</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#parallelThrowOverride">parallelThrowOverride</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#resultArg">resultArg</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#run">run</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#series">series</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#seriesThrowOverride">seriesThrowOverride</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#throwsError">throwsError</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#verify">verify</a></span></li>
-</nav>
 
 <div id="main">
   
@@ -82,8 +78,8 @@
         Asynchro
         </h2>
         
-            <div class="class-description"><p>&#8669; Management for multiple <code>async function</code>/<code>await</code> tasks that can be ran in <strong>series/sequential</strong> and/or <strong>parallel/concurrent</strong>
-order in relation to one another</p></div>
+            <div class="class-description"><p>&#8669; Manages multiple <code>async function</code>/<code>await</code> tasks that can be ran in <strong>series/sequential</strong> and/or <strong>parallel/concurrent</strong>
+order in relation to one another. See started for more details.</p></div>
         
     
 </header>
@@ -141,7 +137,7 @@ order in relation to one another</p></div>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line9">line 9</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line13">line 13</a>
     </li></ul></dd>
     
 
@@ -447,7 +443,7 @@ included in the final <code>Asynchro.messages</code> output (defaults to false)<
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line411">line 411</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line415">line 415</a>
     </li></ul></dd>
     
 
@@ -521,7 +517,7 @@ included in the final <code>Asynchro.messages</code> output (defaults to false)<
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line387">line 387</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line391">line 391</a>
     </li></ul></dd>
     
 
@@ -595,7 +591,7 @@ included in the final <code>Asynchro.messages</code> output (defaults to false)<
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line375">line 375</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line379">line 379</a>
     </li></ul></dd>
     
 
@@ -669,7 +665,7 @@ included in the final <code>Asynchro.messages</code> output (defaults to false)<
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line381">line 381</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line385">line 385</a>
     </li></ul></dd>
     
 
@@ -743,7 +739,7 @@ included in the final <code>Asynchro.messages</code> output (defaults to false)<
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line399">line 399</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line403">line 403</a>
     </li></ul></dd>
     
 
@@ -817,7 +813,7 @@ included in the final <code>Asynchro.messages</code> output (defaults to false)<
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line393">line 393</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line397">line 397</a>
     </li></ul></dd>
     
 
@@ -891,7 +887,7 @@ included in the final <code>Asynchro.messages</code> output (defaults to false)<
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line405">line 405</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line409">line 409</a>
     </li></ul></dd>
     
 
@@ -965,7 +961,7 @@ included in the final <code>Asynchro.messages</code> output (defaults to false)<
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line351">line 351</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line355">line 355</a>
     </li></ul></dd>
     
 
@@ -1040,7 +1036,7 @@ and will overwrite any end handler that has been previously been set.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line198">line 198</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line202">line 202</a>
     </li></ul></dd>
     
 
@@ -1104,7 +1100,7 @@ and will overwrite any end handler that has been previously been set.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line343">line 343</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line347">line 347</a>
     </li></ul></dd>
     
 
@@ -1178,7 +1174,7 @@ and will overwrite any end handler that has been previously been set.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line335">line 335</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line339">line 339</a>
     </li></ul></dd>
     
 
@@ -1252,7 +1248,7 @@ and will overwrite any end handler that has been previously been set.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line367">line 367</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line371">line 371</a>
     </li></ul></dd>
     
 
@@ -1327,7 +1323,7 @@ using <code>instanceof</code> on the thrown error (used by <code>system</code> v
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line327">line 327</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line331">line 331</a>
     </li></ul></dd>
     
 
@@ -1401,7 +1397,7 @@ using <code>instanceof</code> on the thrown error (used by <code>system</code> v
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line359">line 359</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line363">line 363</a>
     </li></ul></dd>
     
 
@@ -1442,7 +1438,7 @@ using <code>instanceof</code> on the thrown error (used by <code>system</code> v
 
     
 
-    <h4 class="name" id=".promisifyCallback"><span class="type-signature">(static) </span>promisifyCallback<span class="signature">(obj, fname, fparams<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {function}</span></h4>
+    <h4 class="name" id=".asyncCallback"><span class="type-signature">(static) </span>asyncCallback<span class="signature">(obj, fname, fparams<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {function}</span></h4>
 
     
 
@@ -1487,7 +1483,7 @@ into the callback (excluding the 1st error parameter). Also supports <code>this<
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line491">line 491</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line499">line 499</a>
     </li></ul></dd>
     
 
@@ -1608,6 +1604,9 @@ into the callback (excluding the 1st error parameter). Also supports <code>this<
             
                 
 <span class="param-type"><code>Array.&lt;String></code></span>
+|
+
+<span class="param-type"><code>function</code></span>
 
 
             
@@ -1628,8 +1627,9 @@ into the callback (excluding the 1st error parameter). Also supports <code>this<
             
 
             <td class="description last">
-                <p>an array of parameter names for the given function that will be used as the property names on the resolved promise
-object (should not include the error or callback parameter names) or omit to simply use an array of argument values when resolving the promise</p>
+                <p>an array of parameter names for the given function that will be used as the property names on the resolved
+promise object (should not include the error or callback parameter names), a <code>Function</code> to extract the property names from, or omit/<code>false</code> to
+simply use an array of argument values when resolving the promise</p>
                 
             </td>
         </tr>
@@ -1685,14 +1685,14 @@ object (should not include the error or callback parameter names) or omit to sim
 
     
 
-    <h4 class="name" id=".promisifyDelay"><span class="type-signature">(static) </span>promisifyDelay<span class="signature">(delay, val, rejectIt)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    <h4 class="name" id=".extractFuncArgs"><span class="type-signature">(static) </span>extractFuncArgs<span class="signature">(fn)</span><span class="type-signature"> &rarr; {Array.&lt;String>}</span></h4>
 
     
 
 
 
 <div class="description">
-    <p>Delays for a period then resolves or rejects the promise</p>
+    <p>Extracts the argument names that a function accepts</p>
 </div>
 
 
@@ -1728,7 +1728,7 @@ object (should not include the error or callback parameter names) or omit to sim
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line518">line 518</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line529">line 529</a>
     </li></ul></dd>
     
 
@@ -1772,13 +1772,13 @@ object (should not include the error or callback parameter names) or omit to sim
 
         <tr>
             
-                <td class="name"><code>delay</code></td>
+                <td class="name"><code>fn</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><code>Integer</code></span>
+<span class="param-type"><code>function</code></span>
 
 
             
@@ -1789,59 +1789,7 @@ object (should not include the error or callback parameter names) or omit to sim
             
 
             <td class="description last">
-                <p>the number of milliseconds to delay before resolving/rejecting</p>
-                
-            </td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>val</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><code>*</code></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">
-                <p>the value to use when resolving/rejecting</p>
-                
-            </td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>rejectIt</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><code>*</code></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">
-                <p>true to reject, false to resolve after the delay expires</p>
+                <p>the function to extract paramter names from</p>
                 
             </td>
         </tr>
@@ -1874,7 +1822,7 @@ object (should not include the error or callback parameter names) or omit to sim
     </dt>
     <dd>
         
-<span class="param-type"><code>Promise</code></span>
+<span class="param-type"><code>Array.&lt;String></code></span>
 
 
     </dd>
@@ -1882,7 +1830,7 @@ object (should not include the error or callback parameter names) or omit to sim
 
 
 <div class="param-desc">
-    <p>the delayed promise</p>
+    <p>the array of function parameter names in the order that they are defined</p>
 </div>
 
     
@@ -1897,7 +1845,7 @@ object (should not include the error or callback parameter names) or omit to sim
 
     
 
-    <h4 class="name" id=".promisifyEvents"><span class="type-signature">(static) </span>promisifyEvents<span class="signature">(eventEmitter, events, tko<span class="signature-attributes">opt</span>, implyError<span class="signature-attributes">opt</span>, eventMax<span class="signature-attributes">opt</span>, eventErrorMax<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    <h4 class="name" id=".promisifyEvents"><span class="type-signature">(static) </span>promisifyEvents<span class="signature">(emitter, events, tko<span class="signature-attributes">opt</span>, implyError<span class="signature-attributes">opt</span>, eventMax<span class="signature-attributes">opt</span>, eventErrorMax<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
 
     
 
@@ -1940,7 +1888,7 @@ object (should not include the error or callback parameter names) or omit to sim
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line432">line 432</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line436">line 436</a>
     </li></ul></dd>
     
 
@@ -1988,13 +1936,13 @@ object (should not include the error or callback parameter names) or omit to sim
 
         <tr>
             
-                <td class="name"><code>eventEmitter</code></td>
+                <td class="name"><code>emitter</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><code>EventEmitter</code></span>
+<span class="param-type"><code>object</code></span>
 
 
             
@@ -2017,7 +1965,7 @@ object (should not include the error or callback parameter names) or omit to sim
             
 
             <td class="description last">
-                <p>the event emitter that will be listened to</p>
+                <p>the object that will emit an event that will be listened to</p>
                 
             </td>
         </tr>
@@ -2483,7 +2431,7 @@ Thrown errors within the scope of specified <code>throws</code> flag(s) will be 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line91">line 91</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line95">line 95</a>
     </li></ul></dd>
     
 
@@ -2800,7 +2748,7 @@ all of the names/values on the object in order to be <strong>rethrown</strong>.<
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line266">line 266</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line270">line 270</a>
     </li></ul></dd>
     
 
@@ -2969,7 +2917,7 @@ the original call to <code>Asynchro.background</code> that queued the <em>backgr
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line307">line 307</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line311">line 311</a>
     </li></ul></dd>
     
 
@@ -3141,7 +3089,7 @@ the original call to <code>Asynchro.background</code> that queued the <em>backgr
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line63">line 63</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line67">line 67</a>
     </li></ul></dd>
     
 
@@ -3385,7 +3333,7 @@ construction.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line146">line 146</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line150">line 150</a>
     </li></ul></dd>
     
 
@@ -3702,7 +3650,7 @@ all of the names/values on the object in order to be <strong>rethrown</strong>.<
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line297">line 297</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line301">line 301</a>
     </li></ul></dd>
     
 
@@ -3874,7 +3822,7 @@ any background tasks to finish completing).</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line212">line 212</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line216">line 216</a>
     </li></ul></dd>
     
 
@@ -3982,7 +3930,7 @@ any background tasks to finish completing).</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line50">line 50</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line54">line 54</a>
     </li></ul></dd>
     
 
@@ -4226,7 +4174,7 @@ construction.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line119">line 119</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line123">line 123</a>
     </li></ul></dd>
     
 
@@ -4543,7 +4491,7 @@ all of the names/values on the object in order to be <strong>rethrown</strong>.<
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line317">line 317</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line321">line 321</a>
     </li></ul></dd>
     
 
@@ -4755,7 +4703,7 @@ times for the same name will overwrite any <em>verify</em> functions that were s
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="index.js.html">index.js</a>, <a href="index.js.html#line184">line 184</a>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line188">line 188</a>
     </li></ul></dd>
     
 
@@ -4913,7 +4861,7 @@ be running after a queue has been stopped/transferred by <em>verify</em>.</p>
 
 <footer>
   <b>asynchro v1.0.0</b><br/>
-  Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Wed Sep 26 2018 17:21:39 GMT-0400 (Eastern Daylight Time).
+  Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Sep 27 2018 16:56:12 GMT-0400 (Eastern Daylight Time).
 </footer>
 
 <script>prettyPrint();</script>

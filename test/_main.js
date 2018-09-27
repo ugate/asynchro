@@ -1,7 +1,9 @@
 'use strict';
 
+// run tests:
+// npm test
 // generate jsdoc:
-// "node_modules/.bin/jsdoc" -c jsdoc/conf.json
+// npm run gen-docs
 
 const { expect } = require('code');
 exports.expect = expect;
@@ -33,7 +35,7 @@ exports.asyncCall = async function asyncCall(num, val, rtn, rejectIt, delay, log
   if (log) log(`${num}. Starting`);
   var result, err;
   try {
-    result = await Asynchro.promisifyDelay(delay, val, rejectIt);
+    result = await promisifyDelay(delay, val, rejectIt);
   } catch (e) {
     err = e;
   }
@@ -61,4 +63,13 @@ exports.expectABC = function expectABC(ax, error, testError, throws) {
   }
   expect(ax.result.one).to.equal('A');
   expect(ax.result.two).to.equal(undefined);
+}
+
+function promisifyDelay(delay, val, rejectIt) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (rejectIt) reject(val instanceof Error ? val : new Error(val));
+      else resolve(val);
+    }, delay);
+  });
 }

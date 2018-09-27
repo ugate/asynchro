@@ -1,10 +1,14 @@
 'use strict';
 
 const ERROR_TYPES_SYSTEM = Object.freeze([ EvalError, RangeError, ReferenceError, SyntaxError, TypeError, URIError ]);
+const FN_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
+const FN_ARROWS = /\(?([^\)]*?)\)?=>.*$/mg;
+const FN_DEFAULT_PARAMS = /=[^>][^,]+/mg;
+const FN_PARAMS_SEP = /([^\s,]+)/g;
 
 /**
- * &#8669; Management for multiple `async function`/`await` tasks that can be ran in **series/sequential** and/or **parallel/concurrent**
- * order in relation to one another
+ * &#8669; Manages multiple `async function`/`await` tasks that can be ran in **series/sequential** and/or **parallel/concurrent**
+ * order in relation to one another. See {@tutorial started} for more details.
  */
 class Asynchro {
 // TODO : ESM use... export class Asynchro {
@@ -412,7 +416,7 @@ class Asynchro {
 
   /**
   * Promisifies event emitter event(s)
-  * @param {EventEmitter} eventEmitter the event emitter that will be listened to
+  * @param {object} emitter the object that will emit an event that will be listened to
   * @param {(Array|String)} events the event(s) that will be listened for- either an `Object[]`, each containing event
   * properties or a `String[]`/`String` indicating event name(s) (strings will use the passed `tko`)
   * @param {String} [events[].name] the event name
@@ -429,15 +433,18 @@ class Asynchro {
   * @returns {Promise} the promise for the specified event(s) that resolves with the listener's `arguments` or an array
   * of `arguments` when `eventMax` is greater than one
   */
-  static promisifyEvents(eventEmitter, events, tko = 60000, implyError = true, eventMax = 1, eventErrorMax = 1) {
+  static promisifyEvents(emitter, events, tko = 60000, implyError = true, eventMax = 1, eventErrorMax = 1) {
     eventMax = eventMax < 0 ? 1 : eventMax;
+    const on = emitter['once'] && eventMax === 1 ? 'once' : (emitter['on'] && 'on') || (emitter['addEventListener'] && 'addEventListener');
+    const off = emitter['removeListener'] ? 'removeListener' : emitter['removeEventListener'] && 'removeEventListener';
+    if (!on || !off) throw new Error(`Invalid event emitter ${emitter}`); 
     return new Promise((resolve, reject) => {
       var timers = {}, listeners = {}, prm = this, eventCount = 0, errorCnt = 0, errors, results;
       prm.done = false;
       const clearAll = () => {
         for (let handle in timers) clearTimeout(timers[handle]);
         timers = {};
-        for (let event in listeners) eventEmitter.removeListener(event, listeners[event]);
+        for (let event in listeners) emitter[off](event, listeners[event]);
         listeners = {};
       };
       const addlistener = (event) => {
@@ -459,7 +466,7 @@ class Asynchro {
           if (isError) reject(errors || err);
           else resolve.apply(this, results || arguments);
         };
-        eventEmitter[eventMax === 1 ? 'once' : 'on'](event.name, listeners[event.name]);
+        emitter[on](event.name, listeners[event.name]);
         if (!event.tko && !tko) return;
         timers[event.name] = setTimeout(() => {
           clearAll();
@@ -484,15 +491,21 @@ class Asynchro {
    * into the callback (excluding the 1st error parameter). Also supports `this` reference within the passed function (set to the passed `obj`) 
    * @param {Object} obj the object that contains the function that will be promisfied
    * @param {String} fname the name of the function property in the `obj`
-   * @param {String[]} [fparams] an array of parameter names for the given function that will be used as the property names on the resolved promise
-   * object (should not include the error or callback parameter names) or omit to simply use an array of argument values when resolving the promise
+   * @param {(String[]|Function)} [fparams] an array of parameter names for the given function that will be used as the property names on the resolved
+   * promise object (should not include the error or callback parameter names), a `Function` to extract the property names from, or omit/`false` to
+   * simply use an array of argument values when resolving the promise
    * @returns {Function} a function that returns a promise
    */
-  static promisifyCallback(obj, fname, fparams) {
+  static asyncCallback(obj, fname, fparams) {
     return function promisifier() {
       const args = Array.prototype.slice.call(arguments);
       // callback needs to be in the correct position regardless of what was passed
       for (let ai = arguments.length, ln = obj[fname].length - 1; ai < ln; ++ai) args.push(undefined);
+      if (fparams && typeof fparams === 'function') {
+        fparams = Asynchro.extractFuncArgs(fparams);
+        fparams.shift(); // first argument should be the error
+        fparams.pop(); // last argument should be the callback
+      }
       return new Promise((resolve, reject) => {
         args.push(function promisifierCb(err) {
           if (err) reject(err);
@@ -509,19 +522,15 @@ class Asynchro {
   }
 
   /**
-   * Delays for a period then resolves or rejects the promise
-   * @param {Integer} delay the number of milliseconds to delay before resolving/rejecting
-   * @param {*} val the value to use when resolving/rejecting
-   * @param {*} rejectIt true to reject, false to resolve after the delay expires
-   * @returns {Promise} the delayed promise
+   * Extracts the argument names that a function accepts
+   * @param {Function} fn the function to extract paramter names from
+   * @returns {String[]} the array of function parameter names in the order that they are defined
    */
-  static promisifyDelay(delay, val, rejectIt) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (rejectIt) reject(val instanceof Error ? val : new Error(val));
-        else resolve(val);
-      }, delay);
-    });
+  static extractFuncArgs(fn) {
+    if (!fn || typeof fn !== 'function') return [];
+    var ftxt = fn.toString().replace(FN_COMMENTS, '').replace(FN_DEFAULT_PARAMS, '').replace(FN_ARROWS, '($1)');
+    const rtn = ftxt.slice(ftxt.indexOf('(') + 1, ftxt.indexOf(')')).match(FN_PARAMS_SEP);
+    return rtn || [];
   }
 }
 

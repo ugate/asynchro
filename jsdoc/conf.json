@@ -16,7 +16,8 @@
     "encoding": "utf8",
     "private": true,
     "recurse": true,
-    "template": "./jsdoc"
+    "template": "./jsdoc",
+    "tutorials": "./jsdoc/tutorial"
   },
   "templates": {
     "cleverLinks": false,
