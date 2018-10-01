@@ -5,10 +5,13 @@
   "2-queue": {
     "title": "The Queue"
   },
-  "3-verification": {
+  "3-conversion": {
+    "title": "Conversions"
+  },
+  "4-verification": {
     "title": "Verification"
   },
-  "4-branches": {
+  "5-branches": {
     "title": "Branching"
   }
 }

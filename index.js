@@ -291,14 +291,14 @@ class Asynchro {
    * ax.series('two', async (a) => {
    *  // other async operations here
    *  console.log(a); // prints out 1
-   * }, ax.resultArg('one.array[0]'));
+   * }, ax.arg('one.array[0]'));
    * await ax.run();
    * @param {String} name the name given for the task where the result will be stored as a property of the {@link Asynchro.result} object.
    * Can use dot notation to express a path to other objects (e.g. `someObject.someOtherObject.someValue` would equate to
    * `asynchro.result.someObject.someOtherObject.someValue` once the queued task function is executed)
    * @returns {ResultArg} the {@link ResultArg}
    */
-  resultArg(name) {
+  arg(name) {
     if (!name || typeof name !== 'string') throw new Error(`Invlaid name: ${name}`);
     return new ResultArg(name);
   }
@@ -415,74 +415,109 @@ class Asynchro {
   static get DEFAULT_SYSTEM_ERROR_TYPES() { return ERROR_TYPES_SYSTEM; }
 
   /**
-  * Promisifies event emitter event(s)
-  * @param {object} emitter the object that will emit an event that will be listened to
-  * @param {(Array|String)} events the event(s) that will be listened for- either an `Object[]`, each containing event
-  * properties or a `String[]`/`String` indicating event name(s) (strings will use the passed `tko`)
-  * @param {String} [events[].name] the event name
-  * @param {Integer} [events[].tko=tko] the timeout delay in milliseconds to wait for the event before _rejecting_ or
-  * _resolving_ the promise (set to zero for _unlimited_ timeout)
-  * @param {Boolean} [events[].resolveOnTimeout] true to _resolve_ when the `tko` timeout is reached, false to _reject_
+  * Promisifies event(s) fired from a event target
+  * @param {Object} target the object that will fire event(s)
   * @param {Integer} [tko=60000] the timeout delay in milliseconds to wait for the event before _rejecting_ or
   * _resolving_ the promise (set to zero for _unlimited_ timeout or override using `events[].tko`)
-  * @param {Boolean} [implyError=true] true will automatically listen for an `error` event that will reject or resolve
+  * @param {Integer} [eventMax=1] the number of times any one of the events must fire before the promise is resolved
+  * @param {Integer} [eventErrorMax=1] the number of times any one of the events must fire that contain an `Error` as
+  * the first argument before the promise is rejected with that `Error` (or `Error[]` if there are more than one)
+  * @param {Boolean} [implyError=true] true will automatically listen for an `error` events that will reject or resolve
+  * @param {Boolean} [resolveOnTimeout=false] true to _resolve_ when the `tko` timeout is reached, false to _reject_
   * and uses the passed `tko` for the timeout delay
-  * @param {Integer} [eventMax=1] the number of events that must be emitted before the promise is resolved
-  * @param {Integer} [eventErrorMax=1] the number of events that must be emitted that contain an `Error` as the first argument
-  * before the promise is rejected
-  * @returns {Promise} the promise for the specified event(s) that resolves with the listener's `arguments` or an array
-  * of `arguments` when `eventMax` is greater than one
+  * @returns {Function} the function that will listen for events to fire before resolving/rejecting. The function accepts
+  * the following arguments:
+  * - `eventName` the event name that will be listened to
+  * - `listenerParams` an optional `String[]` of parameter names for the given function that will be used as the
+  * property names on the resolved promise object (or `Object[]` when `eventMax > 1`), a `Function` to extract the
+  * property names from, or omit/`false` to simply use an array of argument values when resolving the promise
+  * @example
+  * // 60 sec timeout, 1 event max (default), 1 error event max (default)
+  * const fn = Asynchro.promisifyEventTarget(myEventTarget, 60000);
+  * setTimeout(() => {
+  *  myEventTarget.dispatchEvent('my-event-1', 'done');
+  *  myEventTarget.dispatchEvent('my-event-2', 1, 2, 3);
+  *  myEventTarget.dispatchEvent('my-event-2', 4, 5, 6);
+  *  // my-event-2 will never set the following since it exceeds event max of 1
+  *  myEventTarget.dispatchEvent('my-event-2', 'not set');
+  *  myEventTarget.dispatchEvent('my-event-3', 1, 2, 3);
+  *  myEventTarget.dispatchEvent('my-event-4', 'a', 'b', 'c');
+  *  myEventTarget.dispatchEvent('my-event-4', 'd', 'e', 'f');
+  * }, 10);
+  * // run in parallel
+  * const p1 = fn('my-event-1');
+  * const p2 = fn({ name: 'my-event-2', eventMax: 2 });
+  * const p3 = fn('my-event-3', ['one', 'two', 'three']);
+  * const p4 = fn({ name: 'my-event-4', eventMax: 2 }, ['name1', 'name2', 'name3']);
+  * const p4x = fn({ name: 'my-event-4', eventMax: 2 }, function demoNames(name1, name2, name3){});
+  * console.log(await p1); // ['done']
+  * console.log(await p2); // [[1, 2, 3], [4, 5, 6]]
+  * console.log(await p3); // { one: 1, two: 2, three: 3 }
+  * console.log(await p4); // [{ name1: 'a', name2: 'b', name3: 'c' }, { name1: 'd', name2: 'e', name3: 'f' }]
+  * console.log(await p4x); // [{ name1: 'a', name2: 'b', name3: 'c' }, { name1: 'd', name2: 'e', name3: 'f' }]
   */
-  static promisifyEvents(emitter, events, tko = 60000, implyError = true, eventMax = 1, eventErrorMax = 1) {
-    eventMax = eventMax < 0 ? 1 : eventMax;
-    const on = emitter['once'] && eventMax === 1 ? 'once' : (emitter['on'] && 'on') || (emitter['addEventListener'] && 'addEventListener');
-    const off = emitter['removeListener'] ? 'removeListener' : emitter['removeEventListener'] && 'removeEventListener';
-    if (!on || !off) throw new Error(`Invalid event emitter ${emitter}`); 
-    return new Promise((resolve, reject) => {
-      var timers = {}, listeners = {}, prm = this, eventCount = 0, errorCnt = 0, errors, results;
-      prm.done = false;
-      const clearAll = () => {
-        for (let handle in timers) clearTimeout(timers[handle]);
-        timers = {};
-        for (let event in listeners) emitter[off](event, listeners[event]);
-        listeners = {};
-      };
-      const addlistener = (event) => {
-        listeners[event.name] = function listener(err) {
-          const isError = err && err instanceof Error;
-          if ((isError && eventErrorMax && ++errorCnt >= eventErrorMax) || (!isError && eventMax && ++eventCount >= eventMax)) {
-            clearAll();
-            prm.done = true;
-            if (errorCnt > eventErrorMax || eventCount > eventMax) return;
-          }
-          if (isError && eventErrorMax !== 1) {
-            errors = errors || [];
-            errors.push(err);
-          } else if (!isError && eventMax !== 1) {
-            results = results || [];
-            results.push(arguments);
-          }
-          if ((isError && eventErrorMax && errorCnt !== eventErrorMax) || (!isError && eventMax && eventCount !== eventMax)) return;
-          if (isError) reject(errors || err);
-          else resolve.apply(this, results || arguments);
+  static promisifyEventTarget(target, tko = 60000, eventMax = 1, eventErrorMax = 1, implyError = true, resolveOnTimeout = false) {
+    const on = target['once'] && eventMax === 1 ? 'once' : (target['on'] && 'on') || (target['addListener'] && 'addListener')
+      || (target['addEventListener'] && 'addEventListener');
+    const off = target['removeListener'] ? 'removeListener' : target['removeEventListener'] && 'removeEventListener';
+    return function promisifierEvent(eventName, listenerParams) {
+      if (!eventName) throw new Error(`Invalid event name ${eventName}`);
+      if (!on || !off) throw new Error(`Invalid event target ${target}`);
+      if (listenerParams && typeof listenerParams === 'function') listenerParams = Asynchro.extractFuncArgs(listenerParams);
+      const it = {};
+      return new Promise((resolve, reject) => {
+        var timers = {}, listeners = {}, errors, results, counts = { events: 0, errors: 0 };
+        it.done = false;
+        const clearAll = () => {
+          for (let handle in timers) clearTimeout(timers[handle]);
+          timers = {};
+          for (let event in listeners) target[off](event, listeners[event]);
+          listeners = {};
         };
-        emitter[on](event.name, listeners[event.name]);
-        if (!event.tko && !tko) return;
-        timers[event.name] = setTimeout(() => {
-          clearAll();
-          if (prm.done) return;
-          prm.done = true;
-          eventCount = eventMax;
-          const err = new Error(`Promisify events for event "${event.name}" timeout at ${event.tko}ms`);
-          if (event.resolveOnTimeout) resolve(err);
-          else reject(err);
-        }, event.hasOwnProperty('tko') ? event.tko : tko);
-      };
-      for (let i = 0, ln = events.length; i < ln; ++i) {
-        addlistener(typeof events[i] === 'string' ? { name: events[i], tko } : events[i]);
-      }
-      if (implyError) addlistener({ name: 'error', tko });
-    });
+        const addlistener = (event) => {
+          listeners[event.name] = function listener(err) {
+            const isError = err && err instanceof Error;
+            if ((isError && ++counts.errors >= event.errorMax) || (!isError && ++counts.events >= event.max)) {
+              clearAll();
+              it.done = true;
+              if (counts.errors > event.errorMax || counts.events > event.max) return;
+            }
+            if (isError && event.errorMax !== 1) {
+              errors = errors || [];
+              if (arguments.length > 1) err[event.name] = Array.prototype.slice.call(arguments, 1);
+              errors.push(err);
+            } else if (!isError) {
+              var args;
+              if (listenerParams) {
+                args = {};
+                var fni = -1;
+                for (let name of listenerParams) args[name] = arguments[++fni];
+              } else args = Array.prototype.slice.call(arguments);
+              if (results) results.push(args);
+              else if (event.max === 1) results = args;
+              else results = [args];
+            }
+            if ((isError && counts.errors !== event.errorMax) || (!isError && counts.events !== event.max)) return;
+            if (isError) reject(errors || err);
+            else resolve(results);
+          };
+          target[on](event.name, listeners[event.name]);
+          if (!event.tko) return;
+          timers[event.name] = setTimeout(() => {
+            clearAll();
+            if (it.done) return;
+            it.done = true;
+            const err = new Error(`Promisify events for event "${event.name}" timeout at ${event.tko}ms`);
+            if (event.resolveOnTimeout) resolve(err);
+            else reject(err);
+          }, event.tko);
+        };
+        addlistener({ name: eventName, tko, max: eventMax, errorMax: eventErrorMax, resolveOnTimeout });
+        if (implyError && eventName !== 'error') {
+          addlistener({ name: 'error', tko, max: eventMax, errorMax: eventErrorMax, resolveOnTimeout });
+        }
+      });
+    }
   }
 
   /**
@@ -490,33 +525,33 @@ class Asynchro {
    * an `Error`) and converts it to a promise. Rejects when an `Error` is passed in as the first argument or resolves using the arguments passed
    * into the callback (excluding the 1st error parameter). Also supports `this` reference within the passed function (set to the passed `obj`) 
    * @param {Object} obj the object that contains the function that will be promisfied
-   * @param {String} fname the name of the function property in the `obj`
-   * @param {(String[]|Function)} [fparams] an array of parameter names for the given function that will be used as the property names on the resolved
-   * promise object (should not include the error or callback parameter names), a `Function` to extract the property names from, or omit/`false` to
-   * simply use an array of argument values when resolving the promise
-   * @returns {Function} a function that returns a promise
+   * @param {String} funcName the name of the function property in the `obj`
+   * @param {(String[]|Function)} [funcParams] a `String[]` of parameter names for the given function that will be used as the property names on the
+   * resolved promise object (should not include the error or callback parameter names), a `Function` to extract the property names from, or
+   * omit/`false` to simply use an array of argument values when resolving the promise
+   * @returns {Function} a `function(..args)` that returns a promise
    */
-  static asyncCallback(obj, fname, fparams) {
-    return function promisifier() {
+  static promisifyCallback(obj, funcName, funcParams) {
+    return function promisifierCallback() {
       const args = Array.prototype.slice.call(arguments);
       // callback needs to be in the correct position regardless of what was passed
-      for (let ai = arguments.length, ln = obj[fname].length - 1; ai < ln; ++ai) args.push(undefined);
-      if (fparams && typeof fparams === 'function') {
-        fparams = Asynchro.extractFuncArgs(fparams);
-        fparams.shift(); // first argument should be the error
-        fparams.pop(); // last argument should be the callback
+      for (let ai = arguments.length, ln = obj[funcName].length - 1; ai < ln; ++ai) args.push(undefined);
+      if (funcParams && typeof funcParams === 'function') {
+        funcParams = Asynchro.extractFuncArgs(funcParams);
+        funcParams.shift(); // first argument should be the error
+        funcParams.pop(); // last argument should be the callback
       }
       return new Promise((resolve, reject) => {
         args.push(function promisifierCb(err) {
           if (err) reject(err);
-          else if (fparams) {
+          else if (funcParams) {
             const rtn = {};
             var fni = 0; // skip error argument
-            for (let name of fparams) rtn[name] = arguments[++fni];
+            for (let name of funcParams) rtn[name] = arguments[++fni];
             resolve(rtn);
           } else resolve(Array.prototype.slice.call(arguments, 1)); // remove error argument and return array
         });
-        obj[fname].apply(obj, args);
+        obj[funcName].apply(obj, args);
       });
     };
   }
@@ -753,9 +788,10 @@ function resolveArgs(asyi, itm) {
   var argi = 0, names, mtch, val;
   for (let arg of itm.args) {
     if (arg instanceof ResultArg) {
-      if (!names) names = arg.name.split('.');
+      // convert any obj['path']["to"][`value`][0] -> obj.path.to.value -> [ obj, path, to, value[0] ]
+      names = arg.name.replace(/\[['"`](\w+)['"`]\]/g, '.$1').split('.');
+      val = asyi.result;
       for (let nm of names) {
-        val = !val ? asyi.result : val;
         if (typeof val !== 'object') break;
         mtch = nm.match(/^([^\[]+)\[(\d+)\]$/);
         nm = (mtch && mtch[1]) || nm;

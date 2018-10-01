@@ -65,90 +65,17 @@
 </div>
 
 <div id="main">
-  
+  <section>
 
-
-
+<header>
     
+</header>
 
+<article>
+    <h3>Verification</h3><h4><a href="tutorial-3-branches.html">Branching &gt;&gt;</a></h4>
+</article>
 
-
-
-
-
-
-
-
-    
-
-
-    <section class="readme">
-        <article><h1>&#8669; asynchro</h1><p>Micro lib for <strong>parallel</strong>/<strong>series</strong>/<strong>background</strong> asynchronous functions using built-in ES <code>async/await</code> with <strong>zero</strong> external dependencies.</p>
-<ul>
-<li><a href="https://ugate.github.io/asynchro/tutorial-1-started.html">Tutorials</a></li>
-<li><a href="https://ugate.github.io/asynchro/Asynchro.html">API Docs</a></li>
-</ul>
-<h3>Turn <em>vanilla</em> <code>async/await</code> boilerplate code like this...</h3><pre class="prettyprint source lang-js"><code>async function myWorkflow() {
-  const rslt = { result: {}, errors: [] }, promises = {}, log = console.log;
-  try {
-    rslt.one = await mySeriesFunc1('val1', 2, 3);
-  } catch (err) {
-    if (log) log('Error at one', err);
-    rslt.errors.push(err);
-    return rslt;
-  }
-  rslt.two = await mySeriesFunc2(1, 2); // always throw errors for two
-  try {
-    promises.three = myParallelFunc1({ a: 1, b: 2, c: 3 });
-  } catch (err) {
-    if (log) log('Error at three', err);
-    rslt.errors.push(err);
-    return rslt;
-  }
-  try {
-    promises.four = myParallelFunc2();
-  } catch (err) {
-    if (log) log('Error at four', err);
-    rslt.errors.push(err);
-    return rslt;
-  }
-  promises.five = myParallelFunc3('always throw errors');
-  try {
-    rslt.six = await mySeriesFunc3(true, false);
-  } catch (err) {
-    if (log) log('Error at six', err);
-    rslt.errors.push(err);
-    return rslt;
-  }
-  for (let name in promises) {
-    // always throw five/myParallelFunc3
-    if (name === 'five') rslt.five = await promises[name];
-    try {
-      rslt[name] = await promises[name];
-    } catch (err) {
-      if (log) log(`Error at ${name}`, err);
-      rslt.errors.push(err);
-      return rslt;
-    }
-  }
-  return rslt;
-}</code></pre><h3>... into this:</h3><pre class="prettyprint source lang-js"><code>async function myWorkflow() {
-  const ax = new Asynchro({}, false, console.log);
-  ax.series('one', mySeriesFunc1, 'val1', 2, 3);
-  ax.series('two', mySeriesFunc2, 1, 2);
-  ax.parallel('three', myParallelFunc1, { a: 1, b: 2, c: 3 });
-  ax.parallel('four', myParallelFunc2);
-  ax.parallelThrowOverride('five', true, myParallelFunc3, 'always throw errors');
-  ax.series('six', mySeriesFunc3, true, false);
-  const result = await ax.run();
-  return { result, errors: ax.errors };
-}</code></pre><h3><a href="https://ugate.github.io/asynchro/tutorial-1-started.html">Take me there! &gt;&gt;</a></h3></article>
-    </section>
-
-
-
-
-
+</section>
 
 </div>
 

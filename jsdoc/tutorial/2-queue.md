@@ -33,42 +33,51 @@ Each argument passed after the async function will be passed in order to that fu
 To omit an async function's return value from the final result simply use `null`, `false` or `undefined` as the _name_ argument value: `ax.series(null, mySeriesFunc1, 'val1', 2, 3);`.
 
 #### Passing Results During Execution
-Passing results from one async function to the next is fairly easy to follow using [Asynchro.resultArg](Asynchro.html#resultArg):
+Passing results from one async function to the next is fairly easy to follow using [Asynchro.arg](Asynchro.html#arg):
 ```js
-const ax = new Asynchro({});
-ax.series('one', async () => {
+const asyncOne = async () => {
   // other async operations here
   return { array: [1] };
-});
-ax.series('two', async (array) => {
+};
+const asyncTwo = async (array) => {
   // other async operations here
   const rtn = 2;
   array.push(rtn);
   return rtn;
-}, ax.resultArg('one.array'));
-ax.series('three', async (a1) => {
+};
+const asyncThree = async (a1) => {
   // other async operations here
   console.log(a1); // prints out 1
   return a1 + 2;
-}, ax.resultArg('one.array[0]'));
-ax.series(null, async (array) => {
+};
+const asyncFour = async (array) => {
   // other async operations here
   array.push(4);
-}, ax.resultArg('one.array'));
+};
+
+const ax = new Asynchro({});
+ax.series('one', asyncOne);
+ax.series('two', asyncTwo, ax.arg('one.array'));
+ax.series('three', asyncThree, ax.arg('one.array[0]'));
+ax.series(null, asyncFour, ax.arg('one.array'));
 const rslt = await ax.run();
 console.log(rslt); // { one: { array: [1, 2, 4] }, two: 2, three: 3 }
 ```
-Keep in mind that result arguments may not be available in a _parallel_ async function when coming from a previously queued _parallel_ async function execution (depending on how long the previous operation takes):
+Keep in mind that result arguments may not be available in a _parallel_ async function when referencing a previously queued _parallel_ async function execution (depending on how long the previous operation takes):
 ```js
-const ax = new Asynchro({});
-ax.parallel('one', async () => {
+const asyncOne = async () => {
   // other async operations here
   return { array: [1] };
-});
-ax.parallel(null, async (array) => {
+};
+const asyncTwo = async (array) => {
   // other async operations here
   array.push(2); // ERROR: one.array not yet set!
-}, ax.resultArg('one.array'));
+};
+
+const ax = new Asynchro({});
+ax.parallel('one', asyncOne);
+ax.parallel(null, asyncTwo, ax.arg('one.array'));
+await ax.run();
 ```
 
 #### Error Handling
@@ -121,50 +130,4 @@ Another way to control which errors are caught or thrown is to use an `Object` a
 ```
 For convenience, [Asynchro.throwsError](Asynchro.html#throwsError) is provided to check if the queue will throw or catch a specified `Error`/error type.
 
-#### Callback Conversions
-Most _callback_ style functions that follow the `function(error, function callback(error, returnValue))` schematics can be converted/promisified into an async function using a utility such as the one provided by `util.promisify` in [Node.js](https://nodejs.org). But if you're running in a browser or just need to be able to wrap/_promisify_ a synchronous function with a callback function that contains multiple arguments with an asynchronous one, `asynchro` provides some simple solutions to assist. [Asynchro.asyncCallback](Asynchro.html#asyncCallback) does the conversion provided that the callback function belongs to an `Object`:
-```js
-const myCallbackObj = { // could also be a class instance
-  multiply: (a, b, c, cb) => {
-    const thiz = this;
-    setTimeout(() => {
-      cb(thiz.error, 10 * (a || 0), 20 * (b || 0), 30 * (c || 0), cb);
-    }, 500);
-  }
-};
-const myAsyncFunc = Asynchro.asyncCallback(myCallbackObj, 'multiply');
-const myAsyncFuncNamed = Asynchro.asyncCallback(myCallbackObj, 'multiply', [ 'a', 'b', 'c' ]);
-(async () => {
-  var rslt;
-  rslt = await myAsyncFunc(0, 1, 2); // 10 * 0 = 0, 20 * 1 = 20, 30 * 2 = 60
-  console.log(rslt); // [ 0, 20, 60 ]
-  rslt = await myAsyncFuncNamed(1, 2, 4); // 10 * 1 = 10, 20 * 2 = 40, 30 * 4 = 120
-  console.log(rslt); // { a: 10, b: 40, c: 120 }
-  rslt = await myAsyncFuncNamed(2, 4, 6); // 10 * 2 = 20, 20 * 4 = 80, 30 * 6 = 180
-  console.log(rslt); // { a: 20, b: 80, c: 180 }
-
-  myCallbackObj.error = new Error('My expected error');
-  try {
-    rslt = await myAsyncFunc(0, 1, 2);
-  } catch (err) {
-    console.log(err); // My expected error
-  }
-})();
-```
-Which enables the converted function to be added to the queue:
-```js
-const myAsyncFunc = Asynchro.asyncCallback(myCallbackObj, 'multiply', [ 'a', 'b', 'c' ]);
-const ax = new Asynchro({}, false, console.log);
-ax.series('one', myAsyncFunc, 1, 2, 4);
-// ...more async function added to the queue here
-const rslt = await ax.run();
-console.log(rslt); // { one: { a: 10, b: 40, c: 120 } }
-```
-
-#### Event Conversions
-On some occasions there may be certain events that need to be `await`ed for before continuing queue execution. In order to achieve this `asynchro` provides [Asynchro.promisifyEvents](Asynchro.html#promisifyEvents).
-```js
-const rslt = await Asynchro.promisifyEvents(eventObject, ['my-event'], 60000); // if no event is fired within 60 secods a timeout error is thrown
-```
-
-#### [Verification >>](tutorial-3-verification.html)
+#### [Conversions >>](tutorial-3-conversion.html)

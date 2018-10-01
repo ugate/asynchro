@@ -65,90 +65,83 @@
 </div>
 
 <div id="main">
-  
+  <section>
 
-
-
+<header>
     
+</header>
 
-
-
-
-
-
-
-
-
-    
-
-
-    <section class="readme">
-        <article><h1>&#8669; asynchro</h1><p>Micro lib for <strong>parallel</strong>/<strong>series</strong>/<strong>background</strong> asynchronous functions using built-in ES <code>async/await</code> with <strong>zero</strong> external dependencies.</p>
-<ul>
-<li><a href="https://ugate.github.io/asynchro/tutorial-1-started.html">Tutorials</a></li>
-<li><a href="https://ugate.github.io/asynchro/Asynchro.html">API Docs</a></li>
-</ul>
-<h3>Turn <em>vanilla</em> <code>async/await</code> boilerplate code like this...</h3><pre class="prettyprint source lang-js"><code>async function myWorkflow() {
-  const rslt = { result: {}, errors: [] }, promises = {}, log = console.log;
-  try {
-    rslt.one = await mySeriesFunc1('val1', 2, 3);
-  } catch (err) {
-    if (log) log('Error at one', err);
-    rslt.errors.push(err);
-    return rslt;
+<article>
+    <h3>Conversions</h3><p>There are some instances where legacy style <code>async</code>-like functions need to be incorporated into a workflow. <code>Asynchro</code> provides some micro-sized utilities that should accommodate the most common use cases.</p>
+<h4>Callback Conversions</h4><p>Most <em>callback</em> style functions that follow the <code>function(error, function callback(error, returnValue))</code> schematics can be converted/promisified into an async function using a utility such as the one provided by <code>util.promisify</code> in <a href="https://nodejs.org">Node.js</a>. But if you're running in a browser or just need multiple argument support, those type of solutions fall short. <code>Aynchro</code> provides some simple solutions to assist. <a href="Asynchro.html#promisifyCallback">Asynchro.promisifyCallback</a> does callback conversions on one or more aguments provided that the callback function belongs to an <code>Object</code>:</p>
+<pre class="prettyprint source lang-js"><code>const myCallbackObj = { // could also be a class instance
+  multiply: (a, b, c, cb) => {
+    const thiz = this;
+    setTimeout(() => {
+      cb(thiz.error, 10 * (a || 0), 20 * (b || 0), 30 * (c || 0), cb);
+    }, 500);
   }
-  rslt.two = await mySeriesFunc2(1, 2); // always throw errors for two
+};
+const myAsyncFunc = Asynchro.promisifyCallback(myCallbackObj, 'multiply');
+const myAsyncFuncNamed = Asynchro.promisifyCallback(myCallbackObj, 'multiply', [ 'a', 'b', 'c' ]);
+(async () => {
+  var rslt;
+  rslt = await myAsyncFunc(0, 1, 2); // 10 * 0 = 0, 20 * 1 = 20, 30 * 2 = 60
+  console.log(rslt); // [ 0, 20, 60 ]
+  rslt = await myAsyncFuncNamed(1, 2, 4); // 10 * 1 = 10, 20 * 2 = 40, 30 * 4 = 120
+  console.log(rslt); // { a: 10, b: 40, c: 120 }
+  rslt = await myAsyncFuncNamed(2, 4, 6); // 10 * 2 = 20, 20 * 4 = 80, 30 * 6 = 180
+  console.log(rslt); // { a: 20, b: 80, c: 180 }
+
+  myCallbackObj.error = new Error('My expected error');
   try {
-    promises.three = myParallelFunc1({ a: 1, b: 2, c: 3 });
+    rslt = await myAsyncFunc(0, 1, 2);
   } catch (err) {
-    if (log) log('Error at three', err);
-    rslt.errors.push(err);
-    return rslt;
+    console.log(err); // My expected error
   }
-  try {
-    promises.four = myParallelFunc2();
-  } catch (err) {
-    if (log) log('Error at four', err);
-    rslt.errors.push(err);
-    return rslt;
+})();</code></pre><p>Which enables the converted function to be added to the queue:</p>
+<pre class="prettyprint source lang-js"><code>const myAsyncFunc = Asynchro.promisifyCallback(myCallbackObj, 'multiply', [ 'a', 'b', 'c' ]);
+const ax = new Asynchro({}, false, console.log);
+ax.series('one', myAsyncFunc, 1, 2, 4);
+// ...more async function added to the queue here
+const rslt = await ax.run();
+console.log(rslt); // { one: { a: 10, b: 40, c: 120 } }</code></pre><h4>Event Conversions</h4><p>There may be certain events that need to <code>await</code> for before continuing queue execution. In order to achieve this <code>asynchro</code> provides <a href="Asynchro.html#promisifyEventTarget">Asynchro.promisifyEventTarget</a>. The event object that is converted must have an <code>addListener</code>, <code>addEventListener</code>, <code>once</code> or <code>on</code> function for registering an event listener as well as a <code>removeListener</code>, <code>removeEventListener</code> function for removing the listener. Both functions must have a function signature of <code>function(eventName, listenerFunction)</code>. The listener will listen for a single dispatched/emitted event of any one of the specified events. Once the listener is notified the listener is removed. By default <code>error</code> events are listened to and thrown- allowing an <code>Asynchro</code> queue to process the generated async function just like any other task in the queue.</p>
+<pre class="prettyprint source lang-js"><code>// class just for demo purposes
+class MyEventTarg {
+  constructor() {
+    this.listeners = {};
   }
-  promises.five = myParallelFunc3('always throw errors');
-  try {
-    rslt.six = await mySeriesFunc3(true, false);
-  } catch (err) {
-    if (log) log('Error at six', err);
-    rslt.errors.push(err);
-    return rslt;
+  addListener(event, listener) {
+    this.listeners[event] = this.listeners[event] || [];
+    this.listeners[event].push(listener);
   }
-  for (let name in promises) {
-    // always throw five/myParallelFunc3
-    if (name === 'five') rslt.five = await promises[name];
-    try {
-      rslt[name] = await promises[name];
-    } catch (err) {
-      if (log) log(`Error at ${name}`, err);
-      rslt.errors.push(err);
-      return rslt;
+  removeListener(event, listener) {
+    var idx = -1;
+    if (!(event in this.listeners)) idx;
+    for (let lsn of this.listeners[event]) if (++idx && lsn === listener) {
+       this.listeners[event].splice(idx, 1);
+       return idx;
     }
   }
-  return rslt;
-}</code></pre><h3>... into this:</h3><pre class="prettyprint source lang-js"><code>async function myWorkflow() {
-  const ax = new Asynchro({}, false, console.log);
-  ax.series('one', mySeriesFunc1, 'val1', 2, 3);
-  ax.series('two', mySeriesFunc2, 1, 2);
-  ax.parallel('three', myParallelFunc1, { a: 1, b: 2, c: 3 });
-  ax.parallel('four', myParallelFunc2);
-  ax.parallelThrowOverride('five', true, myParallelFunc3, 'always throw errors');
-  ax.series('six', mySeriesFunc3, true, false);
-  const result = await ax.run();
-  return { result, errors: ax.errors };
-}</code></pre><h3><a href="https://ugate.github.io/asynchro/tutorial-1-started.html">Take me there! &gt;&gt;</a></h3></article>
-    </section>
+  dispatchEvent(type) {
+    if (this.listeners[type]) {
+      const args = Array.prototype.slice.call(arguments, 1);
+      for (let lsn of this.listeners[type]) lsn.apply(this, args);
+    }
+  }
+}
 
+const trg = new MyEventTarg();
+// if no event is fired within 60 secods a timeout error is thrown
+const fn = Asynchro.promisifyEventTarget(trg, 60000);
+const ax = new Asynchro({});
+ax.series('one', fn, 'test', 123);
+// ...more async function added to the queue here
+const rslt = await ax.run();
+console.log(rslt); // { one: 123 }</code></pre><h4><a href="tutorial-4-verification.html">Verification &gt;&gt;</a></h4>
+</article>
 
-
-
-
+</section>
 
 </div>
 
