@@ -70,13 +70,43 @@ class MyEventTarg {
 }
 
 const trg = new MyEventTarg();
-// if no event is fired within 60 secods a timeout error is thrown
-const fn = Asynchro.promisifyEventTarget(trg, 60000);
+// if no event is fired within 30 secods a timeout error is thrown
+const listen = Asynchro.promisifyEventTarget(trg, 30000);
 const ax = new Asynchro({});
-ax.series('one', fn, 'test', 123);
+ax.parallel('one', listen, 'test', 123);
 // ...more async function added to the queue here
 const rslt = await ax.run();
 console.log(rslt); // { one: 123 }
 ```
+When working with events it's a good practice to ensure that the dispatch/emission of the events used are fully understood before adding them to a queue. This will prevent unintended race conditions. To illustrate, consider the following example.
+```js
+setTimeout(() => {
+  target.dispatchEvent('event-1');
+  target.dispatchEvent('event-2');
+}, 500);
 
-#### [Verification >>](tutorial-4-verification.html)
+const fn = Asynchro.promisifyEventTarget(target);
+const ax = new Asynchro({});
+ax.parallel('one', myAsyncFunc1);
+ax.series('two', fn, 'event-1');
+ax.series('three', myAsyncFunc2);
+ax.parallel('four', fn, 'event-2');
+// default 60 second timeout will occur while waiting
+const rslt = await ax.run();
+```
+Even though "two"/"event-1" and "four"/"event-2" are collectively fired in an _asynchronous_ manner (`setTimeout`), "two"/"event-1" is queued in _series_ and will wait until the "event-1" event fires before progressing and ultimately waiting for the "event-2" to fire. In other words, "event-2" fires before "four" has a chance to listen for the event. One way to remedy this is to queue the events in _parallel_ before any other tasks take place.
+```js
+setTimeout(() => {
+  target.dispatchEvent('event-1');
+  target.dispatchEvent('event-2');
+}, 500);
+
+const fn = Asynchro.promisifyEventTarget(target);
+const ax = new Asynchro({});
+ax.parallel('two', fn, 'event-1');
+ax.parallel('four', fn, 'event-2');
+ax.parallel('one', myAsyncFunc1);
+ax.series('two', fn, 'event-1');
+ax.series('three', myAsyncFunc2);
+const rslt = await ax.run();
+```

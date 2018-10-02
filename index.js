@@ -169,9 +169,10 @@ class Asynchro {
    * called the value will always be `true` since they will never `await` on the task to complete.
    * 4. `isParallel` An _immutable_ boolean value indicating if the task was ran in **parallel** or **series**
    * 5. `isBackground` An _immutable_ boolean value indicating if the task was ran in the **background** (i.e. calls the task without `await`)
-   * 6. `name` An _immutable_ string value reflecting the original name passed into {@link Asynchro.verify}
-   * 7. `operation` An _immutable_ string value reflecting the original function name of the function passed into {@link Asynchro.verify}
-   * 8. `message` A write-only _mutable_ string value that will override the default message that will be added to {@link Asynchro.messages}
+   * 6. `event` An _immutable_ event name defined when the task originated from the function returned by {@link Asynchro.promisifyEventTarget}
+   * 7. `name` An _immutable_ string value reflecting the original name passed into {@link Asynchro.verify}
+   * 8. `operation` An _immutable_ string value reflecting the original function name of the function passed into {@link Asynchro.verify}
+   * 9. `message` A write-only _mutable_ string value that will override the default message that will be added to {@link Asynchro.messages}
    * 
    * The return value should be one of the following:
    * 1. `false` will stop execution of pending tasks that have been queued and {@link Asynchro.status} will be set to {@link Asynchro.STOPPED}.
@@ -425,15 +426,17 @@ class Asynchro {
   * @param {Boolean} [implyError=true] true will automatically listen for an `error` events that will reject or resolve
   * @param {Boolean} [resolveOnTimeout=false] true to _resolve_ when the `tko` timeout is reached, false to _reject_
   * and uses the passed `tko` for the timeout delay
-  * @returns {Function} the function that will listen for events to fire before resolving/rejecting. The function accepts
-  * the following arguments:
-  * - `eventName` the event name that will be listened to
+  * @returns {Function} the function that will listen for events to fire before resolving/rejecting with either an array
+  * of arguments passed into the listener, a single value when the listener was passed one argument, `undefined` when
+  * the listener was not passed any arguments or an `Object` generated using `listenerParams` to map the argument values
+  * passed into the listener in the order they are received. The function accepts the following arguments:
+  * - `event` either the event name that will be listened to or an object that will override 
   * - `listenerParams` an optional `String[]` of parameter names for the given function that will be used as the
   * property names on the resolved promise object (or `Object[]` when `eventMax > 1`), a `Function` to extract the
   * property names from, or omit/`false` to simply use an array of argument values when resolving the promise
   * @example
   * // 60 sec timeout, 1 event max (default), 1 error event max (default)
-  * const fn = Asynchro.promisifyEventTarget(myEventTarget, 60000);
+  * const listenAsync = Asynchro.promisifyEventTarget(myEventTarget, 60000);
   * setTimeout(() => {
   *  myEventTarget.dispatchEvent('my-event-1', 'done');
   *  myEventTarget.dispatchEvent('my-event-2', 1, 2, 3);
@@ -445,12 +448,12 @@ class Asynchro {
   *  myEventTarget.dispatchEvent('my-event-4', 'd', 'e', 'f');
   * }, 10);
   * // run in parallel
-  * const p1 = fn('my-event-1');
-  * const p2 = fn({ name: 'my-event-2', eventMax: 2 });
-  * const p3 = fn('my-event-3', ['one', 'two', 'three']);
-  * const p4 = fn({ name: 'my-event-4', eventMax: 2 }, ['name1', 'name2', 'name3']);
-  * const p4x = fn({ name: 'my-event-4', eventMax: 2 }, function demoNames(name1, name2, name3){});
-  * console.log(await p1); // ['done']
+  * const p1 = listenAsync('my-event-1');
+  * const p2 = listenAsync({ name: 'my-event-2', eventMax: 2 });
+  * const p3 = listenAsync('my-event-3', ['one', 'two', 'three']);
+  * const p4 = listenAsync({ name: 'my-event-4', eventMax: 2 }, ['name1', 'name2', 'name3']);
+  * const p4x = listenAsync({ name: 'my-event-4', eventMax: 2 }, function demoNames(name1, name2, name3){});
+  * console.log(await p1); // done
   * console.log(await p2); // [[1, 2, 3], [4, 5, 6]]
   * console.log(await p3); // { one: 1, two: 2, three: 3 }
   * console.log(await p4); // [{ name1: 'a', name2: 'b', name3: 'c' }, { name1: 'd', name2: 'e', name3: 'f' }]
@@ -460,64 +463,71 @@ class Asynchro {
     const on = target['once'] && eventMax === 1 ? 'once' : (target['on'] && 'on') || (target['addListener'] && 'addListener')
       || (target['addEventListener'] && 'addEventListener');
     const off = target['removeListener'] ? 'removeListener' : target['removeEventListener'] && 'removeEventListener';
-    return function promisifierEvent(eventName, listenerParams) {
-      if (!eventName) throw new Error(`Invalid event name ${eventName}`);
+    const promisifierEvent = function promisifierEvent(event, listenerParams) {
+      const isEvtStr = event && typeof event === 'string';
+      if (!event) throw new Error(`Invlaid event: ${event}`);
+      if (!isEvtStr && (!event.name || typeof event.name !== 'string')) throw new Error(`Event name must be a non-empty string, not: ${event.name}`);
       if (!on || !off) throw new Error(`Invalid event target ${target}`);
       if (listenerParams && typeof listenerParams === 'function') listenerParams = Asynchro.extractFuncArgs(listenerParams);
-      const it = {};
+      var timers = {}, listeners = {}, errors, results, counts = { events: 0, errors: 0 }, it = {};
+      const clearAll = (done) => {
+        for (let handle in timers) clearTimeout(timers[handle]);
+        timers = null;
+        for (let event in listeners) target[off](event, listeners[event]);
+        listeners = null;
+        if (done) it.done = true;
+      };
+      const addlistener = (event) => {
+        listeners[event.name] = function listener(err) {
+          const isError = err && err instanceof Error;
+          if ((isError && ++counts.errors >= event.errorMax) || (!isError && ++counts.events >= event.max)) {
+            clearAll(true);
+            if (counts.errors > event.errorMax || counts.events > event.max) return;
+          }
+          if (isError && event.errorMax !== 1) {
+            errors = errors || [];
+            if (arguments.length > 1) err[event.name] = Array.prototype.slice.call(arguments, 1);
+            errors.push(err);
+          } else if (!isError) {
+            var args;
+            if (listenerParams) {
+              args = {};
+              var fni = -1;
+              for (let name of listenerParams) args[name] = arguments[++fni];
+            } else args = event.max === 1 && arguments.length === 1 ? arguments[0] : arguments.length > 0 ? Array.prototype.slice.call(arguments) : undefined;
+            if (results) results.push(args);
+            else if (event.max === 1) results = args;
+            else results = [args];
+          }
+          if ((isError && counts.errors !== event.errorMax) || (!isError && counts.events !== event.max)) return;
+          if (isError) it.reject(errors || err);
+          else it.resolve(results);
+        };
+        target[on](event.name, listeners[event.name]);
+        if (!event.tko) return;
+        timers[event.name] = setTimeout(() => {
+          clearAll();
+          if (it.done) return;
+          it.done = true;
+          const err = new Error(`Promisify events for event "${event.name}" timeout at ${event.tko}ms`);
+          if (event.resolveOnTimeout) it.resolve(err);
+          else it.reject(err);
+        }, event.tko);
+      };
+      const name = isEvtStr ? event : event.name, etko = !isEvtStr && event.hasOwnProperty('tko') ? event.tko : tko;
+      const max = !isEvtStr && event.hasOwnProperty('eventMax') ? event.eventMax : eventMax;
+      const errorMax =  !isEvtStr && event.hasOwnProperty('eventErrorMax') ? event.eventErrorMax : eventErrorMax;
+      const rlvOnTko = !isEvtStr && event.hasOwnProperty('resolveOnTimeout') ? event.resolveOnTimeout : resolveOnTimeout;
+      addlistener({ name, tko: etko, max, errorMax, resolveOnTimeout: rlvOnTko });
+      if (implyError && name !== 'error') addlistener({ name: 'error', max, errorMax });
       return new Promise((resolve, reject) => {
-        var timers = {}, listeners = {}, errors, results, counts = { events: 0, errors: 0 };
         it.done = false;
-        const clearAll = () => {
-          for (let handle in timers) clearTimeout(timers[handle]);
-          timers = {};
-          for (let event in listeners) target[off](event, listeners[event]);
-          listeners = {};
-        };
-        const addlistener = (event) => {
-          listeners[event.name] = function listener(err) {
-            const isError = err && err instanceof Error;
-            if ((isError && ++counts.errors >= event.errorMax) || (!isError && ++counts.events >= event.max)) {
-              clearAll();
-              it.done = true;
-              if (counts.errors > event.errorMax || counts.events > event.max) return;
-            }
-            if (isError && event.errorMax !== 1) {
-              errors = errors || [];
-              if (arguments.length > 1) err[event.name] = Array.prototype.slice.call(arguments, 1);
-              errors.push(err);
-            } else if (!isError) {
-              var args;
-              if (listenerParams) {
-                args = {};
-                var fni = -1;
-                for (let name of listenerParams) args[name] = arguments[++fni];
-              } else args = Array.prototype.slice.call(arguments);
-              if (results) results.push(args);
-              else if (event.max === 1) results = args;
-              else results = [args];
-            }
-            if ((isError && counts.errors !== event.errorMax) || (!isError && counts.events !== event.max)) return;
-            if (isError) reject(errors || err);
-            else resolve(results);
-          };
-          target[on](event.name, listeners[event.name]);
-          if (!event.tko) return;
-          timers[event.name] = setTimeout(() => {
-            clearAll();
-            if (it.done) return;
-            it.done = true;
-            const err = new Error(`Promisify events for event "${event.name}" timeout at ${event.tko}ms`);
-            if (event.resolveOnTimeout) resolve(err);
-            else reject(err);
-          }, event.tko);
-        };
-        addlistener({ name: eventName, tko, max: eventMax, errorMax: eventErrorMax, resolveOnTimeout });
-        if (implyError && eventName !== 'error') {
-          addlistener({ name: 'error', tko, max: eventMax, errorMax: eventErrorMax, resolveOnTimeout });
-        }
+        it.resolve = resolve;
+        it.reject = reject;
       });
     }
+    Object.defineProperty(promisifierEvent, 'isPromisifiyEvent', { value: true });
+    return promisifierEvent;
   }
 
   /**
@@ -606,7 +616,9 @@ function asynchroQueue(asyi, series, throws, name, fn, args, bgErrors) {
   if (asy.at.status !== Asynchro.QUEUEING) throw new Error(`A ${series ? 'series' : 'parallel'} must be in status ${Asynchro.QUEUEING}, not ${asy.at.status}`);
   throws = throws === true || throws === false ? throws : (throws && typeof throws === 'object' && throws) || (throws && { matches: throws });
   const noResult = (!name || !name.trim()) && (name = guid()) || bgErrors ? true : false;
-  const itm = { series, noAwait: !!bgErrors, throws, name, fn, args, noResult, errorMetaName: asy.at.errorMetaName }; // TODO : should async allow "this" to be passed?
+  // TODO : should async allow "this" to be passed?
+  const itm = { series, event: fn.isPromisifiyEvent && args[0], isBackground: !!bgErrors, throws, name, fn, args, noResult, errorMetaName: asy.at.errorMetaName };
+  itm.noAwait = itm.isBackground;
   if (bgErrors && itm.throws !== true) setBackgroundFunction(itm, asyi.systemErrorTypes, bgErrors);
   asy.at.trk.que.push(itm);
   asy.at.trk.waiting++;
@@ -623,8 +635,8 @@ function asynchroQueue(asyi, series, throws, name, fn, args, bgErrors) {
  * or an `Asynchro` instance that should be
  */
 async function asynchro(trk, asyi) {
-  var itm, pends = [], idx = -1, rtn = true, hdl;
-  while (itm = trk.que[++idx]) {
+  var pends = [], rtn = true, hdl;
+  for (let itm of trk.que) {
     hdl = await asyncHandler(trk, asyi, itm, pends); // execute the queued tasks
     if (!itm.promise) trk.waiting--;
     if (hdl === false || (asyi !== hdl && hdl instanceof Asynchro)) { // stop
@@ -632,8 +644,7 @@ async function asynchro(trk, asyi) {
       break;
     }
   }
-  idx = -1;
-  while (itm = pends[++idx]) {
+  for (let itm of pends) {
     hdl = await asyncHandler(trk, asyi, itm, pends); // wait for pending parallel/concurrent executions to complete
     trk.waiting--;
     if (rtn === false || rtn instanceof Asynchro) continue; // do not override first stop
@@ -717,7 +728,7 @@ async function handleAsync(asyi, itm, pends, backgrounds) {
       itm.promise = false;
       throw new Error(msg);
     }
-    if (itm.noAwait) { // run in background, don't wait for promise
+    if (itm.isBackground) { // run in background, don't wait for promise
       if (backgrounds) {
         itm.backgroundPromise = itm.promise;
         backgrounds.push(itm);
@@ -771,7 +782,8 @@ function defineItemMeta(it, itm, pendPromise, name) {
   }
   Object.defineProperty(obj, 'isPending', { value: !!pendPromise, enumerable: true });
   Object.defineProperty(obj, 'isParallel', { value: !itm.series, enumerable: true });
-  Object.defineProperty(obj, 'isBackground', { value: itm.noAwait, enumerable: true });
+  Object.defineProperty(obj, 'isBackground', { value: itm.isBackground, enumerable: true });
+  Object.defineProperty(obj, 'event', { value: itm.event, enumerable: true });
   Object.defineProperty(obj, 'name', { value: itm.name, enumerable: true });
   Object.defineProperty(obj, 'operation', { value: itm.fn.name, enumerable: true });
 }

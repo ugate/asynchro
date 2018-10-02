@@ -98,6 +98,7 @@ You may have noticed that the 2<sup>nd</sup> argument passed into the `Asynchro`
     Asynchro: {
       name: 'two',
       operation: 'mySeriesFunc2',
+      event: false,
       isPending: false,
       isParallel: false,
       isBackground: false
@@ -130,4 +131,4 @@ Another way to control which errors are caught or thrown is to use an `Object` a
 ```
 For convenience, [Asynchro.throwsError](Asynchro.html#throwsError) is provided to check if the queue will throw or catch a specified `Error`/error type.
 
-#### [Conversions >>](tutorial-3-conversion.html)
+#### [Verification >>](tutorial-3-verification.html)
