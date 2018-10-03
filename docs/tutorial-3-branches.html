@@ -65,102 +65,66 @@
 </div>
 
 <div id="main">
-  
+  <section>
 
-
-
+<header>
     
+</header>
 
+<article>
+    <h3>Branching</h3><p>No workflow engine would be complete without a way to <em>branch</em> from one workflow to another. And since <code>asynchro</code> aims to supply a simple, yet versatile workflow engine, this feature is essential for handling logic routes based upon any number of conditions.</p>
+<p>As we seen when <a href="tutorial-2-verification.html">verifying</a> queued <code>async</code> tasks, the results/errors can be altered after execution has taken place. One aspect that was not dicussed though was the ability to either <strong>stop</strong> the queue from continuting execution or <strong>tranfer/branch</strong> to another queue altogether.</p>
+<p>Stoping the queue from continuting execution is fairly easy. Simply return <code>false</code> from <a href="Asynchro.html#verify">Asynchro.verify</a>. Let's examine the subsequent example.</p>
+<pre class="prettyprint source lang-js"><code>// sample data and async function
+const delay = 10, a = 1, b = 2, c = 3, d = 4, e = 5;
+function multiply(a, b, c) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve({ m1: 10 * (a || 0), m2: 20 * (b || 0), m3: 30 * (c || 0) });
+    }, delay);
+  });
+}
 
-
-
-
-
-
-
-
-    
-
-
-    <section class="readme">
-        <article><h1>&#8669; asynchro</h1><p>Micro lib for <strong>parallel</strong>/<strong>series</strong>/<strong>background</strong> asynchronous functions using built-in ES <code>async/await</code> with <strong>zero</strong> external dependencies. <code>Asynchro</code> is not just another <code>async</code> library, but rather a micro-sized workflow engine! Check out the turorials for more details. Runs in the browser or in <a href="https://nodejs.org/">Node.js</a> <code>npm install asynchro</code>.</p>
-<ul>
-<li><a href="https://ugate.github.io/asynchro/tutorial-1-queue.html">Tutorials</a></li>
-<li><a href="https://ugate.github.io/asynchro/Asynchro.html">API Docs</a></li>
-</ul>
-<h3>Turn <em>vanilla</em> <code>async/await</code> boilerplate code like this...</h3><pre class="prettyprint source lang-js"><code>const SYSTEM_ERRORS = [ EvalError, RangeError, ReferenceError, SyntaxError, TypeError, URIError ];
-async function myWorkflow() {
-  const rslt = { result: {}, errors: [] }, promises = {}, log = console.log;
-  try {
-    rslt.one = await mySeriesFunc1('val1', 2, 3);
-  } catch (err) {
-    if (log) log('Error at one', err);
-    rslt.errors.push(err);
-    return rslt;
+const ax = new Asynchro({});
+ax.series('one', multiply, a, b, c);
+ax.verify('one', async it => {
+  return false; // stop the queue from continuing to process/run
+});
+// two is never ran
+ax.series('two', multiply, d, e);
+const rslt = await ax.run();
+// { one: { m1: 999, m2: 40, m3: 90 } }
+console.log(rslt);</code></pre><p>Tranferring from one <code>Asynchro</code> instance/queue to another is very similar to stopping one. The difference is that a new <code>Asynchro</code> instance is returned from <a href="Asynchro.html#verify">Asynchro.verify</a> rather than returning <code>false</code>.</p>
+<pre class="prettyprint source lang-js"><code>const resultObject = {};
+const ax = new Asynchro(resultObject);
+ax.parallel('one', multiply, a, b, c); // multiply/a/b/c from previous example
+ax.verify('one', async it => {
+  // execute when parallel function is first called (called 2x)
+  // 1. when function is called and a promise is returned
+  // 2. after await on the promise
+  if (it.isPending) { // pending so transfer happens before &quot;two&quot; is executed
+    // we can either use the same result object from the original queue
+    // or use a new one (values from the original will be merged into the new one)
+    const axt = new Asynchro(resultObject);
+    axt.series('X', multiply, 1, 1, 1); // multiply from previous example
+    axt.parallel('y', multiply, 2, 2);
+    // stop the queue from continuing to process/run and transfer/run the new one
+    return axt;
   }
-  try {
-    rslt.two = await mySeriesFunc2(1, 2);
-  } catch (err) {
-    if (log) log('Error at one', err);
-    for (let stype of SYSTEM_ERRORS) {
-      if (err instanceof stype) {
-        throw err; // only system errors will throw
-      }
-    }
-    rslt.errors.push(err);
-    return rslt;
-  }
-  try {
-    promises.three = myParallelFunc1({ a: 1, b: 2, c: 3 });
-  } catch (err) {
-    if (log) log('Error at three', err);
-    rslt.errors.push(err);
-    return rslt;
-  }
-  try {
-    promises.four = myParallelFunc2();
-  } catch (err) {
-    if (log) log('Error at four', err);
-    rslt.errors.push(err);
-    return rslt;
-  }
-  promises.five = myParallelFunc3('always throw errors');
-  try {
-    rslt.six = await mySeriesFunc3(true, false);
-  } catch (err) {
-    if (log) log('Error at six', err);
-    rslt.errors.push(err);
-    return rslt;
-  }
-  for (let name in promises) {
-    // always throw five/myParallelFunc3
-    if (name === 'five') rslt.five = await promises[name];
-    try {
-      rslt[name] = await promises[name];
-    } catch (err) {
-      if (log) log(`Error at ${name}`, err);
-      rslt.errors.push(err);
-      return rslt;
-    }
-  }
-  return rslt;
-}</code></pre><h3>... into this:</h3><pre class="prettyprint source lang-js"><code>async function myWorkflow() {
-  const ax = new Asynchro({}, false, console.log);
-  ax.series('one', mySeriesFunc1, 'val1', 2, 3);
-  ax.seriesThrowOverride('two', 'system', mySeriesFunc2, 1, 2);
-  ax.parallel('three', myParallelFunc1, { a: 1, b: 2, c: 3 });
-  ax.parallel('four', myParallelFunc2);
-  ax.parallelThrowOverride('five', true, myParallelFunc3, 'always throw errors');
-  ax.series('six', mySeriesFunc3, true, false);
-  const result = await ax.run();
-  return { result, errors: ax.errors };
-}</code></pre><h3><a href="https://ugate.github.io/asynchro/tutorial-1-queue.html">Take me there! &gt;&gt;</a></h3></article>
-    </section>
+});
+// two is never ran
+ax.series('two', multiply, d, e); // multiply/d/e from previous example
+const rslt = await ax.run();
+// {
+//   one: { m1: 999, m2: 40, m3: 90 },
+//   x: { m1: 10, m2: 20, m3: 30 },
+//   y: { m1: 20, m2: 40, m3: 60 }
+// }
+console.log(rslt);</code></pre><p>Branching can occur at any given point during queue execution via the return value from <a href="Asynchro.html#verify">Asynchro.verify</a>. There is no <em>hard</em> limit to the number of branches from one <code>Asynchro</code> instance to another. This leads to a simple, yet flexible logic route for defining how workflows interact between one another.</p>
+<h4><a href="tutorial-4-conversion.html">Conversions &gt;&gt;</a></h4>
+</article>
 
-
-
-
-
+</section>
 
 </div>
 

@@ -1,17 +1,14 @@
 {
-  "1-started": {
-    "title": "Getting Started"
-  },
-  "2-queue": {
+  "1-queue": {
     "title": "The Queue"
   },
-  "3-verification": {
+  "2-verification": {
     "title": "Verification"
   },
-  "4-branches": {
+  "3-branches": {
     "title": "Branching"
   },
-  "5-conversion": {
+  "4-conversion": {
     "title": "Conversions"
   }
 }

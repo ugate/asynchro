@@ -25,6 +25,7 @@
     "showInheritedInNav": true,
     "default": {
       "useLongnameInNav": false,
+      "includeDate": false,
       "layoutFile": "./jsdoc/tmpl/layout.tmpl",
       "staticFiles": {
         "include": [

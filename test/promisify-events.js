@@ -179,7 +179,7 @@ lab.experiment(plan, () => {
     expect(rslt.two).to.equal(two);
     expect(rslt.three).to.equal(three);
     expect(rslt.four).to.equal(four);
-  });  
+  });
 });
 
 function dispatchDelay(trg, event, value, delay) {

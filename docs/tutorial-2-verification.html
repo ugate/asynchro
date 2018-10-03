@@ -65,102 +65,63 @@
 </div>
 
 <div id="main">
-  
+  <section>
 
-
-
+<header>
     
+</header>
 
+<article>
+    <h3>Verification</h3><p>There are instances where the result of an <code>async</code> function needs to be verified before proceeding to the next task in the queue. Rather than adding verification logic to the task itself or wrapping those functions with another function to handle that logic, <code>asynchro</code> provides an <a href="Asynchro.html#verify">Asynchro.verify</a> method to handle them. This also opens up the possiblity to <a href="tutorial-3-branches.html">branch from one <code>Asynchro</code> instance to another</a>.</p>
+<pre class="prettyprint source lang-js"><code>// sample data and async function
+const delay = 10, a = 1, b = 2, c = 3, d = 4, e = 5;
+function multiply(a, b, c) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve({ m1: 10 * (a || 0), m2: 20 * (b || 0), m3: 30 * (c || 0) });
+    }, delay);
+  });
+}
 
-
-
-
-
-
-
-
-    
-
-
-    <section class="readme">
-        <article><h1>&#8669; asynchro</h1><p>Micro lib for <strong>parallel</strong>/<strong>series</strong>/<strong>background</strong> asynchronous functions using built-in ES <code>async/await</code> with <strong>zero</strong> external dependencies. <code>Asynchro</code> is not just another <code>async</code> library, but rather a micro-sized workflow engine! Check out the turorials for more details. Runs in the browser or in <a href="https://nodejs.org/">Node.js</a> <code>npm install asynchro</code>.</p>
-<ul>
-<li><a href="https://ugate.github.io/asynchro/tutorial-1-queue.html">Tutorials</a></li>
-<li><a href="https://ugate.github.io/asynchro/Asynchro.html">API Docs</a></li>
-</ul>
-<h3>Turn <em>vanilla</em> <code>async/await</code> boilerplate code like this...</h3><pre class="prettyprint source lang-js"><code>const SYSTEM_ERRORS = [ EvalError, RangeError, ReferenceError, SyntaxError, TypeError, URIError ];
-async function myWorkflow() {
-  const rslt = { result: {}, errors: [] }, promises = {}, log = console.log;
-  try {
-    rslt.one = await mySeriesFunc1('val1', 2, 3);
-  } catch (err) {
-    if (log) log('Error at one', err);
-    rslt.errors.push(err);
-    return rslt;
+const ax = new Asynchro({});
+ax.parallel('one', multiply, a, b, c);
+ax.verify('one', async it => {
+  // parallel tasks call 2x (serial called only 1x and it.isPending is always false)
+  // 1. once called and the promise is pending
+  // 2. another time after the promise completes
+  if (it.isPending) {
+    // do something?
+    return;
   }
-  try {
-    rslt.two = await mySeriesFunc2(1, 2);
-  } catch (err) {
-    if (log) log('Error at one', err);
-    for (let stype of SYSTEM_ERRORS) {
-      if (err instanceof stype) {
-        throw err; // only system errors will throw
-      }
-    }
-    rslt.errors.push(err);
-    return rslt;
+  // override the error or cancel it out?
+  // only available when the error is caught
+  // (see &quot;throws&quot; on parallelThrowOverride/seriesThrowOverride or Asynchro constructor)
+  if (it.error) {
+    // alternatively, could have set it.error
+    throw new Error('Overridden error'); 
   }
-  try {
-    promises.three = myParallelFunc1({ a: 1, b: 2, c: 3 });
-  } catch (err) {
-    if (log) log('Error at three', err);
-    rslt.errors.push(err);
-    return rslt;
-  }
-  try {
-    promises.four = myParallelFunc2();
-  } catch (err) {
-    if (log) log('Error at four', err);
-    rslt.errors.push(err);
-    return rslt;
-  }
-  promises.five = myParallelFunc3('always throw errors');
-  try {
-    rslt.six = await mySeriesFunc3(true, false);
-  } catch (err) {
-    if (log) log('Error at six', err);
-    rslt.errors.push(err);
-    return rslt;
-  }
-  for (let name in promises) {
-    // always throw five/myParallelFunc3
-    if (name === 'five') rslt.five = await promises[name];
-    try {
-      rslt[name] = await promises[name];
-    } catch (err) {
-      if (log) log(`Error at ${name}`, err);
-      rslt.errors.push(err);
-      return rslt;
-    }
-  }
-  return rslt;
-}</code></pre><h3>... into this:</h3><pre class="prettyprint source lang-js"><code>async function myWorkflow() {
-  const ax = new Asynchro({}, false, console.log);
-  ax.series('one', mySeriesFunc1, 'val1', 2, 3);
-  ax.seriesThrowOverride('two', 'system', mySeriesFunc2, 1, 2);
-  ax.parallel('three', myParallelFunc1, { a: 1, b: 2, c: 3 });
-  ax.parallel('four', myParallelFunc2);
-  ax.parallelThrowOverride('five', true, myParallelFunc3, 'always throw errors');
-  ax.series('six', mySeriesFunc3, true, false);
-  const result = await ax.run();
-  return { result, errors: ax.errors };
-}</code></pre><h3><a href="https://ugate.github.io/asynchro/tutorial-1-queue.html">Take me there! &gt;&gt;</a></h3></article>
-    </section>
+  // override the result
+  if (it.result.m1 === 10) it.result.m1 = 999;
+  // set a message indicating what happened
+  it.message = `Successfully verified '${it.name}'`;
+  // {
+  //   name: &quot;one&quot;,
+  //   operation: &quot;multiply&quot;,
+  //   event: false,
+  //   isParallel: true,
+  //   isBackground: false
+  // }
+  console.log(it);
+});
+ax.series('two', multiply, d, e);
+const rslt = await ax.run();
+// { one: { m1: 999, m2: 40, m3: 90 }, two: { m1: 40, m2: 100, m3: 0 } }
+console.log(rslt);
+// [ &quot;Successfully verified 'one'&quot; ]
+console.log(ax.messages());</code></pre><h4><a href="tutorial-3-branches.html">Branching &gt;&gt;</a></h4>
+</article>
 
-
-
-
-
+</section>
 
 </div>
 

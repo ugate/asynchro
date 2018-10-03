@@ -1,11 +1,12 @@
 # &#8669; asynchro 
-Micro lib for __parallel__/__series__/__background__ asynchronous functions using built-in ES `async/await` with __zero__ external dependencies.
+Micro lib for __parallel__/__series__/__background__ asynchronous functions using built-in ES `async/await` with __zero__ external dependencies. `Asynchro` is not just another `async` library, but rather a micro-sized workflow engine! Check out the turorials for more details. Runs in the browser or in [Node.js](https://nodejs.org/) `npm install asynchro`.
 
-* [Tutorials](https://ugate.github.io/asynchro/tutorial-1-started.html)
+* [Tutorials](https://ugate.github.io/asynchro/tutorial-1-queue.html)
 * [API Docs](https://ugate.github.io/asynchro/Asynchro.html)
 
 ### Turn _vanilla_ `async/await` boilerplate code like this...
 ```js
+const SYSTEM_ERRORS = [ EvalError, RangeError, ReferenceError, SyntaxError, TypeError, URIError ];
 async function myWorkflow() {
   const rslt = { result: {}, errors: [] }, promises = {}, log = console.log;
   try {
@@ -15,7 +16,18 @@ async function myWorkflow() {
     rslt.errors.push(err);
     return rslt;
   }
-  rslt.two = await mySeriesFunc2(1, 2); // always throw errors for two
+  try {
+    rslt.two = await mySeriesFunc2(1, 2);
+  } catch (err) {
+    if (log) log('Error at one', err);
+    for (let stype of SYSTEM_ERRORS) {
+      if (err instanceof stype) {
+        throw err; // only system errors will throw
+      }
+    }
+    rslt.errors.push(err);
+    return rslt;
+  }
   try {
     promises.three = myParallelFunc1({ a: 1, b: 2, c: 3 });
   } catch (err) {
@@ -58,7 +70,7 @@ async function myWorkflow() {
 async function myWorkflow() {
   const ax = new Asynchro({}, false, console.log);
   ax.series('one', mySeriesFunc1, 'val1', 2, 3);
-  ax.series('two', mySeriesFunc2, 1, 2);
+  ax.seriesThrowOverride('two', 'system', mySeriesFunc2, 1, 2);
   ax.parallel('three', myParallelFunc1, { a: 1, b: 2, c: 3 });
   ax.parallel('four', myParallelFunc2);
   ax.parallelThrowOverride('five', true, myParallelFunc3, 'always throw errors');
@@ -68,4 +80,4 @@ async function myWorkflow() {
 }
 ```
 
-### [Take me there! >>](https://ugate.github.io/asynchro/tutorial-1-started.html)
+### [Take me there! >>](https://ugate.github.io/asynchro/tutorial-1-queue.html)

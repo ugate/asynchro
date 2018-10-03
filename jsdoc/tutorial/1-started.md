@@ -1,6 +1,0 @@
-## Getting Started
-As seen in the [intro examples](index.html), trying to coordinate multiple `async` functions into a workflow can be convoluted and hard to follow. Parallel/Concurrent function execution requires extra steps to `await` promises returned from the previously executed async functions. In addition to this, error handling via `try`/`catch` blocks can often become a daunting process. In some instances it's desirable to catch errors, in others, throwing fatal errors is a must. And yet other cases only certain _types_ of errors should be thrown. Also, async functions that need to run in the background require wrapping them within another async function in order to handle errors since `await` is not used and an error may occur during actual execution.
-
-`Asynchro` was developed to address these issues and other nuances encountered when working with multiple async functions. Simplicity is the core concept that keeps `asynchro` concise and intuitive without being bombarded with extra features that will rarely, if ever, be used.
-
-#### [The Queue >>](tutorial-2-queue.html)

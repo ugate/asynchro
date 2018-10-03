@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>asynchro - documentation</title>
+
+  <script src="scripts/prettify/prettify.js"></script>
+  <script src="scripts/prettify/lang-css.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+  <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+  <style>
+  #topNav {
+    width: 100%;
+    height: 64px;
+    padding: 16px;
+    font-size: 32px;
+    margin-left: 250px;
+    background-color: #E0E0E0;
+  }
+  @media only screen and (max-width: 680px) and (min-width: 320px) {
+    #topNav {
+      margin-left: 0px;
+    }
+  }
+  #topNav a {
+    text-decoration: none;
+  }
+  #topNav .sep {
+    padding: 16px;
+  }
+  </style>
+  <script>
+    window.addEventListener('load', function(event) {
+      var readme = document.querySelector('.readme > article > h1');
+      if (readme) readme.parentElement.removeChild(readme);
+    });
+  </script>
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+  <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Tutorials</li><li class="nav-item"><a href="tutorial-1-queue.html">The Queue</a></li><li class="nav-item"><a href="tutorial-2-verification.html">Verification</a></li><li class="nav-item"><a href="tutorial-3-branches.html">Branching</a></li><li class="nav-item"><a href="tutorial-4-conversion.html">Conversions</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Asynchro.html">Asynchro</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#.extractFuncArgs">extractFuncArgs</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#.promisifyCallback">promisifyCallback</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#.promisifyEventTarget">promisifyEventTarget</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#arg">arg</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#background">background</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#backgroundWaiter">backgroundWaiter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#messages">messages</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#parallel">parallel</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#parallelThrowOverride">parallelThrowOverride</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#run">run</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#series">series</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#seriesThrowOverride">seriesThrowOverride</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#throwsError">throwsError</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#verify">verify</a></span></li>
+</nav>
+
+<div id="topNav">
+  <a href="index.html" id="source" title="Source Code">
+    &#8669; asynchro
+  </a>
+  <span class="sep">|</span>
+  <a href="https://github.com/ugate/asynchro#readme" id="source" title="Source Code">
+    <img height="24" width="24" src="img/github.svg" />
+  </a>
+</div>
+
+<div id="main">
+  <section>
+
+<header>
+    
+</header>
+
+<article>
+    <h3>Conversions</h3><p>There are some instances where legacy style <code>async</code>-like functions need to be incorporated into a workflow. <code>Asynchro</code> provides some micro-sized utilities that should accommodate the most common use cases.</p>
+<h4>Callback Conversions</h4><p>Most <em>callback</em> style functions that follow the <code>function(error, function callback(error, returnValue))</code> schematics that can be converted/promisified into an async function using a utility such as the one provided by <code>util.promisify</code> in <a href="https://nodejs.org">Node.js</a>. But if you're running in a browser or just need multiple argument support, those type of solutions fall short. <code>Aynchro</code> provides some simple solutions to assist. <a href="Asynchro.html#promisifyCallback">Asynchro.promisifyCallback</a> does callback conversions on one or more aguments provided that the callback function belongs to an <code>Object</code>:</p>
+<pre class="prettyprint source lang-js"><code>const myCallbackObj = { // could also be a class instance
+  multiply: (a, b, c, cb) => {
+    const thiz = this;
+    setTimeout(() => {
+      cb(thiz.error, 10 * (a || 0), 20 * (b || 0), 30 * (c || 0), cb);
+    }, 500);
+  }
+};
+const myAsyncFunc = Asynchro.promisifyCallback(myCallbackObj, 'multiply');
+const myAsyncFuncNamed = Asynchro.promisifyCallback(myCallbackObj, 'multiply', [ 'a', 'b', 'c' ]);
+var rslt = await myAsyncFunc(0, 1, 2); // 10 * 0 = 0, 20 * 1 = 20, 30 * 2 = 60
+console.log(rslt); // [ 0, 20, 60 ]
+rslt = await myAsyncFuncNamed(1, 2, 4); // 10 * 1 = 10, 20 * 2 = 40, 30 * 4 = 120
+console.log(rslt); // { a: 10, b: 40, c: 120 }
+rslt = await myAsyncFuncNamed(2, 4, 6); // 10 * 2 = 20, 20 * 4 = 80, 30 * 6 = 180
+console.log(rslt); // { a: 20, b: 80, c: 180 }
+
+myCallbackObj.error = new Error('My expected error');
+try {
+  rslt = await myAsyncFunc(0, 1, 2);
+} catch (err) {
+  console.log(err); // My expected error
+}</code></pre><p>Which enables the converted function to be added to the queue:</p>
+<pre class="prettyprint source lang-js"><code>const myAsyncFunc = Asynchro.promisifyCallback(myCallbackObj, 'multiply', [ 'a', 'b', 'c' ]);
+const ax = new Asynchro({}, false, console.log);
+ax.series('one', myAsyncFunc, 1, 2, 4);
+// ...more async function added to the queue here
+const rslt = await ax.run();
+console.log(rslt); // { one: { a: 10, b: 40, c: 120 } }</code></pre><h4>Event Conversions</h4><p>There may be certain events that need to <code>await</code> for before continuing queue execution. In order to achieve this <code>asynchro</code> provides <a href="Asynchro.html#promisifyEventTarget">Asynchro.promisifyEventTarget</a>. The event object that is converted must have at least one of the following functions for registering an event listener:</p>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaQueryList/addListener">addEventListener(eventName, listener)</a></li>
+<li><a href="https://nodejs.org/api/events.html#events_emitter_addlistener_eventname_listener">addListener(eventName, listener)</a></li>
+<li><a href="https://nodejs.org/api/events.html#events_emitter_once_eventname_listener">once(eventName, listener)</a></li>
+<li><a href="https://nodejs.org/api/events.html#events_emitter_on_eventname_listener">on(eventName, listener)</a></li>
+</ul>
+<p>As well as any one of the following functions for removing a previously registered event listener:</p>
+<ul>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/removeEventListener">removeEventListener(eventName, listener)</a></li>
+<li><a href="https://nodejs.org/api/events.html#events_emitter_removelistener_eventname_listener">removeListener(eventName, listener)</a></li>
+<li><a href="https://nodejs.org/api/events.html#events_emitter_off_eventname_listener">off(eventName, listener)</a></li>
+</ul>
+<p>The listener will listen for a one or more dispatched/emitted events (configurable). Once the listener is notified and the maximum number of events allotted is reached, the listener is removed. By default, yet configurable, <code>error</code> events are listened to and thrown- allowing an <code>Asynchro</code> queue to process the generated async function just like any other task in the queue.</p>
+<pre class="prettyprint source lang-js"><code>// setup for example purposes
+class MyEventTarg {
+  constructor() {
+    this.listeners = {};
+  }
+  addListener(event, listener) {
+    this.listeners[event] = this.listeners[event] || [];
+    this.listeners[event].push(listener);
+  }
+  removeListener(event, listener) {
+    var idx = -1;
+    if (!(event in this.listeners)) idx;
+    for (let lsn of this.listeners[event]) if (++idx && lsn === listener) {
+       this.listeners[event].splice(idx, 1);
+       return idx;
+    }
+  }
+  dispatchEvent(type) {
+    if (this.listeners[type]) {
+      const args = Array.prototype.slice.call(arguments, 1);
+      for (let lsn of this.listeners[type]) lsn.apply(this, args);
+    }
+  }
+}
+const trg = new MyEventTarg();
+const tko = 30000, delay = 10, a = 1, b = 2, c = 3, d = 4, e = 5, l1 = 200, l2 = 300;
+function multiply(a, b, c) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve({ m1: 10 * (a || 0), m2: 20 * (b || 0), m3: 30 * (c || 0) });
+    }, delay);
+  });
+}
+
+// 30 sec timeout, 1 event max (default), 1 error event max (default)
+const listenAsync = Asynchro.promisifyEventTarget(trg, tko);
+const ax = new Asynchro({});
+ax.parallel('one', multiply, a, b, c);
+ax.series('two', listenAsync, 'event-1');
+ax.series('three', multiply, d, e);
+ax.parallel('four', listenAsync, 'event-2');
+
+setTimeout(() => {
+  trg.dispatchEvent('event-1', l1);
+  setTimeout(() => {
+    trg.dispatchEvent('event-2', l2);
+  }, delay * 2); // delay must be between delay on &quot;two&quot;/&quot;three&quot; and &quot;tko&quot;
+}, delay); // delay must be between delay on &quot;two&quot; and &quot;tko&quot; (&quot;one&quot; is in parallel)
+
+const rslt = await ax.run();
+// { one: { m1: 10, m2: 40, m3: 90 }, two: 200, three: { m1: 40, m2: 100, m3: 0 }, four: 300 }
+console.log(rslt);</code></pre><p>You may have noticed that in the <code>delay</code> was strategically calculated to ensure that there was enough time elapsed before dispatching the events (see inline comments in the previous example). That's why it's a good practice to ensure that the dispatch/emission of the events used are fully understood before adding them to a queue. This will prevent unintended race conditions. To illustrate, consider the following example.</p>
+<pre class="prettyprint source lang-js"><code>// MyEventTarg from the previous example
+const trg = new MyEventTarg();
+const tko = 30000, delay = 10, a = 1, b = 2, c = 3, d = 4, e = 5, l1 = 200, l2 = 300;
+setTimeout(() => {
+  trg.dispatchEvent('event-1', l1);
+  trg.dispatchEvent('event-2', l2);
+}, 500);
+
+const listenAsync = Asynchro.promisifyEventTarget(trg, tko);
+const ax = new Asynchro({});
+ax.parallel('one', multiply, a, b, c); // multiply from the previous example
+ax.series('two', listenAsync, 'event-1');
+ax.series('three', multiply, d, e); // multiply from the previous example
+ax.parallel('four', listenAsync, 'event-2');
+// ERROR: Timeout since &quot;four&quot; waits for &quot;two&quot; before listening
+const rslt = await ax.run();</code></pre><p>Even though &quot;two&quot;/&quot;event-1&quot; and &quot;four&quot;/&quot;event-2&quot; are collectively fired in an <em>asynchronous</em> manner (<code>setTimeout</code>), &quot;two&quot;/&quot;event-1&quot; is queued in <em>series</em> and will wait until the &quot;event-1&quot; event fires before progressing and ultimately waiting for the &quot;event-2&quot; to fire. In other words, &quot;event-2&quot; fires before &quot;four&quot; has a chance to listen for the event. Another way to remedy this other than tweaking the timing of dispatch is to simply queue the events in <em>parallel</em> before any other tasks take place.</p>
+<pre class="prettyprint source lang-js"><code>// MyEventTarg from the previous example
+const trg = new MyEventTarg();
+const tko = 30000, delay = 10, a = 1, b = 2, c = 3, d = 4, e = 5, l1 = 200, l2 = 300;
+setTimeout(() => {
+  trg.dispatchEvent('event-1', l1);
+  trg.dispatchEvent('event-2', l2);
+}, 500);
+
+const listenAsync = Asynchro.promisifyEventTarget(trg, tko);
+const ax = new Asynchro({});
+ax.parallel('two', listenAsync, 'event-1');
+ax.parallel('four', listenAsync, 'event-2');
+ax.parallel('one', multiply, a, b, c); // multiply from the previous example
+ax.series('three', multiply, d, e); // multiply from the previous example
+const rslt = await ax.run();
+// { one: { m1: 10, m2: 40, m3: 90 }, two: 200, three: { m1: 40, m2: 100, m3: 0 }, four: 300 }
+console.log(rslt);</code></pre><p>There is also an additional <code>event</code> parameter set during <a href="tutorial-2-verification.html">Verification</a> for events.</p>
+<pre class="prettyprint source lang-js"><code>// assuming the last example setup
+ax.verify('two', async it => {
+  // {
+  //   name: &quot;two&quot;,
+  //   operation: &quot;promisifierEvent&quot;,
+  //   event: &quot;event-1&quot;,
+  //   isParallel: true,
+  //   isBackground: false
+  // }
+  console.log(it);
+});</code></pre><h4><a href="Asynchro.html">API &gt;&gt;</a></h4>
+</article>
+
+</section>
+
+</div>
+
+<br class="clear">
+
+<footer>
+  <b>asynchro v1.0.0</b><br/>
+  Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
