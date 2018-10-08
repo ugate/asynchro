@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>asynchro - documentation</title>
+
+  <script src="scripts/prettify/prettify.js"></script>
+  <script src="scripts/prettify/lang-css.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link rel="apple-touch-icon" sizes="57x57" href="apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="msapplication-TileColor" content="#BDBDBD">
+  <meta name="msapplication-TileImage" content="ms-icon-144x144.png">
+  <meta name="theme-color" content="#BDBDBD">
+
+  <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+  <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+  <style>
+  #topNav {
+    width: 100%;
+    height: 64px;
+    padding: 16px;
+    font-size: 32px;
+    margin-left: 250px;
+    background-color: #E0E0E0;
+  }
+  @media only screen and (max-width: 680px) and (min-width: 320px) {
+    #topNav {
+      margin-left: 0px;
+    }
+  }
+  #topNav a {
+    text-decoration: none;
+  }
+  #topNav .sep {
+    padding: 16px;
+  }
+  .theme-color {
+    color: #FFA726;
+    text-shadow: 1px 1px 0px white;
+  }
+  </style>
+  <script>
+    window.addEventListener('load', function(event) {
+      var readme = document.querySelector('.readme > article > h1');
+      if (readme) readme.parentElement.removeChild(readme);
+    });
+  </script>
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+  <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Tutorials</li><li class="nav-item"><a href="tutorial-1-queue.html">The Queue</a></li><li class="nav-item"><a href="tutorial-2-verification.html">Verification</a></li><li class="nav-item"><a href="tutorial-3-branches.html">Branching</a></li><li class="nav-item"><a href="tutorial-4-conversion.html">Conversions</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Asynchro.html">Asynchro</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#.extractFuncArgs">extractFuncArgs</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#.promisifyCallback">promisifyCallback</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#.promisifyEventTarget">promisifyEventTarget</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#arg">arg</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#background">background</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#backgroundWaiter">backgroundWaiter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#messages">messages</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#parallel">parallel</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#parallelThrowOverride">parallelThrowOverride</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#run">run</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#series">series</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#seriesThrowOverride">seriesThrowOverride</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#throwsError">throwsError</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#verify">verify</a></span></li>
+</nav>
+
+<div id="topNav">
+  <a href="index.html" id="source" title="Source Code">
+    <b class="theme-color">&#8669;</b> asynchro
+  </a>
+  <span class="sep">|</span>
+  <a href="https://github.com/ugate/asynchro#readme" id="source" title="Source Code">
+    <img height="24" width="24" src="img/github.svg" />
+  </a>
+</div>
+
+<div id="main">
+  <section>
+
+<header>
+    
+</header>
+
+<article>
+    <h3>Verification</h3><p>There are instances where the result of an <code>async</code> function needs to be verified before proceeding to the next task in the queue. Rather than adding verification logic to the task itself or wrapping those functions with another function to handle that logic, <code>asynchro</code> provides an <a href="Asynchro.html#verify">Asynchro.verify</a> method to handle them. This also opens up the possiblity to <a href="tutorial-3-branches.html">branch from one <code>Asynchro</code> instance to another</a>.</p>
+<pre class="prettyprint source lang-js"><code>// sample data and async function
+const delay = 10, a = 1, b = 2, c = 3, d = 4, e = 5;
+function multiply(a, b, c) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve({ m1: 10 * (a || 0), m2: 20 * (b || 0), m3: 30 * (c || 0) });
+    }, delay);
+  });
+}
+
+const ax = new Asynchro({});
+ax.parallel('one', multiply, a, b, c);
+ax.verify('one', async it => {
+  // parallel tasks call 2x (serial called only 1x and it.isPending is always false)
+  // 1. once called and the promise is pending
+  // 2. another time after the promise completes
+  if (it.isPending) {
+    // do something?
+    return;
+  }
+  // override the error or cancel it out?
+  // only available when the error is caught
+  // (see &quot;throws&quot; on parallelThrowOverride/seriesThrowOverride or Asynchro constructor)
+  if (it.error) {
+    // alternatively, could have set it.error
+    throw new Error('Overridden error'); 
+  }
+  // override the result
+  if (it.result.m1 === 10) it.result.m1 = 999;
+  // set a message indicating what happened
+  it.message = `Successfully verified '${it.name}'`;
+  // {
+  //   name: &quot;one&quot;,
+  //   operation: &quot;multiply&quot;,
+  //   event: false,
+  //   isParallel: true,
+  //   isBackground: false
+  // }
+  console.log(it);
+});
+ax.series('two', multiply, d, e);
+const rslt = await ax.run();
+// { one: { m1: 999, m2: 40, m3: 90 }, two: { m1: 40, m2: 100, m3: 0 } }
+console.log(rslt);
+// [ &quot;Successfully verified 'one'&quot; ]
+console.log(ax.messages());</code></pre><h4><a href="tutorial-3-branches.html">Branching &gt;&gt;</a></h4>
+</article>
+
+</section>
+
+</div>
+
+<br class="clear">
+
+<footer>
+  <b>asynchro v1.0.6</b><br/>
+  Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

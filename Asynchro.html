@@ -1,0 +1,4854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>asynchro - documentation</title>
+
+  <script src="scripts/prettify/prettify.js"></script>
+  <script src="scripts/prettify/lang-css.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link rel="apple-touch-icon" sizes="57x57" href="apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="msapplication-TileColor" content="#BDBDBD">
+  <meta name="msapplication-TileImage" content="ms-icon-144x144.png">
+  <meta name="theme-color" content="#BDBDBD">
+
+  <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+  <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+  <style>
+  #topNav {
+    width: 100%;
+    height: 64px;
+    padding: 16px;
+    font-size: 32px;
+    margin-left: 250px;
+    background-color: #E0E0E0;
+  }
+  @media only screen and (max-width: 680px) and (min-width: 320px) {
+    #topNav {
+      margin-left: 0px;
+    }
+  }
+  #topNav a {
+    text-decoration: none;
+  }
+  #topNav .sep {
+    padding: 16px;
+  }
+  .theme-color {
+    color: #FFA726;
+    text-shadow: 1px 1px 0px white;
+  }
+  </style>
+  <script>
+    window.addEventListener('load', function(event) {
+      var readme = document.querySelector('.readme > article > h1');
+      if (readme) readme.parentElement.removeChild(readme);
+    });
+  </script>
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+  <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Tutorials</li><li class="nav-item"><a href="tutorial-1-queue.html">The Queue</a></li><li class="nav-item"><a href="tutorial-2-verification.html">Verification</a></li><li class="nav-item"><a href="tutorial-3-branches.html">Branching</a></li><li class="nav-item"><a href="tutorial-4-conversion.html">Conversions</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Asynchro.html">Asynchro</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#.extractFuncArgs">extractFuncArgs</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#.promisifyCallback">promisifyCallback</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#.promisifyEventTarget">promisifyEventTarget</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#arg">arg</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#background">background</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#backgroundWaiter">backgroundWaiter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#messages">messages</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#parallel">parallel</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#parallelThrowOverride">parallelThrowOverride</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#run">run</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#series">series</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#seriesThrowOverride">seriesThrowOverride</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#throwsError">throwsError</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#verify">verify</a></span></li>
+</nav>
+
+<div id="topNav">
+  <a href="index.html" id="source" title="Source Code">
+    <b class="theme-color">&#8669;</b> asynchro
+  </a>
+  <span class="sep">|</span>
+  <a href="https://github.com/ugate/asynchro#readme" id="source" title="Source Code">
+    <img height="24" width="24" src="img/github.svg" />
+  </a>
+</div>
+
+<div id="main">
+  
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        Asynchro
+        </h2>
+        
+            <div class="class-description"><p>&#8669; Manages multiple <code>async function</code>/<code>await</code> tasks that can be ran in <strong>series/sequential</strong> and/or <strong>parallel/concurrent</strong>
+order in relation to one another. See started for more details.</p></div>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+<div class="section-method">
+
+    
+    <h2>Constructor</h2>
+    
+
+    <h4 class="name" id="Asynchro"><span class="type-signature"></span>new Asynchro<span class="signature">(result<span class="signature-attributes">opt</span>, throws<span class="signature-attributes">opt</span>, log<span class="signature-attributes">opt</span>, includeErrorMsgCheck<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Constructor</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line13">line 13</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>result</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>Object</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p>the object used for storing results (omit to prevent capturing of results)</p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>throws</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>Boolean</code></span>
+|
+
+<span class="param-type"><code>Object</code></span>
+|
+
+<span class="param-type"><code>String</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p>one of the following values (unless superseded, will be applied to all queued tasks):</p>
+<ul>
+<li><code>true</code> to throw any errors and instantly stop any further execution</li>
+<li><code>false</code> to catch any errors that are thrown</li>
+<li><code>Object</code> an object containing the following properties:</li>
+<li><ul>
+<li><code>invert</code> true to catch errors when matches are made, false/omit to throw errors when matches are made</li>
+</ul>
+</li>
+<li><ul>
+<li><code>matches</code> An array that contains any of the following:</li>
+</ul>
+</li>
+<li><ul>
+<li><ul>
+<li><code>system</code> A string value equal to &quot;system&quot; that will match when an error is a type within <code>Asynchro.systemErrorTypes</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><ul>
+<li><ul>
+<li><code>Object</code> An object that contains property names/values that will be matched against property name/values in the caught error.
+When invert is true, all names/values on the caught error must match the names/values on the object in order to be 
+<strong>caught/captured</strong> in <code>Asynchro.errors</code>. When invert is false/omitted, all names/values on the caught error must match
+all of the names/values on the object in order to be <strong>rethrown</strong>.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>system</code> a single <code>matches</code> string (invert defaults to false)</li>
+</ul>
+<p>Re-thrown errors will set <code>Error.cause</code> to the originally thrown error.</p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>log</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>function</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p><code>function(tagArray, object)</code> that will log process output (omit to prevent logging)</p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>includeErrorMsgCheck</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>function</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p>A <code>function(name, operation, error)</code> that will return true when the error message should be
+included in the final <code>Asynchro.messages</code> output (defaults to false)</p>
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<div class="section-members">
+<h4 class="name" id=".DEFAULT_SYSTEM_ERROR_TYPES"><span class="type-signature">(static) </span>DEFAULT_SYSTEM_ERROR_TYPES<span class="type-signature"> :Array.&lt;function()></span></h4>
+
+
+
+
+<div class="description">
+    <p>The default system error types that will be used for the <code>system</code> error type</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line417">line 417</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><code>Array.&lt;function()></code></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</div>
+
+        
+            
+<div class="section-members">
+<h4 class="name" id=".FAILED"><span class="type-signature">(static) </span>FAILED<span class="type-signature"> :String</span></h4>
+
+
+
+
+<div class="description">
+    <p>The status indicating that the queue was ran, but failed to complete</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line393">line 393</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><code>String</code></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</div>
+
+        
+            
+<div class="section-members">
+<h4 class="name" id=".QUEUEING"><span class="type-signature">(static) </span>QUEUEING<span class="type-signature"> :String</span></h4>
+
+
+
+
+<div class="description">
+    <p>The status indicating that the queue is available for tasks to be added and is waiting to be ran</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line381">line 381</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><code>String</code></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</div>
+
+        
+            
+<div class="section-members">
+<h4 class="name" id=".RUNNING"><span class="type-signature">(static) </span>RUNNING<span class="type-signature"> :String</span></h4>
+
+
+
+
+<div class="description">
+    <p>The status indicating that the queue is sealed from adding new tasks and is waiting to complete</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line387">line 387</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><code>String</code></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</div>
+
+        
+            
+<div class="section-members">
+<h4 class="name" id=".STOPPED"><span class="type-signature">(static) </span>STOPPED<span class="type-signature"> :String</span></h4>
+
+
+
+
+<div class="description">
+    <p>The status indicating that the queue has been stopped before completing</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line405">line 405</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><code>String</code></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</div>
+
+        
+            
+<div class="section-members">
+<h4 class="name" id=".SUCCEEDED"><span class="type-signature">(static) </span>SUCCEEDED<span class="type-signature"> :String</span></h4>
+
+
+
+
+<div class="description">
+    <p>The status indicating that the queue has successfully ran to completion</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line399">line 399</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><code>String</code></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</div>
+
+        
+            
+<div class="section-members">
+<h4 class="name" id=".TRANSFERRED"><span class="type-signature">(static) </span>TRANSFERRED<span class="type-signature"> :String</span></h4>
+
+
+
+
+<div class="description">
+    <p>The status indicating that the queue has been transferred to another queue before completing</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line411">line 411</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><code>String</code></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</div>
+
+        
+            
+<div class="section-members">
+<h4 class="name" id="count"><span class="type-signature"></span>count<span class="type-signature"> :Integer</span></h4>
+
+
+
+
+<div class="description">
+    <p>The total number of tasks queued for execution</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line357">line 357</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><code>Integer</code></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</div>
+
+        
+            
+<div class="section-members">
+<h4 class="name" id="endHandler"><span class="type-signature"></span>endHandler<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    <p>Registers a handler function that will be executed once <code>Asynchro.run</code> has completed. Only one handler is allowed per instance
+and will overwrite any end handler that has been previously been set.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line203">line 203</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+</div>
+
+        
+            
+<div class="section-members">
+<h4 class="name" id="errors"><span class="type-signature"></span>errors<span class="type-signature"> :Array.&lt;Error></span></h4>
+
+
+
+
+<div class="description">
+    <p>An immutable array of all the caught errors encountered during execution</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line349">line 349</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><code>Array.&lt;Error></code></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</div>
+
+        
+            
+<div class="section-members">
+<h4 class="name" id="result"><span class="type-signature"></span>result<span class="type-signature"> :Object</span></h4>
+
+
+
+
+<div class="description">
+    <p>The result of all of the cumulative execution results that had designated names assigned</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line341">line 341</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><code>Object</code></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</div>
+
+        
+            
+<div class="section-members">
+<h4 class="name" id="status"><span class="type-signature"></span>status<span class="type-signature"> :String</span></h4>
+
+
+
+
+<div class="description">
+    <p>The current execution status</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line373">line 373</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><code>String</code></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</div>
+
+        
+            
+<div class="section-members">
+<h4 class="name" id="systemErrorTypes"><span class="type-signature"></span>systemErrorTypes<span class="type-signature"> :Array.&lt;function()></span></h4>
+
+
+
+
+<div class="description">
+    <p>An immutable array of error type constructs that will be thrown when they are encountered during queue execution
+using <code>instanceof</code> on the thrown error (used by <code>system</code> values for throwing in <code>Asynchro.throwsError</code>)</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line333">line 333</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><code>Array.&lt;function()></code></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</div>
+
+        
+            
+<div class="section-members">
+<h4 class="name" id="waiting"><span class="type-signature"></span>waiting<span class="type-signature"> :Integer</span></h4>
+
+
+
+
+<div class="description">
+    <p>The number of tasks queued that are <em>waiting</em> for execution</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line365">line 365</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><code>Integer</code></span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</div>
+
+        
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+<div class="section-method">
+
+    
+
+    <h4 class="name" id=".extractFuncArgs"><span class="type-signature">(static) </span>extractFuncArgs<span class="signature">(fn)</span><span class="type-signature"> &rarr; {Array.&lt;String>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Extracts the argument names that a function accepts</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line634">line 634</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>function</code></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">
+                <p>The function to extract paramter names from</p>
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="section-returns">
+<h5>Returns:</h5>
+
+        
+
+<dl class="param-type">
+    <dt>
+        Type:
+    </dt>
+    <dd>
+        
+<span class="param-type"><code>Array.&lt;String></code></span>
+
+
+    </dd>
+</dl>
+
+
+<div class="param-desc">
+    <p>The array of function parameter names in the order that they are defined</p>
+</div>
+
+    
+</div>
+
+
+
+</div>
+        
+            
+<div class="section-method">
+
+    
+
+    <h4 class="name" id=".promisifyCallback"><span class="type-signature">(static) </span>promisifyCallback<span class="signature">(obj, funcName, funcParams<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {function}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Takes an object's function with the last argument being a callback function which accepts <strong>multiple parameter arguments</strong> (1st argument being
+an <code>Error</code>) and converts it to a promise. Rejects when an <code>Error</code> is passed in as the first argument or resolves using the arguments passed
+into the callback (excluding the 1st error parameter). Also supports <code>this</code> reference within the passed function (set to the passed <code>obj</code>)</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line602">line 602</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>obj</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>Object</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p>The object that contains the function that will be promisfied</p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>funcName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>String</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p>The name of the function property in the <code>obj</code></p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>funcParams</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>Array.&lt;String></code></span>
+|
+
+<span class="param-type"><code>function</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p>A <code>String[]</code> of parameter names for the given function that will be used as the property names on the
+resolved promise object (should not include the error or callback parameter names), a <code>Function</code> to extract the property names from, or
+omit/<code>false</code> to simply use an array of argument values when resolving the promise</p>
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="section-returns">
+<h5>Returns:</h5>
+
+        
+
+<dl class="param-type">
+    <dt>
+        Type:
+    </dt>
+    <dd>
+        
+<span class="param-type"><code>function</code></span>
+
+
+    </dd>
+</dl>
+
+
+<div class="param-desc">
+    <p>A <code>function(..args)</code> that returns a promise</p>
+</div>
+
+    
+</div>
+
+
+
+</div>
+        
+            
+<div class="section-method">
+
+    
+
+    <h4 class="name" id=".promisifyEventTarget"><span class="type-signature">(static) </span>promisifyEventTarget<span class="signature">(target, tko<span class="signature-attributes">opt</span>, eventMax<span class="signature-attributes">opt</span>, eventErrorMax<span class="signature-attributes">opt</span>, implyError<span class="signature-attributes">opt</span>, resolveOnTimeout<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {function}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Promisifies event(s) fired from a event target</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line518">line 518</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>target</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>Object</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">
+                <p>The object that will fire event(s)</p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>tko</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>Integer</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    60000
+                
+                </td>
+            
+
+            <td class="description last">
+                <p>The timeout delay in milliseconds to wait for the event before <em>rejecting</em> or
+<em>resolving</em> the promise (set to zero for <em>unlimited</em> timeout or override using <code>events[].tko</code>)</p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>eventMax</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>Integer</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    1
+                
+                </td>
+            
+
+            <td class="description last">
+                <p>The number of times any one of the events must fire before the promise is resolved</p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>eventErrorMax</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>Integer</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    1
+                
+                </td>
+            
+
+            <td class="description last">
+                <p>Rhe number of times any one of the events must fire that contain an <code>Error</code> as
+the first argument before the promise is rejected with that <code>Error</code> (or <code>Error[]</code> if there are more than one)</p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>implyError</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>Boolean</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    true
+                
+                </td>
+            
+
+            <td class="description last">
+                <p><code>true</code> will automatically listen for an <code>error</code> events that will reject or resolve</p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>resolveOnTimeout</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>Boolean</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last">
+                <p><code>true</code> to <em>resolve</em> when the <code>tko</code> timeout is reached, false to <em>reject</em>
+and uses the passed <code>tko</code> for the timeout delay</p>
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="section-returns">
+<h5>Returns:</h5>
+
+        
+
+<dl class="param-type">
+    <dt>
+        Type:
+    </dt>
+    <dd>
+        
+<span class="param-type"><code>function</code></span>
+
+
+    </dd>
+</dl>
+
+
+<div class="param-desc">
+    <p>The function that will listen for events to fire before resolving/rejecting with either an array
+of arguments passed into the listener, a single value when the listener was passed one argument, <code>undefined</code> when
+the listener was not passed any arguments or an <code>Object</code> generated using <code>listenerParams</code> to map the argument values
+passed into the listener in the order they are received. The function accepts the following arguments:</p>
+<ul>
+<li><code>event</code> either the event name that will be listened to or an object that will override </li>
+<li><code>listenerParams</code> an optional <code>String[]</code> of parameter names for the given function that will be used as the
+property names on the resolved promise object (or <code>Object[]</code> when <code>eventMax &gt; 1</code>), a <code>Function</code> to extract the
+property names from, or omit/<code>false</code> to simply use an array of argument values when resolving the promise</li>
+</ul>
+</div>
+
+    
+</div>
+
+
+
+<div class="section-examples">
+<h5>Examples</h5>
+
+    <pre class="prettyprint"><code>// 30 sec timeout, 1 event max (default), 1 error event max (default)
+const listenAsync = Asynchro.promisifyEventTarget(myEventTarget, 30000);
+setTimeout(() => {
+ myEventTarget.dispatchEvent('my-event-1', 'done');
+ myEventTarget.dispatchEvent('my-event-2', 1, 2, 3);
+ myEventTarget.dispatchEvent('my-event-2', 4, 5, 6);
+ // my-event-2 will never set the following since it exceeds event max of 1
+ myEventTarget.dispatchEvent('my-event-2', 'not set');
+ myEventTarget.dispatchEvent('my-event-3', 1, 2, 3);
+ myEventTarget.dispatchEvent('my-event-4', 'a', 'b', 'c');
+ myEventTarget.dispatchEvent('my-event-4', 'd', 'e', 'f');
+}, 10);
+// run in parallel
+const p1 = listenAsync('my-event-1');
+const p2 = listenAsync({ name: 'my-event-2', eventMax: 2 });
+const p3 = listenAsync('my-event-3', ['one', 'two', 'three']);
+const p4 = listenAsync({ name: 'my-event-4', eventMax: 2 }, ['name1', 'name2', 'name3']);
+const p4x = listenAsync({ name: 'my-event-4', eventMax: 2 }, function demoNames(name1, name2, name3){});
+console.log(await p1); // done
+console.log(await p2); // [[1, 2, 3], [4, 5, 6]]
+console.log(await p3); // { one: 1, two: 2, three: 3 }
+console.log(await p4); // [{ name1: 'a', name2: 'b', name3: 'c' }, { name1: 'd', name2: 'e', name3: 'f' }]
+console.log(await p4x); // [{ name1: 'a', name2: 'b', name3: 'c' }, { name1: 'd', name2: 'e', name3: 'f' }]</code></pre>
+
+    <pre class="prettyprint"><code>// example setup
+const tko = 30000, delay = 10, a = 1, b = 2, c = 3, d = 4, e = 5, l1 = 200, l2 = 300;
+function multiply(a, b, c) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve({ m1: 10 * (a || 0), m2: 20 * (b || 0), m3: 30 * (c || 0) });
+    }, delay);
+  });
+}
+// class just for example purposes
+class MyEventTarg {
+  constructor() {
+    this.listeners = {};
+  }
+  addListener(event, listener) {
+    this.listeners[event] = this.listeners[event] || [];
+    this.listeners[event].push(listener);
+  }
+  removeListener(event, listener) {
+    var idx = -1;
+    if (!(event in this.listeners)) idx;
+    for (let lsn of this.listeners[event]) if (++idx &amp;&amp; lsn === listener) {
+      this.listeners[event].splice(idx, 1);
+      return idx;
+    }
+  }
+  dispatchEvent(type) {
+    if (this.listeners[type]) {
+      // pass all the args to the listener except the 1st arg that is the event name
+      const args = Array.prototype.slice.call(arguments, 1);
+      for (let lsn of this.listeners[type]) lsn.apply(this, args);
+    }
+  }
+}
+const trg = new MyEventTarg();
+
+// 30 sec timeout, 1 event max (default), 1 error event max (default)
+const listenAsync = Asynchro.promisifyEventTarget(trg, tko);
+const ax = new Asynchro({});
+ax.parallel('one', multiply, a, b, c);
+ax.series('two', listenAsync, 'event-1');
+ax.series('three', multiply, d, e);
+ax.parallel('four', listenAsync, 'event-2');
+
+setTimeout(() => {
+  trg.dispatchEvent('event-1', l1);
+  setTimeout(() => {
+    trg.dispatchEvent('event-2', l2);
+  }, delay * 2); // delay must be between delay on "two"/"three" and "tko"
+}, delay); // delay must be between delay on "two" and "tko" ("one" is in parallel)
+
+const rslt = await ax.run();
+// { one: { m1: 10, m2: 40, m3: 90 }, two: 200, three: { m1: 40, m2: 100, m3: 0 }, four: 300 }
+console.log(rslt);</code></pre>
+
+</div>
+
+</div>
+        
+            
+<div class="section-method">
+
+    
+
+    <h4 class="name" id="arg"><span class="type-signature"></span>arg<span class="signature">(name)</span><span class="type-signature"> &rarr; {<a href="ResultArg.html">ResultArg</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Resolves to a previously completed result value from a queued task function so the results from one task can be passed into subsequent
+tasks during execution via <code>Asynchro.run</code></p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line303">line 303</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>String</code></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">
+                <p>The name given for the task where the result will be stored as a property of the <code>Asynchro.result</code> object.
+Can use dot notation to express a path to other objects (e.g. <code>someObject.someOtherObject.someValue</code> would equate to
+<code>asynchro.result.someObject.someOtherObject.someValue</code> once the queued task function is executed)</p>
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="section-returns">
+<h5>Returns:</h5>
+
+        
+
+<dl class="param-type">
+    <dt>
+        Type:
+    </dt>
+    <dd>
+        
+<span class="param-type"><code><a href="ResultArg.html">ResultArg</a></code></span>
+
+
+    </dd>
+</dl>
+
+
+<div class="param-desc">
+    <p>The <a href="ResultArg.html"><code>ResultArg</code></a></p>
+</div>
+
+    
+</div>
+
+
+
+<div class="section-examples">
+<h5>Example</h5>
+
+    <pre class="prettyprint"><code>const ax = new Asynchro({});
+ax.series('one', async () => {
+ // other async operations here
+ return { array: [1] };
+});
+ax.series('two', async (a) => {
+ // other async operations here
+ console.log(a); // prints out 1
+}, ax.arg('one.array[0]'));
+await ax.run();</code></pre>
+
+</div>
+
+</div>
+        
+            
+<div class="section-method">
+
+    
+
+    <h4 class="name" id="background"><span class="type-signature"></span>background<span class="signature">(name<span class="signature-attributes">opt</span>, throws<span class="signature-attributes">opt</span>, fn, &hellip;args)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Queues an <code>async function</code> to run in the <strong>background</strong> (i.e. the queue wont wait for the results and will not be captured).
+Thrown errors within the scope of specified <code>throws</code> flag(s) will be thrown and will stop further execution of the queue.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line95">line 95</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>String</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p>The name given for the task that can be used in conjunction with <code>Asynchro.verify</code>
+(no results will be set from the function's return value - omit will cause the name/ID will be generated and returned)</p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>throws</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>Boolean</code></span>
+|
+
+<span class="param-type"><code>Object</code></span>
+|
+
+<span class="param-type"><code>String</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p>One of the following values (supersedes any <code>throws</code> parameters passed during construction):</p>
+<ul>
+<li><code>true</code> to throw any errors and instantly stop any further execution</li>
+<li><code>false</code> to catch any errors that are thrown</li>
+<li><code>Object</code> an object containing the following properties:</li>
+<li><ul>
+<li><code>invert</code> true to catch errors when matches are made, false/omit to throw errors when matches are made</li>
+</ul>
+</li>
+<li><ul>
+<li><code>matches</code> An array that contains any of the following:</li>
+</ul>
+</li>
+<li><ul>
+<li><ul>
+<li><code>system</code> A string value equal to &quot;system&quot; that will match when an error is a type within <code>Asynchro.systemErrorTypes</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><ul>
+<li><ul>
+<li><code>Object</code> An object that contains property names/values that will be matched against property name/values in the caught error.
+When invert is true, all names/values on the caught error must match the names/values on the object in order to be 
+<strong>caught/captured</strong> in <code>Asynchro.errors</code>. When invert is false/omitted, all names/values on the caught error must match
+all of the names/values on the object in order to be <strong>rethrown</strong>.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>system</code> a single <code>matches</code> string (invert defaults to false)</li>
+</ul>
+<p>Re-thrown errors will set <code>Error.cause</code> to the originally thrown error.</p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>function</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p>The function to queue for asynchronicity</p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>args</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>*</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                    &lt;repeatable><br>
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p>Aguments that will be passed into the queued function</p>
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="section-returns">
+<h5>Returns:</h5>
+
+        
+
+<dl class="param-type">
+    <dt>
+        Type:
+    </dt>
+    <dd>
+        
+<span class="param-type"><code>String</code></span>
+
+
+    </dd>
+</dl>
+
+
+<div class="param-desc">
+    <p>The queued name/ID (either passed or generated)</p>
+</div>
+
+    
+</div>
+
+
+
+</div>
+        
+            
+<div class="section-method">
+
+    
+
+    <h4 class="name" id="backgroundWaiter"><span class="type-signature">(async) </span>backgroundWaiter<span class="signature">(result)</span><span class="type-signature"> &rarr; {Array.&lt;Error>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Waits for any pending background functions to complete and captures the results/caught errors.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line271">line 271</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>result</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>Object</code></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">
+                <p>The object where the background results will be set using a property name that matches the <em>name</em> passed into 
+the original call to <code>Asynchro.background</code> that queued the <em>background</em> function</p>
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="section-returns">
+<h5>Returns:</h5>
+
+        
+
+<dl class="param-type">
+    <dt>
+        Type:
+    </dt>
+    <dd>
+        
+<span class="param-type"><code>Array.&lt;Error></code></span>
+
+
+    </dd>
+</dl>
+
+
+<div class="param-desc">
+    <p>An array of errors caught due to the original <code>throws</code> rules passed into the original call to
+<code>Asynchro.background</code> that queued the <em>background</em> function</p>
+</div>
+
+    
+</div>
+
+
+
+<div class="section-examples">
+<h5>Example</h5>
+
+    <pre class="prettyprint"><code>const resultObject = {}; // needed so that results are captured
+const ax = new Asynchro(resultObject, true, ASYNC_LOGGER);
+ax.background('myBgTask', false, myAsyncFunc, myAsyncFuncArg1, myAsyncFunc2);
+await ax.run();
+// now that Asynchro.run has completed we can optionally wait for the background tasks to complete
+const bgResultObject = {};
+const errors = await ax.backgroundWaiter(bgResultObject);
+// if errors are caught, should print out errors thrown from the background async function
+for (let error of errors) console.error(error);
+// if no error for myBgTask, should print out the return value from the background async function
+console.log(bgResultObject.myBgTask);</code></pre>
+
+</div>
+
+</div>
+        
+            
+<div class="section-method">
+
+    
+
+    <h4 class="name" id="messages"><span class="type-signature"></span>messages<span class="signature">(delimiter<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>The accumulated message(s) gathered while running queued tasks during a <code>Asynchro.run</code></p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line313">line 313</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>delimiter</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>String</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p>The delimter to use between messages</p>
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="section-returns">
+<h5>Returns:</h5>
+
+        
+
+<dl class="param-type">
+    <dt>
+        Type:
+    </dt>
+    <dd>
+        
+<span class="param-type"><code>String</code></span>
+
+
+    </dd>
+</dl>
+
+
+<div class="param-desc">
+    <p>The cumulative messages</p>
+</div>
+
+    
+</div>
+
+
+
+</div>
+        
+            
+<div class="section-method">
+
+    
+
+    <h4 class="name" id="parallel"><span class="type-signature"></span>parallel<span class="signature">(name<span class="signature-attributes">opt</span>, fn, &hellip;args)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Queues an <code>async function</code> to run in <strong>parallel</strong> relative to other functions in the queue</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line67">line 67</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>String</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p>The name given for the task where the result will be stored as a property of the <code>Asynchro.result</code> object
+(omit to prevent results from being set from function return value - a name/ID will be generated and returned)</p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>function</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p>The function to queue for asynchronicity</p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>args</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>*</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                    &lt;repeatable><br>
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p>Aguments that will be passed into the queued function</p>
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="section-returns">
+<h5>Returns:</h5>
+
+        
+
+<dl class="param-type">
+    <dt>
+        Type:
+    </dt>
+    <dd>
+        
+<span class="param-type"><code>String</code></span>
+
+
+    </dd>
+</dl>
+
+
+<div class="param-desc">
+    <p>The queued name/ID (either passed or generated)</p>
+</div>
+
+    
+</div>
+
+
+
+</div>
+        
+            
+<div class="section-method">
+
+    
+
+    <h4 class="name" id="parallelThrowOverride"><span class="type-signature"></span>parallelThrowOverride<span class="signature">(name<span class="signature-attributes">opt</span>, throws<span class="signature-attributes">opt</span>, fn, &hellip;args)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Queues an <code>async function</code> to run in <strong>parallel</strong> relative to other functions in the queue while overriding the <code>throws</code> option set during
+construction.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line150">line 150</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>String</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p>The name given for the task where the result will be stored as a property of the <code>Asynchro.result</code> object
+(omit to prevent results from being set from function return value - a name/ID will be generated and returned)</p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>throws</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>Boolean</code></span>
+|
+
+<span class="param-type"><code>Object</code></span>
+|
+
+<span class="param-type"><code>String</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p>One of the following values (supersedes any <code>throws</code> parameters passed during construction):</p>
+<ul>
+<li><code>true</code> to throw any errors and instantly stop any further execution</li>
+<li><code>false</code> to catch any errors that are thrown</li>
+<li><code>Object</code> an object containing the following properties:</li>
+<li><ul>
+<li><code>invert</code> true to catch errors when matches are made, false/omit to throw errors when matches are made</li>
+</ul>
+</li>
+<li><ul>
+<li><code>matches</code> An array that contains any of the following:</li>
+</ul>
+</li>
+<li><ul>
+<li><ul>
+<li><code>system</code> A string value equal to &quot;system&quot; that will match when an error is a type within <code>Asynchro.systemErrorTypes</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><ul>
+<li><ul>
+<li><code>Object</code> An object that contains property names/values that will be matched against property name/values in the caught error.
+When invert is true, all names/values on the caught error must match the names/values on the object in order to be 
+<strong>caught/captured</strong> in <code>Asynchro.errors</code>. When invert is false/omitted, all names/values on the caught error must match
+all of the names/values on the object in order to be <strong>rethrown</strong>.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>system</code> a single <code>matches</code> string (invert defaults to false)</li>
+</ul>
+<p>Re-thrown errors will set <code>Error.cause</code> to the originally thrown error.</p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>function</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p>The function to queue for asynchronicity</p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>args</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>*</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                    &lt;repeatable><br>
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p>Aguments that will be passed into the queued function</p>
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="section-returns">
+<h5>Returns:</h5>
+
+        
+
+<dl class="param-type">
+    <dt>
+        Type:
+    </dt>
+    <dd>
+        
+<span class="param-type"><code>String</code></span>
+
+
+    </dd>
+</dl>
+
+
+<div class="param-desc">
+    <p>The queued name/ID (either passed or generated)</p>
+</div>
+
+    
+</div>
+
+
+
+</div>
+        
+            
+<div class="section-method">
+
+    
+
+    <h4 class="name" id="run"><span class="type-signature">(async) </span>run<span class="signature">()</span><span class="type-signature"> &rarr; {Object}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>A one-time execution run of all queued asynchronous functions in insertion order with parallel/concurrent running simultaneously and series
+tasks running in succession. Any queued <code>Asynchro.background</code> tasks will continue to run after <code>Asynchro.run</code> completes,
+possibly accumulating additional <code>Asynchro.errors</code> as those tasks complete (see <code>Asynchro.backgroundWaiter</code> to wait for
+any background tasks to finish completing).</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line217">line 217</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="section-returns">
+<h5>Returns:</h5>
+
+        
+
+<dl class="param-type">
+    <dt>
+        Type:
+    </dt>
+    <dd>
+        
+<span class="param-type"><code>Object</code></span>
+
+
+    </dd>
+</dl>
+
+
+<div class="param-desc">
+    <p>The result from <code>Asynchro.result</code></p>
+</div>
+
+    
+</div>
+
+
+
+</div>
+        
+            
+<div class="section-method">
+
+    
+
+    <h4 class="name" id="series"><span class="type-signature"></span>series<span class="signature">(name<span class="signature-attributes">opt</span>, fn, &hellip;args)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Queues an <code>async function</code> to run in <strong>series</strong> relative to other functions in the queue</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line54">line 54</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>String</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p>The name given for the task where the result will be stored as a property of the <code>Asynchro.result</code> object
+(omit to prevent results from being set from function return value - a name/ID will be generated and returned)</p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>function</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p>The function to queue for asynchronicity</p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>args</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>*</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                    &lt;repeatable><br>
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p>Aguments that will be passed into the queued function</p>
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="section-returns">
+<h5>Returns:</h5>
+
+        
+
+<dl class="param-type">
+    <dt>
+        Type:
+    </dt>
+    <dd>
+        
+<span class="param-type"><code>String</code></span>
+
+
+    </dd>
+</dl>
+
+
+<div class="param-desc">
+    <p>The queued name/ID (either passed or generated)</p>
+</div>
+
+    
+</div>
+
+
+
+</div>
+        
+            
+<div class="section-method">
+
+    
+
+    <h4 class="name" id="seriesThrowOverride"><span class="type-signature"></span>seriesThrowOverride<span class="signature">(name<span class="signature-attributes">opt</span>, throws<span class="signature-attributes">opt</span>, fn, &hellip;args)</span><span class="type-signature"> &rarr; {String}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Queues an <code>async function</code> to run in <strong>series</strong> relative to other functions in the queue while overriding the <code>throws</code> option set during
+construction.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line123">line 123</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>String</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p>The name given for the task where the result will be stored as a property of the <code>Asynchro.result</code> object
+(omit to prevent results from being set from function return value - a name/ID will be generated and returned)</p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>throws</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>Boolean</code></span>
+|
+
+<span class="param-type"><code>Object</code></span>
+|
+
+<span class="param-type"><code>String</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p>One of the following values (supersedes any <code>throws</code> parameters passed during construction):</p>
+<ul>
+<li><code>true</code> to throw any errors and instantly stop any further execution</li>
+<li><code>false</code> to catch any errors that are thrown</li>
+<li><code>Object</code> an object containing the following properties:</li>
+<li><ul>
+<li><code>invert</code> true to catch errors when matches are made, false/omit to throw errors when matches are made</li>
+</ul>
+</li>
+<li><ul>
+<li><code>matches</code> An array that contains any of the following:</li>
+</ul>
+</li>
+<li><ul>
+<li><ul>
+<li><code>system</code> A string value equal to &quot;system&quot; that will match when an error is a type within <code>Asynchro.systemErrorTypes</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><ul>
+<li><ul>
+<li><code>Object</code> An object that contains property names/values that will be matched against property name/values in the caught error.
+When invert is true, all names/values on the caught error must match the names/values on the object in order to be 
+<strong>caught/captured</strong> in <code>Asynchro.errors</code>. When invert is false/omitted, all names/values on the caught error must match
+all of the names/values on the object in order to be <strong>rethrown</strong>.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><code>system</code> a single <code>matches</code> string (invert defaults to false)</li>
+</ul>
+<p>Re-thrown errors will set <code>Error.cause</code> to the originally thrown error.</p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>function</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p>The function to queue for asynchronicity</p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>args</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>*</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                    &lt;repeatable><br>
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p>Aguments that will be passed into the queued function</p>
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="section-returns">
+<h5>Returns:</h5>
+
+        
+
+<dl class="param-type">
+    <dt>
+        Type:
+    </dt>
+    <dd>
+        
+<span class="param-type"><code>String</code></span>
+
+
+    </dd>
+</dl>
+
+
+<div class="param-desc">
+    <p>The queued name/ID (either passed or generated)</p>
+</div>
+
+    
+</div>
+
+
+
+</div>
+        
+            
+<div class="section-method">
+
+    
+
+    <h4 class="name" id="throwsError"><span class="type-signature"></span>throwsError<span class="signature">(errorOrType, throwWhenTrue<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Determines if an <code>Error</code> or a <code>Function</code> construct to an <code>Error</code> will be thrown when encountered during an execution run</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line323">line 323</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>errorOrType</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>Error</code></span>
+|
+
+<span class="param-type"><code>function</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p>Either an <code>Error</code> or a <code>Function</code> construct to an Error</p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>throwWhenTrue</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>Boolean</code></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">
+                <p><code>true</code> to actually throw the error when <code>errorOrType</code> is an actual <code>Error</code> and it is determined that the error should throw</p>
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="section-returns">
+<h5>Returns:</h5>
+
+        
+
+<dl class="param-type">
+    <dt>
+        Type:
+    </dt>
+    <dd>
+        
+<span class="param-type"><code>Boolean</code></span>
+
+
+    </dd>
+</dl>
+
+
+<div class="param-desc">
+    <p>Returns true if the <code>Error</code> or <code>Function</code> construct to an <code>Error</code> will be thrown when encountered during an execution run</p>
+</div>
+
+    
+</div>
+
+
+
+</div>
+        
+            
+<div class="section-method">
+
+    
+
+    <h4 class="name" id="verify"><span class="type-signature"></span>verify<span class="signature">(name, fn)</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+<div class="description">
+    <p>Each <code>verify</code> is an <code>async</code> function that will be called after the queued task that matches the registered <em>name</em> has ran. <strong>It's important to note
+that <em>parallel</em> tasks will call the registered <em>verify</em> function TWICE. Once when the <code>async</code> function is invoked (<code>isPending === true</code>) and
+antoher time when <code>await</code> completes (<code>isPending !== true</code>).</strong> There is only one <em>verify</em> per registered name. So, registering <em>verify</em> multiple
+times for the same name will overwrite any <em>verify</em> functions that were set by previous calls.</p>
+</div>
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="index.js.html">index.js</a>, <a href="index.js.html#line189">line 189</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>String</code></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">
+                <p>Either the name designated as the property name or the <code>Function.name</code> from the function used when calling <code>parallel</code> or <code>series</code></p>
+                
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>fn</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><code>function</code></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">
+                <p>An <code>async function</code> that will accept a single object argument that contains the follwing properties:</p>
+<ol>
+<li><code>error</code> A <em>mutable</em> error object that occurred during execution of the queued task (changes to this value will be reflected in the final
+<code>Asynchro.result</code> or re-thrown depending on the rules/<code>throws</code> set for re-throwing/catching defined on the corresponding queued task).
+Setting the <em>error</em> will have the same effect as throwing an Error from within the <em>verify</em> function.</li>
+<li><code>result</code> A <em>mutable</em> result value returned from the queued task execution (changes to this value will be reflected in the final
+<code>Asynchro.result</code>).</li>
+<li><code>isPending</code> An <em>immutable</em> boolean value indicating the task has not yet returned from <code>await</code>. The value will always be <code>false</code> for <strong>series</strong>
+tasks since they <code>await</code> before calling the <em>verify</em>. When a <strong>parallel</strong> task is called, but not yet returned from <code>await</code> the value will be <code>true</code>.
+In the subsequent <strong>parallel</strong> call to the <em>verify</em> function the value will be <code>false</code> since <code>await</code> has completed. When <strong>background</strong> tasks are
+called the value will always be <code>true</code> since they will never <code>await</code> on the task to complete.</li>
+<li><code>isParallel</code> An <em>immutable</em> boolean value indicating if the task was ran in <strong>parallel</strong> or <strong>series</strong></li>
+<li><code>isBackground</code> An <em>immutable</em> boolean value indicating if the task was ran in the <strong>background</strong> (i.e. calls the task without <code>await</code>)</li>
+<li><code>event</code> An <em>immutable</em> event name defined when the task originated from the function returned by <a href="Asynchro.html#.promisifyEventTarget"><code>Asynchro.promisifyEventTarget</code></a></li>
+<li><code>name</code> An <em>immutable</em> string value reflecting the original name passed into <code>Asynchro.verify</code></li>
+<li><code>operation</code> An <em>immutable</em> string value reflecting the original function name of the function passed into <code>Asynchro.verify</code></li>
+<li><code>message</code> A write-only <em>mutable</em> string value that will override the default message that will be added to <code>Asynchro.messages</code></li>
+</ol>
+<p>The return value should be one of the following:</p>
+<ol>
+<li><code>false</code> will stop execution of pending tasks that have been queued and <code>Asynchro.status</code> will be set to <a href="Asynchro.html#.STOPPED"><code>Asynchro.STOPPED</code></a>.</li>
+<li>Another <code>Asynchro</code> instance that will cause the current queue to stop while the new queue will take over via <code>await</code> <code>Asynchro.run</code>.
+<code>Asynchro.status</code> will be set to <a href="Asynchro.html#.TRANSFERRED"><code>Asynchro.TRANSFERRED</code></a> with any <code>Asynchro.messages</code> and/or <code>Asynchro.errors</code>
+being appended to the new queue instance. Also, <code>Asynchro.result</code> will be merged into the new queue instance.</li>
+<li>Any other value will have no impact.</li>
+</ol>
+<p>The <em>verify</em> <code>this</code> reference will point to the <a href="Asynchro.html"><code>Asynchro</code></a> instance</p>
+<p><strong>NOTE:</strong> There may be some residuale parallel/concurrent/background functions that were already running prior to the queue being stopped that
+may still be running after a queue has been stopped/transferred by <em>verify</em>.</p>
+                
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+  <b>asynchro v1.0.6</b><br/>
+  Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
