@@ -1,5 +1,5 @@
 # deploy from dev/local machine via (which will create git tag):
-# npm version
+# npm version patch -m "%s release"
 dist: xenial
 language: node_js
 node_js:
