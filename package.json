@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "lab -t 100 -v",
+    "test": "lab -t 70 -v",
     "gen-docs": "node_modules/.bin/jsdoc -c jsdoc/conf.json --verbose"
   },
   "repository": {
@@ -33,6 +33,7 @@
   "publishConfig": {
     "access": "public"
   },
+  "dependencies": {},
   "devDependencies": {
     "code": "^5.2.0",
     "jsdoc": "^3.5.5",
