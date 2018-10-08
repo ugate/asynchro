@@ -23,9 +23,7 @@ deploy:
     on:
       tags: true # only on tagging commit
       all_branches: true
-  - edge:
-      branch: v1.9.1 # https://github.com/travis-ci/travis-ci/issues/9312
-    provider: pages
+  - provider: pages
     skip-cleanup: true
     github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
     keep-history: true
