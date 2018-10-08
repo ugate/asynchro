@@ -1,6 +1,6 @@
 {
   "name": "asynchro",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Micro async lib for parallel/series/background functions using built-in ES async/await",
   "main": "index.js",
   "directories": {
