@@ -12,7 +12,7 @@ branches:
     - master
     - "/v*/"
 script:
-  - printenv
+  #- printenv
   - "npm test"
 before_deploy:
   - "npm run gen-docs"

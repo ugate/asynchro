@@ -549,7 +549,9 @@ class Asynchro {
             if (listenerParams) {
               args = {};
               var fni = -1;
-              for (let name of listenerParams) args[name] = arguments[++fni];
+              for (let name of listenerParams) {
+                args[name] = arguments[++fni];
+              }
             } else args = event.max === 1 && arguments.length === 1 ? arguments[0] : arguments.length > 0 ? Array.prototype.slice.call(arguments) : undefined;
             if (results) results.push(args);
             else if (event.max === 1) results = args;
@@ -613,7 +615,9 @@ class Asynchro {
           else if (funcParams) {
             const rtn = {};
             var fni = 0; // skip error argument
-            for (let name of funcParams) rtn[name] = arguments[++fni];
+            for (let name of funcParams) {
+              rtn[name] = arguments[++fni];
+            }
             resolve(rtn);
           } else resolve(Array.prototype.slice.call(arguments, 1)); // remove error argument and return array
         });
