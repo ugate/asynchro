@@ -14,10 +14,9 @@ async function myWorkflow() {
   } catch (err) {
     if (log) log('Error at one', err);
     rslt.errors.push(err);
-    return rslt;
   }
   try {
-    rslt.two = await mySeriesFunc2(1, 2);
+    rslt.two = await mySeriesFunc2(1, 2, rslt.one ? rslt.one.value : undefined);
   } catch (err) {
     if (log) log('Error at one', err);
     for (let stype of SYSTEM_ERRORS) {
@@ -26,29 +25,37 @@ async function myWorkflow() {
       }
     }
     rslt.errors.push(err);
-    return rslt;
   }
   try {
     promises.three = myParallelFunc1({ a: 1, b: 2, c: 3 });
   } catch (err) {
     if (log) log('Error at three', err);
     rslt.errors.push(err);
-    return rslt;
   }
   try {
     promises.four = myParallelFunc2();
   } catch (err) {
     if (log) log('Error at four', err);
     rslt.errors.push(err);
-    return rslt;
   }
   promises.five = myParallelFunc3('always throw errors');
   try {
     rslt.six = await mySeriesFunc3(true, false);
+    if (rslt.six && rslt.six.isWorkflow2) {
+      rslt.six = 'Going to workflow2';
+      myWorkflow2(rslt, promises, log);
+    }
   } catch (err) {
     if (log) log('Error at six', err);
     rslt.errors.push(err);
-    return rslt;
+  }
+  if (rslt.six !== 'Going to workflow2') {
+    try {
+      rslt.seven = await mySeriesFunc4();
+    } catch (err) {
+      if (log) log('Error at seven', err);
+      rslt.errors.push(err);
+    }
   }
   for (let name in promises) {
     // always throw five/myParallelFunc3
@@ -58,10 +65,23 @@ async function myWorkflow() {
     } catch (err) {
       if (log) log(`Error at ${name}`, err);
       rslt.errors.push(err);
-      return rslt;
     }
   }
   return rslt;
+}
+async function myWorkflow2(rslt, promises, log) {
+  try {
+    promises.seven = myParallelFunc4('workflow2Arg');
+  } catch (err) {
+    if (log) log('Error at seven', err);
+    rslt.errors.push(err);
+  }
+  try {
+    rslt.eight = await mySeriesFunc5();
+  } catch (err) {
+    if (log) log('Error at eight', err);
+    rslt.errors.push(err);
+  }
 }
 ```
 
@@ -70,11 +90,21 @@ async function myWorkflow() {
 async function myWorkflow() {
   const ax = new Asynchro({}, false, console.log);
   ax.series('one', mySeriesFunc1, 'val1', 2, 3);
-  ax.seriesThrowOverride('two', 'system', mySeriesFunc2, 1, 2);
+  ax.seriesThrowOverride('two', 'system', mySeriesFunc2, 1, 2, ax.arg('one.value'));
   ax.parallel('three', myParallelFunc1, { a: 1, b: 2, c: 3 });
   ax.parallel('four', myParallelFunc2);
   ax.parallelThrowOverride('five', true, myParallelFunc3, 'always throw errors');
   ax.series('six', mySeriesFunc3, true, false);
+  ax.verify('six', async it => {
+    if (!it.error && it.result && it.result.isWorkflow2) {
+      it.result = 'Going to workflow2';
+      const ax2 = new Asynchro(ax.result, false, console.log);
+      ax2.parallel('seven', myParallelFunc4, 'workflow2Arg');
+      ax2.series('eight', mySeriesFunc5);
+      return ax2;
+    }
+  });
+  ax.series('seven', mySeriesFunc4);
   const result = await ax.run();
   return { result, errors: ax.errors };
 }
