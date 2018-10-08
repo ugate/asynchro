@@ -21,7 +21,8 @@
     "series",
     "background",
     "concurrent",
-    "sequential"
+    "sequential",
+    "workflow"
   ],
   "author": "ugate",
   "license": "MIT",
@@ -29,6 +30,9 @@
     "url": "https://github.com/ugate/asynchro/issues"
   },
   "homepage": "https://github.com/ugate/asynchro#readme",
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "code": "^5.2.0",
     "jsdoc": "^3.5.5",

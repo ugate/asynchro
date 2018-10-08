@@ -1,4 +1,4 @@
-# &#8669; asynchro 
+# <b style="color:#FFA726">&#8669;</b> asynchro 
 Micro lib for __parallel__/__series__/__background__ asynchronous functions using built-in ES `async/await` with __zero__ external dependencies. `Asynchro` is not just another `async` library, but rather a micro-sized workflow engine! Check out the turorials for more details. Runs in the browser or in [Node.js](https://nodejs.org/) `npm install asynchro`.
 
 * [Tutorials](https://ugate.github.io/asynchro/tutorial-1-queue.html)
