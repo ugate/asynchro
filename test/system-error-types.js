@@ -7,7 +7,7 @@ const lab = exports.lab = Lab.script();
 
 const plan = `${PLAN} System Error Types`;
 
-// "node_modules/.bin/lab" test/stops.js -vi 1
+// "node_modules/.bin/lab" test/error-types.js -vi 1
 
 lab.experiment(plan, () => {
 

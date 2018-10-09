@@ -18,6 +18,7 @@ function multiply(a, b, c) {
 const ax = new Asynchro({});
 ax.series('one', multiply, a, b, c);
 ax.verify('one', async it => {
+  it.result = 999; // optionally override result value
   return false; // stop the queue from continuing to process/run
 });
 // two is never ran
@@ -44,6 +45,9 @@ ax.verify('one', async it => {
     axt.parallel('y', multiply, 2, 2);
     // stop the queue from continuing to process/run and transfer/run the new one
     return axt;
+  } else {
+    // optionally override result value (once it's set- i.e. isPending = false)
+    it.result = 999;
   }
 });
 // two is never ran
@@ -57,5 +61,44 @@ const rslt = await ax.run();
 console.log(rslt);
 ```
 Branching can occur at any given point during queue execution via the return value from [Asynchro.verify](Asynchro.html#verify). There is no _hard_ limit to the number of branches from one `Asynchro` instance to another. This leads to a simple, yet flexible logic route for defining how workflows interact between one another.
+
+When branching to/from queues that contain one or more [background tasks](tutorial-2-background.html) it's important to keep in mind that [Asynchro.backgroundWaiter](Asynchro.html#backgroundWaiter) will accumulate the subsequent results that are set as well as any errors that are caught after [Asynchro.run](Asynchro.html#run) is `await`ed for.
+```js
+const ax = new Asynchro({});
+ax.parallel('one', multiply, a, b, c); // multiply/a/b/c from previous example
+ax.verify('one', async it => {
+  if (it.isPending) {
+    const axt = new Asynchro(ax.result);
+    axt.series('x', multiply, 1, 1, 1); // multiply from previous example
+    axt.parallel('y', multiply, 2, 2);
+    axt.background('z', multiply, 4, 4, 4);
+    // stop the queue from continuing to process/run and transfer/run the new one
+    return axt;
+  } else {
+    it.result = 999;
+  }
+});
+// two is never ran
+ax.series('two', multiply, d, e); // multiply/d/e from previous example
+await ax.run();
+// {
+//   one: { m1: 999, m2: 40, m3: 90 },
+//   x: { m1: 10, m2: 20, m3: 30 },
+//   y: { m1: 20, m2: 40, m3: 60 }
+// }
+console.log(ax.result);
+// if we don't want to set results on the same result object as "ax"
+// we can pass another object as the 1st argument
+const abx = await ax.backgroundWaiter();
+// {
+//   one: { m1: 999, m2: 40, m3: 90 },
+//   x: { m1: 10, m2: 20, m3: 30 },
+//   y: { m1: 20, m2: 40, m3: 60 },
+//   z: { m1: 40, m2: 80, m3: 120 }
+// }
+console.log(abx.result);
+// true
+console.log(ax.result === abx.result);
+```
 
 #### [Conversions >>](tutorial-5-conversion.html)

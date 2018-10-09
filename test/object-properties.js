@@ -7,7 +7,7 @@ const lab = exports.lab = Lab.script();
 
 const plan = `${PLAN} Object Properties`;
 
-// "node_modules/.bin/lab" test/stops.js -vi 1
+// "node_modules/.bin/lab" test/object-properties.js -vi 1
 
 lab.experiment(plan, () => {
 

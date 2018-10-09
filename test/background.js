@@ -30,21 +30,21 @@ lab.experiment(plan, () => {
     expect(ax.errors).to.be.array();
     expect(ax.errors).to.be.empty();
 
-    const errors = await ax.backgroundWaiter(ax.result);
-    logTest(`${PLAN}: waiter, delayed error`, LOGGER, ax, rslt, errors && errors[0]);
+    const abx = await ax.backgroundWaiter(ax.result);
+    logTest(`${PLAN}: waiter, delayed error`, LOGGER, abx, abx.result, abx.errors && abx.errors[0]);
     expect(rslt.one).to.equal('A');
     expect(rslt.hasOwnProperty('two')).to.be.true();
     expect(rslt.two).to.be.undefined();
     expect(rslt.three).to.equal('C');
-    expect(errors).to.be.equal(ax.errors);
-    expect(errors).to.be.array();
-    expect(errors).to.be.length(1);
-    expect(errors[0]).to.be.equal(bgVals[0]);
-    expect(errors[0][Asynchro.name]).to.be.object();
-    expect(errors[0][Asynchro.name].isPending).to.be.false();
-    expect(errors[0][Asynchro.name].isParallel).to.be.false();
-    expect(errors[0][Asynchro.name].isBackground).to.be.true();
-    expect(errors[0][Asynchro.name].name).to.equal('two');
+    expect(abx.errors).to.be.equal(ax.errors);
+    expect(abx.errors).to.be.array();
+    expect(abx.errors).to.be.length(1);
+    expect(abx.errors[0]).to.be.equal(bgVals[0]);
+    expect(abx.errors[0][Asynchro.name]).to.be.object();
+    expect(abx.errors[0][Asynchro.name].isPending).to.be.false();
+    expect(abx.errors[0][Asynchro.name].isParallel).to.be.false();
+    expect(abx.errors[0][Asynchro.name].isBackground).to.be.true();
+    expect(abx.errors[0][Asynchro.name].name).to.equal('two');
   });
 
   lab.test(`${plan}: waiter, multiple caught errors`, { timeout: TEST_TKO }, async (flags) => {
@@ -70,7 +70,7 @@ lab.experiment(plan, () => {
     expect(ax.errors).to.be.length(1);
     expect(ax.errors[0]).to.be.error();
   
-    const errors = await ax.backgroundWaiter(ax.result);
+    const abx = await ax.backgroundWaiter();
     logTest(`${PLAN}: waiter, multiple caught errors`, LOGGER, ax, rslt);
     expect(rslt.one).to.be.object();
     expect(rslt.one.m1).to.equal(10);
@@ -83,11 +83,11 @@ lab.experiment(plan, () => {
     expect(rslt.three).to.be.undefined();
     expect(rslt.four).to.be.undefined();
     expect(rslt.five).to.be.undefined();
-    expect(errors).to.be.equal(ax.errors);
-    expect(errors).to.be.array();
-    expect(errors).to.be.length(2);
+    expect(abx.errors).to.be.equal(ax.errors);
+    expect(abx.errors).to.be.array();
+    expect(abx.errors).to.be.length(2);
     var idx = -1;
-    for (let err of errors) {
+    for (let err of abx.errors) {
       idx++;
       expect(err).to.be.error();
       expect(err[Asynchro.name]).to.be.object();
@@ -119,10 +119,10 @@ lab.experiment(plan, () => {
     expect(rslt.two).to.equal(undefined);
     expect(rslt.three).to.equal('C');
 
-    const bgr = {};
-    const errors = await ax.backgroundWaiter(bgr);
-    expect(errors).to.be.empty();
-    for (let itm of bgs) expect(itm.value).to.equal(bgr[itm.name]);
+    const abx = await ax.backgroundWaiter();
+    expect(rslt).to.equal(ax.result);
+    expect(abx.errors).to.be.empty();
+    for (let itm of bgs) expect(itm.value).to.equal(rslt[itm.name]);
   });
 
   lab.test(`${plan}: error`, { timeout: TEST_TKO }, async (flags) => {
@@ -141,19 +141,14 @@ lab.experiment(plan, () => {
     expect(rslt.two).to.equal(undefined);
     expect(rslt.three).to.equal('C');
 
-    const bgr = {};
-    const errors = await ax.backgroundWaiter(bgr);
-    expect(errors).not.to.be.empty();
-    expect(errors.length).to.be.equal(bgs.length);
+    const abx = await ax.backgroundWaiter();
+    expect(rslt).to.equal(abx.result);
+    expect(abx.errors).not.to.be.empty();
+    expect(abx.errors).to.be.length(bgs.length);
     bgIdx = -1;
-    for (let err of errors) expect(err).to.equal(bgs[++bgIdx].value);
-    expect(bgIdx).to.equal(bgs.length - 1);
-    bgIdx = -1;
-    for (let nm in bgr) {
-      bgIdx++;
-      expect(bgr[nm]).to.equal(undefined);
+    for (let err of abx.errors) {
+      expect(err).to.equal(bgs[++bgIdx].value);
     }
-    expect(bgIdx).to.equal(bgs.length - 1);
   });
 });
 

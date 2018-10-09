@@ -7,7 +7,7 @@ const lab = exports.lab = Lab.script();
 
 const plan = `${PLAN} System Codes`;
 
-// "node_modules/.bin/lab" test/stops.js -vi 1
+// "node_modules/.bin/lab" test/branches.js -vi 1
 
 lab.experiment(plan, () => {
 
@@ -107,22 +107,22 @@ lab.experiment(plan, () => {
     expect(rslt).to.equal(ax.result);
     expect(rslt.one).to.equal('A');
     expect(rslt.sync).to.equal(syncArg);
-    expect(rslt.two).to.equal(undefined);
+    expect(rslt.two).to.be.undefined();
     expect(rslt.three).to.equal('B');
     expect(rslt.four).to.equal(verifyValue);
     expect(rslt.five).to.equal('C');
     expect(rslt.six).to.equal('D');
-    expect(rslt.seven).to.equal(undefined);
+    expect(rslt.seven).to.be.undefined();
     expect(rslt.eight).to.equal(verifyStopValue);
-    expect(rslt.nine).to.equal(undefined);
-    expect(rslt.shouldNotRun).to.equal(undefined);
-    expect(rslt.shouldNotRun2).to.equal(undefined);
+    expect(rslt.nine).to.be.undefined();
+    expect(rslt.shouldNotRun).to.be.undefined();
+    expect(rslt.shouldNotRun2).to.be.undefined();
     //expect(ax.errors.length).to.equal(1);
     expect(ax.status).to.equal(Asynchro.STOPPED);
   });
 
-  lab.test(`${plan}: transfer`, { timeout: TEST_TKO }, async (flags) => {
-    const afn = flags.mustCall(asyncCall, 6); // some errors will be hidden when using this: comment out to view
+  lab.test(`${plan}: transfer with background waiter`, { timeout: TEST_TKO }, async (flags) => {
+    const afn = flags.mustCall(asyncCall, 7); // some errors will be hidden when using this: comment out to view
     var delay = TASK_DELAY, count = 0;
 
     // decrement delay in order to force the natrual order of execution is reversed, yet asyncs order should still be maintained by Asynchro
@@ -149,6 +149,7 @@ lab.experiment(plan, () => {
         axt.series('eight', afn, 8, 'H', true, false, delay -= 10);
         axt.parallel('nine', afn, 9, 'I', true, true, delay -= 10);
         axt.parallel('ten', afn, 10, 'J', true, false, delay -= 10);
+        axt.background('eleven', afn, 11, 'K', true, false, delay -= 10);
         return axt; // stop the queue from continuing to process/run and transfer/run the new one
       } else it.result = verifyStopValue;
     }, 2));
@@ -157,23 +158,33 @@ lab.experiment(plan, () => {
     expect(axt.status).to.equal(Asynchro.QUEUEING);
     const rslt = await ax.run();
 
-    logTest(`${plan}: transfer`, LOGGER, ax, rslt);
+    logTest(`${plan}: transfer with background waiter`, console.log || LOGGER, ax, rslt, ax.errors);
     expect(origResult).to.equal(ax.result);
     expect(rslt).to.equal(ax.result);
+    expect(rslt).to.equal(axt.result);
     expect(rslt.one).to.equal('A');
     expect(rslt.two).to.equal(verifyValue);
     expect(rslt.three).to.equal(verifyStopValue);
-    expect(rslt.four).to.equal(undefined);
-    expect(rslt.five).to.equal(undefined);
-    expect(rslt.six).to.equal(undefined);
-    expect(rslt.seven).to.equal(undefined);
+    expect(rslt.four).to.equal('D');
+    expect(rslt.five).to.be.undefined();
+    expect(rslt.six).to.be.undefined();
+    expect(rslt.seven).to.be.undefined();
     expect(rslt.eight).to.equal('H');
-    expect(rslt.nine).to.equal(undefined);
+    expect(rslt.nine).to.be.undefined();
     expect(rslt.ten).to.equal('J');
-    expect(ax.errors.length).to.equal(0);
+    expect(rslt.eleven).to.be.undefined();
+    expect(ax.errors).to.be.empty();
     expect(ax.status).to.equal(Asynchro.TRANSFERRED);
     expect(axt.errors.length).to.equal(1);
     expect(axt.errors[0]).to.be.an.error('I');
     expect(axt.status).to.equal(Asynchro.FAILED);
+    
+    const abx = await ax.backgroundWaiter();
+    expect(abx.status).to.equal(Asynchro.FAILED);
+    expect(rslt).to.equal(abx.result);
+    expect(rslt.four).to.equal('D');
+    expect(rslt.eleven).to.equal('K');
+    expect(abx.errors.length).to.equal(1);
+    expect(abx.errors[0]).to.be.an.error('I');
   });
 });

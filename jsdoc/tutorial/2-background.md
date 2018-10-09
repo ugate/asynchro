@@ -66,8 +66,9 @@ ax.background('three', multiply, 0);
 ax.background('four', multiply, 1, 2, 3, { reject: true });
 ax.background('five', multiply, 1, 0, 3, { reject: true });
 await ax.run();
-// could use a different result object or add to the current one
-const errors = await ax.backgroundWaiter(ax.result);
+// could also pass in a different result object as the 1st argument
+// NOTE: awlays use return Asynchro instance in case branching took place
+const abx = await ax.backgroundWaiter();
 // {
 //  one: { m1: 10, m2: 40, m3: 90 },
 //  two: { m1: 40, m2: 100, m3: 180 },
@@ -75,7 +76,7 @@ const errors = await ax.backgroundWaiter(ax.result);
 //  four: undefined,
 //  five: undefined
 // }
-console.log(ax.result);
+console.log(abx.result);
 // [
 //  { Error: "a" must be a number greater than zero, but received: 0
 //    ...
@@ -98,7 +99,7 @@ console.log(ax.result);
 //    }
 //  },
 // ]
-console.log(errors);
+console.log(abx.errors);
 ```
 
 #### [Verification >>](tutorial-3-verification.html)

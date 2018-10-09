@@ -263,27 +263,29 @@ class Asynchro {
   }
 
   /**
-   * Waits for any pending background functions to complete and captures the results/caught errors.
+   * Waits for any pending {@link Asynchro.background} functions to complete and captures the results/caught errors.
    * @example
-   * const resultObject = {}; // needed so that results are captured
-   * const ax = new Asynchro(resultObject, true, ASYNC_LOGGER);
-   * ax.background('myBgTask', false, myAsyncFunc, myAsyncFuncArg1, myAsyncFunc2);
+   * const ax = new Asynchro({});
+   * ax.background('myBgTask', myAsyncFunc, myAsyncFuncArg1, myAsyncFunc2);
+   * // ...other queued tasks?
    * await ax.run();
    * // now that Asynchro.run has completed we can optionally wait for the background tasks to complete
-   * const bgResultObject = {};
-   * const errors = await ax.backgroundWaiter(bgResultObject);
+   * // NOTE: awlays use return Asynchro instance in case branching took place
+   * const abx = await ax.backgroundWaiter();
    * // if errors are caught, should print out errors thrown from the background async function
-   * for (let error of errors) console.error(error);
+   * for (let error of abx.errors) console.error(error);
    * // if no error for myBgTask, should print out the return value from the background async function
-   * console.log(bgResultObject.myBgTask);
+   * console.log(abx.result.myBgTask);
    * @async
-   * @param {Object} result The object where the background results will be set using a property name that matches the _name_ passed into 
-   * the original call to {@link Asynchro.background} that queued the _background_ function
-   * @returns {Error[]} An array of errors caught due to the original `throws` rules passed into the original call to
-   * {@link Asynchro.background} that queued the _background_ function
+   * @param {(Object|Boolean)} [resultObj=true] Either the object where the background results will be set or `true` to use the 
+   * {@link Asynchro.result} (may be from a different {@link Asynchro} instance when branching). Each property name that matches the
+   * _name_ passed into the original call to {@link Asynchro.background} that queued the _background_ function will be set on the
+   * _result_ object.
+   * @returns {Asynchro} Typically, the {@link Asynchro} instance that the `backgroundWaiter` was called from, but could also be an
+   * {@link Asynchro} instance returned from a branching operation using {@link Asynchro.verify}
    */
-  async backgroundWaiter(result) {
-    const asy = internal(this), asyw = asy.at.asyncWaiter;
+  async backgroundWaiter(resultObj = true) {
+    const asy = internal(this), asyw = asy.at.asyncWaiter, result = resultObj === true ? asyw.this.result : resultObj;
     if (!asyw) return asyw.at.trk.errors;
     asy.at.asyncWaiter = null;
     var rslt;
@@ -292,7 +294,7 @@ class Asynchro {
       rslt = await itm.backgroundPromise;
       if (result && itm.name) result[itm.name] = rslt;
     }
-    return asyw.at.trk.errors;
+    return asyw.this;
   }
 
   /**
