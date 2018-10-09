@@ -57,7 +57,7 @@ console.log(ax.result);
 // ]
 console.log(ax.errors);
 ```
-Only the result for `one` is set in [Asynchro.result](Asynchro.html#result). And since the only error that occurred was the one that was immediately thrown when `multiply(0)` was called, it is the only one recorded yet in [Asynchro.errors](Asynchro.html#errors). If it is desirable to capture background results/errors that occurred after all the background tasks have been `await`ed for (either completed or errored) [Asynchro.backgroundWaiter](Asynchro.html#backgroundWaiter) can be `await`ed for after `await`ing [Asynchro.run](Asynchro.html#run).
+Only the result for `one` is set in [Asynchro.result](Asynchro.html#result). And since the only error that occurred was the one that was immediately thrown when `multiply(0)` was called, it is the only one recorded yet in [Asynchro.errors](Asynchro.html#errors). If it is desirable to capture background results/errors that occurred after all the background tasks have been `await`ed for (either completed or caught errors) [Asynchro.backgroundWaiter](Asynchro.html#backgroundWaiter) can be `await`ed for after `await`ing [Asynchro.run](Asynchro.html#run).
 ```js
 const ax = new Asynchro({}, false, console.log);
 ax.series('one', multiply, 1, 2, 3); // multiply from previous examples
