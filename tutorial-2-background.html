@@ -88,132 +88,106 @@
 </div>
 
 <div id="main">
-  
+  <section>
 
-
-
+<header>
     
+</header>
 
-
-
-
-
-
-
-
-
-    
-
-
-    <section class="readme">
-        <article><h1><b style="color:#FFA726">&#8669;</b> asynchro</h1><p>Micro lib for <strong>parallel</strong>/<strong>series</strong>/<strong>background</strong> asynchronous functions using built-in ES <code>async/await</code> with <strong>zero</strong> external dependencies. <code>Asynchro</code> is not just another <code>async</code> library, but rather a micro-sized workflow engine! Check out the tutorials for more details. Runs in the browser or in <a href="https://nodejs.org/">Node.js</a> <code>npm install asynchro</code>.</p>
-<ul>
-<li><a href="https://ugate.github.io/asynchro/tutorial-1-queue.html">Tutorials</a></li>
-<li><a href="https://ugate.github.io/asynchro/Asynchro.html">API Docs</a></li>
-</ul>
-<h3>Turn <em>vanilla</em> <code>async/await</code> boilerplate code like this...</h3><pre class="prettyprint source lang-js"><code>const SYSTEM_ERRORS = [ EvalError, RangeError, ReferenceError, SyntaxError, TypeError, URIError ];
-async function myWorkflow() {
-  const rslt = { result: {}, errors: [] }, promises = {}, log = console.log;
-  try {
-    rslt.one = await mySeriesFunc1('val1', 2, 3);
-  } catch (err) {
-    if (log) log('Error at one', err);
-    rslt.errors.push(err);
-  }
-  try {
-    rslt.two = await mySeriesFunc2(1, 2, rslt.one ? rslt.one.value : undefined);
-  } catch (err) {
-    if (log) log('Error at one', err);
-    for (let stype of SYSTEM_ERRORS) {
-      if (err instanceof stype) {
-        throw err; // only system errors will throw
-      }
-    }
-    rslt.errors.push(err);
-  }
-  try {
-    promises.three = myParallelFunc1({ a: 1, b: 2, c: 3 });
-  } catch (err) {
-    if (log) log('Error at three', err);
-    rslt.errors.push(err);
-  }
-  try {
-    promises.four = myParallelFunc2();
-  } catch (err) {
-    if (log) log('Error at four', err);
-    rslt.errors.push(err);
-  }
-  promises.five = myParallelFunc3('always throw errors');
-  try {
-    rslt.six = await mySeriesFunc3(true, false);
-    if (rslt.six && rslt.six.isWorkflow2) {
-      rslt.six = 'Going to workflow2';
-      myWorkflow2(rslt, promises, log);
-    }
-  } catch (err) {
-    if (log) log('Error at six', err);
-    rslt.errors.push(err);
-  }
-  if (rslt.six !== 'Going to workflow2') {
-    try {
-      rslt.seven = await mySeriesFunc4();
-    } catch (err) {
-      if (log) log('Error at seven', err);
-      rslt.errors.push(err);
-    }
-  }
-  for (let name in promises) {
-    // always throw five/myParallelFunc3
-    if (name === 'five') rslt.five = await promises[name];
-    try {
-      rslt[name] = await promises[name];
-    } catch (err) {
-      if (log) log(`Error at ${name}`, err);
-      rslt.errors.push(err);
-    }
-  }
-  return rslt;
+<article>
+    <h3>Background Tasks</h3><p>Background tasks are <code>async</code> functions that do not require <code>await</code>ing before proceeding to subsequent tasks in the queue, but still require adherence to an <strong>Error Handling Rule</strong> (discussed in <em>Error Handling</em> section of <a href="tutorial-1-queue.html">The Queue</a>). To get a better understanding of this concept, consider the following functions.</p>
+<pre class="prettyprint source lang-js"><code>function multiply(a, b, c, obj) { // public function
+  if (!a) throw new Error(`&quot;a&quot; must be a number greater than zero, but received: ${a}`);
+  if (!b) return;
+  return multiplier(a, b, c, obj)
 }
-async function myWorkflow2(rslt, promises, log) {
-  try {
-    promises.seven = myParallelFunc4('workflow2Arg');
-  } catch (err) {
-    if (log) log('Error at seven', err);
-    rslt.errors.push(err);
-  }
-  try {
-    rslt.eight = await mySeriesFunc5();
-  } catch (err) {
-    if (log) log('Error at eight', err);
-    rslt.errors.push(err);
-  }
-}</code></pre><h3>... into this:</h3><pre class="prettyprint source lang-js"><code>async function myWorkflow() {
-  const ax = new Asynchro({}, false, console.log);
-  ax.series('one', mySeriesFunc1, 'val1', 2, 3);
-  ax.seriesThrowOverride('two', 'system', mySeriesFunc2, 1, 2, ax.arg('one.value'));
-  ax.parallel('three', myParallelFunc1, { a: 1, b: 2, c: 3 });
-  ax.parallel('four', myParallelFunc2);
-  ax.parallelThrowOverride('five', true, myParallelFunc3, 'always throw errors');
-  ax.series('six', mySeriesFunc3, true, false);
-  ax.verify('six', async it => {
-    if (!it.error && it.result && it.result.isWorkflow2) {
-      it.result = 'Going to workflow2';
-      const ax2 = new Asynchro(ax.result, false, console.log);
-      ax2.parallel('seven', myParallelFunc4, 'workflow2Arg');
-      ax2.series('eight', mySeriesFunc5);
-      return ax2;
-    }
+function multiplier(a, b, c, obj) { // private function
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (obj && obj.reject) reject(new Error('Example error after timeout'));
+      else resolve({ m1: 10 * a, m2: 20 * b, m3: 30 * (c || 0) });
+    }, 10);
   });
-  ax.series('seven', mySeriesFunc4);
-  const result = await ax.run();
-  return { result, errors: ax.errors };
-}</code></pre><h3><a href="https://ugate.github.io/asynchro/tutorial-1-queue.html">Take me there! &gt;&gt;</a></h3></article>
-    </section>
+}</code></pre><p>Now lets consider the different results when invoking <code>multiply</code>.</p>
+<pre class="prettyprint source lang-js"><code>try {
+  // caught since error is thrown immediately
+  multiply(0);
+  // .catch() is required since a promise is returned
+  multiply(1, 2, 3, { reject: true }).catch((err) => {
+    console.error(err);
+  });
+  // TypeError: Cannot read property 'catch' of undefined
+  multiply(1, 0, 3, { reject: true }).catch((err) => {
+    console.error(err);
+  });
+} catch (err) {
+  console.error(err);
+}</code></pre><p>As illustrated, there are quite a few ways that an error can be either intentionally or unintentionally thrown. Another option would be to convert <code>function multiply</code> to <code>async function multiply</code>, but that would add another <code>Promise</code> wrapper that would need to be processed internally during the next iteration of the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop">Event Loop</a>. And that's assuming the function doesn't belong to an external module where we do not have any control over it's implementation. With all the different variations involved, it's better to keep it simple and mitigate any risk by wrapping background tasks within another <code>async function</code>. Fortunately, <code>asynchro</code> will do this for us everytime we call <a href="Asynchro.html#background">Asynchro.background</a>. Take for instance the subsequent example:</p>
+<pre class="prettyprint source lang-js"><code>const ax = new Asynchro({}, false, console.log);
+ax.series('one', multiply, 1, 2, 3); // multiply from previous examples
+ax.background('two', multiply, 4, 5, 6);
+ax.background('three', multiply, 0);
+ax.background('four', multiply, 1, 2, 3, { reject: true });
+ax.background('five', multiply, 1, 0, 3, { reject: true });
+await ax.run();
+// { one: { m1: 10, m2: 40, m3: 90 } }
+console.log(ax.result);
+// [
+//  { Error: &quot;a&quot; must be a number greater than zero, but received: 0
+//    ...
+//    Asynchro: {
+//      name: 'three',
+//      operation: 'multiply'
+//      isPending: false,
+//      isParallel: false,
+//      isBackground: true
+//    }
+//  }
+// ]
+console.log(ax.errors);</code></pre><p>Only the result for <code>one</code> is set in <a href="Asynchro.html#result">Asynchro.result</a>. And since the only error that occurred was the one that was immediately thrown when <code>multiply(0)</code> was called, it is the only one recorded yet in <a href="Asynchro.html#errors">Asynchro.errors</a>. If it is desirable to capture background results/errors that occurred after all the background tasks have been <code>await</code>ed for (either completed or errored) <a href="Asynchro.html#backgroundWaiter">Asynchro.backgroundWaiter</a> can be <code>await</code>ed for after <code>await</code>ing <a href="Asynchro.html#run">Asynchro.run</a>.</p>
+<pre class="prettyprint source lang-js"><code>const ax = new Asynchro({}, false, console.log);
+ax.series('one', multiply, 1, 2, 3); // multiply from previous examples
+ax.background('two', multiply, 4, 5, 6);
+ax.background('three', multiply, 0);
+ax.background('four', multiply, 1, 2, 3, { reject: true });
+ax.background('five', multiply, 1, 0, 3, { reject: true });
+await ax.run();
+// could use a different result object or add to the current one
+const errors = await ax.backgroundWaiter(ax.result);
+// {
+//  one: { m1: 10, m2: 40, m3: 90 },
+//  two: { m1: 40, m2: 100, m3: 180 },
+//  three: undefined,
+//  four: undefined,
+//  five: undefined
+// }
+console.log(ax.result);
+// [
+//  { Error: &quot;a&quot; must be a number greater than zero, but received: 0
+//    ...
+//    Asynchro: {
+//      name: 'three',
+//      operation: 'multiply'
+//      isPending: false,
+//      isParallel: false,
+//      isBackground: true
+//    }
+//  },
+//  { Error: Example error after timeout
+//    ...
+//    Asynchro: {
+//      name: 'four',
+//      operation: 'multiply'
+//      isPending: false,
+//      isParallel: false,
+//      isBackground: true
+//    }
+//  },
+// ]
+console.log(errors);</code></pre><h4><a href="tutorial-3-verification.html">Verification &gt;&gt;</a></h4>
+</article>
 
-
-
-
-
+</section>
 
 </div>
 
