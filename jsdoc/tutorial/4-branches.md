@@ -1,7 +1,7 @@
 ### Branching
 No workflow engine would be complete without a way to _branch_ from one workflow to another. And since `asynchro` aims to supply a simple, yet versatile workflow engine, this feature is essential for handling logic routes based upon any number of conditions.
 
-As we seen when [verifying](tutorial-2-verification.html) queued `async` tasks, the results/errors can be altered after execution has taken place. One aspect that was not dicussed though was the ability to either __stop__ the queue from continuting execution or __tranfer/branch__ to another queue altogether.
+As we seen when [verifying](tutorial-3-verification.html) queued `async` tasks, the results/errors can be altered after execution has taken place. One aspect that was not dicussed though was the ability to either __stop__ the queue from continuting execution or __tranfer/branch__ to another queue altogether.
 
 Stoping the queue from continuting execution is fairly easy. Simply return `false` from [Asynchro.verify](Asynchro.html#verify). Let's examine the subsequent example.
 ```js
@@ -40,7 +40,7 @@ ax.verify('one', async it => {
     // we can either use the same result object from the original queue
     // or use a new one (values from the original will be merged into the new one)
     const axt = new Asynchro(resultObject);
-    axt.series('X', multiply, 1, 1, 1); // multiply from previous example
+    axt.series('x', multiply, 1, 1, 1); // multiply from previous example
     axt.parallel('y', multiply, 2, 2);
     // stop the queue from continuing to process/run and transfer/run the new one
     return axt;
@@ -58,4 +58,4 @@ console.log(rslt);
 ```
 Branching can occur at any given point during queue execution via the return value from [Asynchro.verify](Asynchro.html#verify). There is no _hard_ limit to the number of branches from one `Asynchro` instance to another. This leads to a simple, yet flexible logic route for defining how workflows interact between one another.
 
-#### [Conversions >>](tutorial-4-conversion.html)
+#### [Conversions >>](tutorial-5-conversion.html)

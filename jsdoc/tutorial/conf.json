@@ -2,13 +2,16 @@
   "1-queue": {
     "title": "The Queue"
   },
-  "2-verification": {
+  "2-background": {
+    "title": "Background Tasks"
+  },
+  "3-verification": {
     "title": "Verification"
   },
-  "3-branches": {
+  "4-branches": {
     "title": "Branching"
   },
-  "4-conversion": {
+  "5-conversion": {
     "title": "Conversions"
   }
 }

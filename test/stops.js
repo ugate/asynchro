@@ -72,13 +72,17 @@ lab.experiment(plan, () => {
     expect(ax.status).to.equal(Asynchro.STOPPED);
   });
 
-  lab.test(`${plan}: series stop`, { timeout: TEST_TKO }, async (flags) => {
+  lab.test(`${plan}: series stop, synchronous series function`, { timeout: TEST_TKO }, async (flags) => {
     const afn = flags.mustCall(asyncCall, 8); // some errors will be hidden when using this: comment out to view
     var delay = TASK_DELAY;
 
     // decrement delay in order to force the natrual order of execution is reversed, yet asyncs order should still be maintained by Asynchro
-    const ax = new Asynchro({}, false, ASYNC_LOGGER), verifyValue = 'Override value from test verify', verifyStopValue = 'Override value from stop test verify';
+    const ax = new Asynchro({}, false, ASYNC_LOGGER), verifyValue = 'Override value from test verify';
+    const verifyStopValue = 'Override value from stop test verify', syncArg = 'synchronous series arg';
     ax.series('one', afn, 1, 'A', true, false, delay -= 10);
+    ax.series('sync', function testSyncFunc(arg) {
+      return arg;
+    }, syncArg);
     ax.series('two', afn, 2, null, false, false, delay -= 10);
     ax.series('three', afn, 3, 'B', true, false, delay -= 10);
     ax.parallel('four', afn, 4, null, false, false, delay -= 10);
@@ -102,6 +106,7 @@ lab.experiment(plan, () => {
     logTest(`${plan}: series stop`, LOGGER, ax, rslt);
     expect(rslt).to.equal(ax.result);
     expect(rslt.one).to.equal('A');
+    expect(rslt.sync).to.equal(syncArg);
     expect(rslt.two).to.equal(undefined);
     expect(rslt.three).to.equal('B');
     expect(rslt.four).to.equal(verifyValue);

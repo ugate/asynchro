@@ -1,12 +1,12 @@
 ### Getting Started
-As seen in the [intro examples](index.html), trying to coordinate multiple `async` functions into a workflow can be convoluted and hard to follow. Parallel/Concurrent function execution requires extra steps to `await` promises returned from the previously executed async functions. In addition to this, error handling via `try`/`catch` blocks can often become a daunting process. In some instances it's desirable to catch errors, in others, throwing fatal errors is a must. And yet other cases only certain _types_ of errors should be thrown. Also, async functions that need to run in the background require wrapping them within another async function in order to handle errors since `await` is not used and an error may occur during actual execution. Furthermore, additional corriagraphy logic is required for [contextual workflow routing (i.e. branching)](tutorial-3-branches.html) that is typically offered by workflow engines.
+As seen in the [intro examples](index.html), trying to coordinate multiple `async` functions into a workflow can be convoluted and hard to follow. Parallel/Concurrent function execution requires extra steps to `await` promises returned from the previously executed async functions. In addition to this, error handling via `try`/`catch` blocks can often become a daunting process. In some instances it's desirable to catch errors, in others, throwing fatal errors is a must. And yet other cases only certain _types_ of errors should be thrown. Also, async functions that need to run in the background require wrapping them within another async function in order to handle errors since `await` is not used and an error may occur during actual execution. Furthermore, additional corriagraphy logic is required for [contextual workflow routing (i.e. branching)](tutorial-4-branches.html) that is typically offered by workflow engines.
 
 `Asynchro` was developed to address these issues and other nuances encountered when working with multiple async functions. Simplicity is the core concept that keeps `asynchro` concise and intuitive without being bombarded with bloated features that will rarely, if ever, be used.
 
 ### The Queue
 At the heart of `asynchro` is a queue. The queue is simply an `Object[]` that holds function execution metadata until [Asynchro.run](Asynchro.html#run) is executed/ran. A single _result_ object can be passed to the `Asynchro` constructor in order to store the results from each queued async function execution using a designated _name_ as the property name in the _result_ object (more on this later!). Each queued async function is ran in the order that it was queued. Although there are variations of each, there are only three types of async functions that can be queued:
 
-1. [Series](Asynchro.html#series) - async functions that are `await`ed for until the next async function in the queue is invoked
+1. [Series](Asynchro.html#series) - async functions that are `await`ed for until the next function in the queue is invoked (can also be _normal_ synchronous functions)
 2. [Parallel](Asynchro.html#parallel) - async functions that are _not_ immediately `await`ed for, but rather `await`ed for after the queue is exhausted
 3. [Background](Asynchro.html#background) - like, parallel, but will _not_ be `await`ed for and will still retain error handling set on the queued function (or error handling defined globally on the `Asynchro` instance itself)
 
@@ -136,4 +136,4 @@ Another way to control which errors are caught or thrown is to use an `Object` a
 ```
 For convenience, [Asynchro.throwsError](Asynchro.html#throwsError) is provided to check if the queue will throw or catch a specified `Error`/error type.
 
-#### [Verification >>](tutorial-2-verification.html)
+#### [Background Tasks >>](tutorial-2-background.html)

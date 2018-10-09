@@ -144,7 +144,7 @@ const rslt = await ax.run();
 // { one: { m1: 10, m2: 40, m3: 90 }, two: 200, three: { m1: 40, m2: 100, m3: 0 }, four: 300 }
 console.log(rslt);
 ```
-There is also an additional `event` parameter set during [Verification](tutorial-2-verification.html) for events.
+There is also an additional `event` parameter set during [Verification](tutorial-3-verification.html) for events.
 ```js
 // assuming the last example setup
 ax.verify('two', async it => {

@@ -47,7 +47,7 @@ class Asynchro {
    * Queues an `async function` to run in **series** relative to other functions in the queue
    * @param {String} [name] The name given for the task where the result will be stored as a property of the {@link Asynchro.result} object
    * (omit to prevent results from being set from function return value - a name/ID will be generated and returned)
-   * @param {Function} fn The function to queue for asynchronicity
+   * @param {Function} fn The function to queue for asynchronicity (can also be a synchronous function)
    * @param {...*} args Aguments that will be passed into the queued function
    * @returns {String} The queued name/ID (either passed or generated)
    */
@@ -74,27 +74,13 @@ class Asynchro {
    * Thrown errors within the scope of specified `throws` flag(s) will be thrown and will stop further execution of the queue.
    * @param {String} [name] The name given for the task that can be used in conjunction with {@link Asynchro.verify}
    * (no results will be set from the function's return value - omit will cause the name/ID will be generated and returned)
-   * @param {(Boolean|Object|String)} [throws] One of the following values (supersedes any `throws` parameters passed during construction):
-   * - `true` to throw any errors and instantly stop any further execution
-   * - `false` to catch any errors that are thrown
-   * - `Object` an object containing the following properties:
-   * - - `invert` true to catch errors when matches are made, false/omit to throw errors when matches are made
-   * - - `matches` An array that contains any of the following:
-   * - - - `system` A string value equal to "system" that will match when an error is a type within {@link Asynchro.systemErrorTypes}
-   * - - - `Object` An object that contains property names/values that will be matched against property name/values in the caught error.
-   * When invert is true, all names/values on the caught error must match the names/values on the object in order to be 
-   * **caught/captured** in {@link Asynchro.errors}. When invert is false/omitted, all names/values on the caught error must match
-   * all of the names/values on the object in order to be **rethrown**.
-   * - `system` a single `matches` string (invert defaults to false)
-   * 
-   * Re-thrown errors will set `Error.cause` to the originally thrown error.
    * @param {Function} fn The function to queue for asynchronicity
    * @param {...*} args Aguments that will be passed into the queued function
    * @returns {String} The queued name/ID (either passed or generated)
    */
-  background(name, throws, fn, ...args) {
+  background(name, fn, ...args) {
     const asy = internal(this);
-    return asynchroQueue(asy.this, false, throws, name, fn, args, asy.at.trk.errors);
+    return asynchroQueue(asy.this, false, asy.at.throws, name, fn, args, asy.at.trk.errors);
   }
 
   /**
@@ -149,6 +135,34 @@ class Asynchro {
    */
   parallelThrowOverride(name, throws, fn, ...args) {
     return asynchroQueue(this, false, throws, name, fn, args);
+  }
+
+  /**
+   * Queues an `async function` to run in the **background** (i.e. the queue wont wait for the results and will not be captured).
+   * Thrown errors within the scope of specified `throws` flag(s) will be thrown and will stop further execution of the queue.
+   * @param {String} [name] The name given for the task that can be used in conjunction with {@link Asynchro.verify}
+   * (no results will be set from the function's return value - omit will cause the name/ID will be generated and returned)
+   * @param {(Boolean|Object|String)} [throws] One of the following values (supersedes any `throws` parameters passed during construction):
+   * - `true` to throw any errors and instantly stop any further execution
+   * - `false` to catch any errors that are thrown
+   * - `Object` an object containing the following properties:
+   * - - `invert` true to catch errors when matches are made, false/omit to throw errors when matches are made
+   * - - `matches` An array that contains any of the following:
+   * - - - `system` A string value equal to "system" that will match when an error is a type within {@link Asynchro.systemErrorTypes}
+   * - - - `Object` An object that contains property names/values that will be matched against property name/values in the caught error.
+   * When invert is true, all names/values on the caught error must match the names/values on the object in order to be 
+   * **caught/captured** in {@link Asynchro.errors}. When invert is false/omitted, all names/values on the caught error must match
+   * all of the names/values on the object in order to be **rethrown**.
+   * - `system` a single `matches` string (invert defaults to false)
+   * 
+   * Re-thrown errors will set `Error.cause` to the originally thrown error.
+   * @param {Function} fn The function to queue for asynchronicity
+   * @param {...*} args Aguments that will be passed into the queued function
+   * @returns {String} The queued name/ID (either passed or generated)
+   */
+  backgroundThrowsOverride(name, throws, fn, ...args) {
+    const asy = internal(this);
+    return asynchroQueue(asy.this, false, throws, name, fn, args, asy.at.trk.errors);
   }
 
   /**
@@ -671,15 +685,19 @@ exports.Asynchro = Asynchro;
  * @returns {String} The queued name/ID (either passed or generated)
  */
 function asynchroQueue(asyi, series, throws, name, fn, args, bgErrors) {
-  const asy = internal(asyi);
-  if (!fn || typeof fn !== 'function') throw new Error(`A ${series ? 'series' : 'parallel'} task must be a Function, but found ${typeof fn} (${fn})`);
-  if (asy.at.status !== Asynchro.QUEUEING) throw new Error(`A ${series ? 'series' : 'parallel'} must be in status ${Asynchro.QUEUEING}, not ${asy.at.status}`);
+  const asy = internal(asyi), isBg = !!bgErrors;
+  if (!fn || typeof fn !== 'function') {
+    throw new Error(`A ${series ? 'series' : isBg ? 'background' : 'parallel'} task must be a Function, but found ${typeof fn} (${fn})`);
+  }
+  if (asy.at.status !== Asynchro.QUEUEING) {
+    throw new Error(`A ${series ? 'series' : isBg ? 'background' : 'parallel'} must be in status ${Asynchro.QUEUEING}, not ${asy.at.status}`);
+  }
   throws = throws === true || throws === false ? throws : (throws && typeof throws === 'object' && throws) || (throws && { matches: throws });
-  const noResult = (!name || !name.trim()) && (name = guid()) || bgErrors ? true : false;
+  const noResult = (!name || !name.trim()) && (name = guid()) || isBg ? true : false;
   // TODO : should async allow "this" to be passed?
-  const itm = { series, event: fn.isPromisifiyEvent && args[0], isBackground: !!bgErrors, throws, name, fn, args, noResult, errorMetaName: asy.at.errorMetaName };
+  const itm = { series, event: fn.isPromisifiyEvent && args[0], isBackground: isBg, throws, name, fn, args, noResult, errorMetaName: asy.at.errorMetaName };
   itm.noAwait = itm.isBackground;
-  if (bgErrors && itm.throws !== true) setBackgroundFunction(itm, asyi.systemErrorTypes, bgErrors);
+  if (isBg && itm.throws !== true) setBackgroundFunction(itm, asyi.systemErrorTypes, bgErrors);
   asy.at.trk.que.push(itm);
   asy.at.trk.waiting++;
   return name;
@@ -725,7 +743,7 @@ async function asynchro(trk, asyi) {
  */
 async function asyncHandler(trk, asyi, itm, pends) { // return false or another Asynchro instance should stop iteration
   var rtn = true, msg;
-  const it = {}, type = itm.series ? 'series' : 'parallel';
+  const it = {}, type = itm.series ? 'series' : itm.isBackground ? 'background' : 'parallel';
   if (itm.throws === true && itm.noAwait) handleAsync(asyi, itm, pends, trk.backgrounds);
   else if (itm.throws === true) it.result = await handleAsync(asyi, itm, pends, trk.backgrounds);
   else try {
@@ -776,8 +794,10 @@ async function asyncHandler(trk, asyi, itm, pends) { // return false or another 
 async function handleAsync(asyi, itm, pends, backgrounds) {
   var rslt;
   if (!itm.noResult && itm.args && asyi && asyi.result) resolveArgs(asyi, itm);
-  if (itm.series) rslt = await itm.fn.apply(itm.thiz, itm.args);
-  else if (itm.promise) {
+  if (itm.series) {
+    rslt = itm.fn.apply(itm.thiz, itm.args);
+    if (rslt instanceof Promise) rslt = rslt; // performance gain when not async function
+  } else if (itm.promise) {
     rslt = await itm.promise;
     itm.promise = true;
   } else {
@@ -841,7 +861,7 @@ function defineItemMeta(it, itm, pendPromise, name) {
     obj = obj[name];
   }
   Object.defineProperty(obj, 'isPending', { value: !!pendPromise, enumerable: true });
-  Object.defineProperty(obj, 'isParallel', { value: !itm.series, enumerable: true });
+  Object.defineProperty(obj, 'isParallel', { value: !itm.series && !itm.isBackground, enumerable: true });
   Object.defineProperty(obj, 'isBackground', { value: itm.isBackground, enumerable: true });
   Object.defineProperty(obj, 'event', { value: itm.event, enumerable: true });
   Object.defineProperty(obj, 'name', { value: itm.name, enumerable: true });

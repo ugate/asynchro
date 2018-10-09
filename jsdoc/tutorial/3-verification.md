@@ -1,5 +1,5 @@
 ### Verification
-There are instances where the result of an `async` function needs to be verified before proceeding to the next task in the queue. Rather than adding verification logic to the task itself or wrapping those functions with another function to handle that logic, `asynchro` provides an [Asynchro.verify](Asynchro.html#verify) method to handle them. This also opens up the possiblity to [branch from one `Asynchro` instance to another](tutorial-3-branches.html).
+There are instances where the result of an `async` function needs to be verified before proceeding to the next task in the queue. Rather than adding verification logic to the task itself or wrapping those functions with another function to handle that logic, `asynchro` provides an [Asynchro.verify](Asynchro.html#verify) method to handle them. This also opens up the possiblity to [branch from one `Asynchro` instance to another](tutorial-4-branches.html).
 ```js
 // sample data and async function
 const delay = 10, a = 1, b = 2, c = 3, d = 4, e = 5;
@@ -49,4 +49,4 @@ console.log(rslt);
 console.log(ax.messages());
 ```
 
-#### [Branching >>](tutorial-3-branches.html)
+#### [Branching >>](tutorial-4-branches.html)
