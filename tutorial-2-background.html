@@ -122,7 +122,7 @@ function multiplier(a, b, c, obj) { // private function
   });
 } catch (err) {
   console.error(err);
-}</code></pre><p>As illustrated, there are quite a few ways that an error can be either intentionally or unintentionally thrown. Another option would be to convert <code>function multiply</code> to <code>async function multiply</code>, but that would add another <code>Promise</code> wrapper that would need to be processed internally during the next iteration of the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop">Event Loop</a>. And that's assuming the function doesn't belong to an external module where we do not have any control over it's implementation. With all the different variations involved, it's better to keep it simple and mitigate any risk by wrapping background tasks within another <code>async function</code>. Fortunately, <code>asynchro</code> will do this for us everytime we call <a href="Asynchro.html#background">Asynchro.background</a>. Take for instance the subsequent example:</p>
+}</code></pre><p>As illustrated, there are quite a few ways that an error can be either intentionally or unintentionally thrown. Another option would be to convert <code>function multiply</code> to <code>async function multiply</code>, but that would add another <code>Promise</code> wrapper that would need to be processed internally during the next iteration of the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop">Event Loop</a>. And that's assuming the function doesn't belong to an external module where we do not have any control over it's implementation. With all the different variations involved, it's better to keep it simple and mitigate any risk by wrapping background tasks within another <code>async function</code>. Fortunately, <code>asynchro</code> will do this for us everytime we call <a href="Asynchro.html#background">Asynchro.background</a> (unless always throwing, <code>throws = true</code>). Take for instance the subsequent example:</p>
 <pre class="prettyprint source lang-js"><code>const ax = new Asynchro({}, false, console.log);
 ax.series('one', multiply, 1, 2, 3); // multiply from previous examples
 ax.background('two', multiply, 4, 5, 6);
@@ -144,7 +144,7 @@ console.log(ax.result);
 //    }
 //  }
 // ]
-console.log(ax.errors);</code></pre><p>Only the result for <code>one</code> is set in <a href="Asynchro.html#result">Asynchro.result</a>. And since the only error that occurred was the one that was immediately thrown when <code>multiply(0)</code> was called, it is the only one recorded yet in <a href="Asynchro.html#errors">Asynchro.errors</a>. If it is desirable to capture background results/errors that occurred after all the background tasks have been <code>await</code>ed for (either completed or errored) <a href="Asynchro.html#backgroundWaiter">Asynchro.backgroundWaiter</a> can be <code>await</code>ed for after <code>await</code>ing <a href="Asynchro.html#run">Asynchro.run</a>.</p>
+console.log(ax.errors);</code></pre><p>Only the result for <code>one</code> is set in <a href="Asynchro.html#result">Asynchro.result</a>. And since the only error that occurred was the one that was immediately thrown when <code>multiply(0)</code> was called, it is the only one recorded yet in <a href="Asynchro.html#errors">Asynchro.errors</a>. If it is desirable to capture background results/errors that occurred after all the background tasks have been <code>await</code>ed for (either completed or caught errors) <a href="Asynchro.html#backgroundWaiter">Asynchro.backgroundWaiter</a> can be <code>await</code>ed for after <code>await</code>ing <a href="Asynchro.html#run">Asynchro.run</a>.</p>
 <pre class="prettyprint source lang-js"><code>const ax = new Asynchro({}, false, console.log);
 ax.series('one', multiply, 1, 2, 3); // multiply from previous examples
 ax.background('two', multiply, 4, 5, 6);
@@ -152,8 +152,9 @@ ax.background('three', multiply, 0);
 ax.background('four', multiply, 1, 2, 3, { reject: true });
 ax.background('five', multiply, 1, 0, 3, { reject: true });
 await ax.run();
-// could use a different result object or add to the current one
-const errors = await ax.backgroundWaiter(ax.result);
+// could also pass in a different result object as the 1st argument
+// NOTE: awlays use return Asynchro instance in case branching took place
+const abx = await ax.backgroundWaiter();
 // {
 //  one: { m1: 10, m2: 40, m3: 90 },
 //  two: { m1: 40, m2: 100, m3: 180 },
@@ -161,7 +162,7 @@ const errors = await ax.backgroundWaiter(ax.result);
 //  four: undefined,
 //  five: undefined
 // }
-console.log(ax.result);
+console.log(abx.result);
 // [
 //  { Error: &quot;a&quot; must be a number greater than zero, but received: 0
 //    ...
@@ -184,7 +185,7 @@ console.log(ax.result);
 //    }
 //  },
 // ]
-console.log(errors);</code></pre><h4><a href="tutorial-3-verification.html">Verification &gt;&gt;</a></h4>
+console.log(abx.errors);</code></pre><h4><a href="tutorial-3-verification.html">Verification &gt;&gt;</a></h4>
 </article>
 
 </section>
@@ -194,7 +195,7 @@ console.log(errors);</code></pre><h4><a href="tutorial-3-verification.html">Veri
 <br class="clear">
 
 <footer>
-  <b>asynchro v2.0.0</b><br/>
+  <b>asynchro v3.0.0</b><br/>
   Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>.
 </footer>
 
