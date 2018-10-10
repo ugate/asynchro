@@ -122,34 +122,37 @@ lab.experiment(plan, () => {
   });
 
   lab.test(`${plan}: transfer with background waiter`, { timeout: TEST_TKO }, async (flags) => {
-    const afn = flags.mustCall(asyncCall, 7); // some errors will be hidden when using this: comment out to view
-    var delay = TASK_DELAY, count = 0;
+    const afn = asyncCall;//flags.mustCall(asyncCall, 7); // some errors will be hidden when using this: comment out to view
+    var delay = TASK_DELAY, num = 0, count = 0, countBg = 0;
 
     // decrement delay in order to force the natrual order of execution is reversed, yet asyncs order should still be maintained by Asynchro
     const origResult = {};
     const ax = new Asynchro(origResult, false, ASYNC_LOGGER), verifyValue = 'Override value from test verify', verifyStopValue = 'Override value from transfer test verify';
     const axt = new Asynchro(origResult, false, ASYNC_LOGGER);
-    ax.series('one', afn, ++count, 'A', true, false, delay -= 10);
-    ax.parallel('two', afn, ++count, 'B', true, false, delay -= 10);
-    ax.parallel('three', afn, ++count, 'C', true, false, delay -= 10);
-    ax.parallel('four', afn, ++count, 'D', true, false, delay -= 10);
-    ax.series('five', afn, ++count, 'E', false, false, delay -= 10);
-    ax.series('six', afn, ++count, 'F', false, false, delay -= 10);
-    ax.parallel('seven', afn, ++count, 'G', true, false, delay -= 10);
-    ax.verify('two', flags.mustCall(async it => {
-      expect(ax.status).to.equal(Asynchro.RUNNING);
-      expect(axt.status).to.equal(Asynchro.QUEUEING);
-      if (it.isPending) expect(ax.waiting).to.equal(count - 1);
-      else it.result = verifyValue;
-    }, 2));
+    ax.background('one', afn, ++countBg && ++num, 'A', true, false, delay -= 10);
+    ax.series('two', afn, ++count && ++num, 'B', true, false, delay -= 10);
+    ax.parallel('three', afn, ++count && ++num, 'C', true, false, delay -= 10);
+    ax.parallel('four', afn, ++count && ++num, 'D', true, false, delay -= 10);
+    ax.parallel('five', afn, ++count && ++num, 'E', true, false, delay -= 10);
+    ax.series('six', afn, ++count && ++num, 'F', false, false, delay -= 10);
+    ax.series('seven', afn, ++count && ++num, 'G', false, false, delay -= 10);
+    ax.parallel('eight', afn, ++count && ++num, 'H', true, false, delay -= 10);
     ax.verify('three', flags.mustCall(async it => {
       expect(ax.status).to.equal(Asynchro.RUNNING);
       expect(axt.status).to.equal(Asynchro.QUEUEING);
+      if (it.isPending) {
+        expect(ax.waiting).to.equal(count - 1);
+        expect(ax.waitingBackground).to.equal(countBg);
+      } else it.result = verifyValue;
+    }, 2));
+    ax.verify('four', flags.mustCall(async it => {
+      expect(ax.status).to.equal(Asynchro.RUNNING);
+      expect(axt.status).to.equal(Asynchro.QUEUEING);
       if (it.isPending) { // execute when parallel function is first called (called 2x, 1st for function call, 2nd for await on the promise)
-        axt.series('eight', afn, 8, 'H', true, false, delay -= 10);
-        axt.parallel('nine', afn, 9, 'I', true, true, delay -= 10);
-        axt.parallel('ten', afn, 10, 'J', true, false, delay -= 10);
-        axt.background('eleven', afn, 11, 'K', true, false, delay -= 10);
+        axt.background('twelve', afn, ++countBg && ++num, 'L', true, false, delay -= 10);
+        axt.series('nine', afn, ++count && ++num, 'I', true, false, delay -= 10);
+        axt.parallel('ten', afn, ++count && ++num, 'J', true, true, delay -= 10);
+        axt.parallel('eleven', afn, ++count && ++num, 'K', true, false, delay -= 10);
         return axt; // stop the queue from continuing to process/run and transfer/run the new one
       } else it.result = verifyStopValue;
     }, 2));
@@ -158,33 +161,42 @@ lab.experiment(plan, () => {
     expect(axt.status).to.equal(Asynchro.QUEUEING);
     const rslt = await ax.run();
 
-    logTest(`${plan}: transfer with background waiter`, console.log || LOGGER, ax, rslt, ax.errors);
+    logTest(`${plan}: transfer with background waiter`, LOGGER, ax, rslt, ax.errors);
+    expect(ax.waiting).to.equal(0);
+    expect(axt.waiting).to.equal(0);
+    expect(ax.waitingBackground).to.equal(1);
+    expect(axt.waitingBackground).to.equal(2);
     expect(origResult).to.equal(ax.result);
     expect(rslt).to.equal(ax.result);
     expect(rslt).to.equal(axt.result);
-    expect(rslt.one).to.equal('A');
-    expect(rslt.two).to.equal(verifyValue);
-    expect(rslt.three).to.equal(verifyStopValue);
-    expect(rslt.four).to.equal('D');
+    expect(rslt.one).to.be.undefined();
+    expect(rslt.two).to.equal('B');
+    expect(rslt.three).to.equal(verifyValue);
+    expect(rslt.four).to.equal(verifyStopValue);
     expect(rslt.five).to.be.undefined();
     expect(rslt.six).to.be.undefined();
     expect(rslt.seven).to.be.undefined();
-    expect(rslt.eight).to.equal('H');
-    expect(rslt.nine).to.be.undefined();
-    expect(rslt.ten).to.equal('J');
-    expect(rslt.eleven).to.be.undefined();
+    expect(rslt.eight).to.be.undefined();
+    expect(rslt.nine).to.equal('I');
+    expect(rslt.ten).to.be.undefined();
+    expect(rslt.eleven).to.equal('K');
+    expect(rslt.twelve).to.be.undefined();
     expect(ax.errors).to.be.empty();
     expect(ax.status).to.equal(Asynchro.TRANSFERRED);
     expect(axt.errors.length).to.equal(1);
-    expect(axt.errors[0]).to.be.an.error('I');
+    expect(axt.errors[0]).to.be.an.error('J');
     expect(axt.status).to.equal(Asynchro.FAILED);
     
     const abx = await ax.backgroundWaiter();
-    expect(abx.status).to.equal(Asynchro.FAILED);
+    expect(abx).to.equal(axt);
+    expect(ax.waitingBackground).to.equal(0);
+    expect(abx.waitingBackground).to.equal(0);
+    expect(ax.waiting).to.equal(0);
+    expect(abx.waiting).to.equal(0);
     expect(rslt).to.equal(abx.result);
-    expect(rslt.four).to.equal('D');
-    expect(rslt.eleven).to.equal('K');
+    expect(rslt.one).to.equal('A');
+    expect(rslt.twelve).to.equal('L');
     expect(abx.errors.length).to.equal(1);
-    expect(abx.errors[0]).to.be.an.error('I');
+    expect(abx.errors[0]).to.be.an.error('J');
   });
 });

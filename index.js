@@ -233,20 +233,22 @@ class Asynchro {
     if (asy.at.status !== Asynchro.QUEUEING) throw new Error(`To respond status must be ${Asynchro.QUEUEING}, not ${asy.at.status}`);
     if (!asy.at.trk.que.length) throw new Error(`Nothing to run/execute`);
     asy.at.status = Asynchro.RUNNING;
-    const rtn = await asynchro(asy.at.trk, asy.this), isTrans = rtn && rtn !== asy.this && rtn instanceof Asynchro;
+    const rtn = await asynchro(asy.at.trk, asy.this), isTrans = rtn && rtn !== asy.this && rtn instanceof Asynchro, waits = asy.at.trk.waiting;
     if (asy.at.trk.errors.length) asy.at.status = Asynchro.FAILED;
     else if (rtn === false || isTrans) asy.at.status = Asynchro.STOPPED;
     else asy.at.status = Asynchro.SUCCEEDED;
-    asy.at.trk.que.length = asy.at.trk.waiting = 0; // clear queue/waiting
+    asy.at.trk.que.length = 0; // clear queue since the queue is stopped before completing
     asy.at.trk.verify = null; // reset verify functions
     var rslt;
     if (isTrans) { // migrate queue state and run returned queue that execution will be transferred to
+      asy.at.trk.waiting = 0; // clear waiting since there may be some tasks waiting before transfer
       const asyn = internal(rtn);
       const errs = asy.at.trk.errors, nerrs = asyn.at.trk.errors, msgs = asy.at.trk.messages, nmsgs = asyn.at.trk.messages;
-      const bgs = asy.at.trk.backgrounds, nbgs = asy.at.trk.backgrounds;
+      const bgs = asy.at.trk.backgrounds, nbgs = asyn.at.trk.backgrounds;
       asyn.at.trk.errors = errs.length ? (nerrs.length && errs.concat(nerrs)) || errs : nerrs;
       asyn.at.trk.messages = msgs.length ? (nmsgs.length && msgs.concat(nmsgs)) || msgs : nmsgs;
-      asyn.at.trk.backgrounds = bgs.length ? (nbgs.length && bgs.concat(nbgs)) || bgs : nbgs;
+      asyn.at.trk.backgrounds = bgs.length ? (nbgs.length && [...new Set(bgs.concat(nbgs))]) || bgs.slice() : nbgs;
+      //asy.at.trk.backgrounds.length = 0; // backgrounds have been transferred
       if (asyn.at.trk.rslt !== asy.at.trk.rslt) merge(asyn.at.trk.rslt, asy.at.trk.rslt, { deep: true });
       asy.at.status = Asynchro.TRANSFERRED;
       if (asy.at.endHandler) asy.at.endHandler.call(asy.this, asyn.this);
@@ -286,7 +288,7 @@ class Asynchro {
    */
   async backgroundWaiter(resultObj = true) {
     const asy = internal(this), asyw = asy.at.asyncWaiter, result = resultObj === true ? asyw.this.result : resultObj;
-    if (!asyw) return asyw.at.trk.errors;
+    if (!asyw) return asyw;
     asy.at.asyncWaiter = null;
     var rslt;
     for (let itm of asyw.at.trk.backgrounds) {
@@ -294,6 +296,8 @@ class Asynchro {
       rslt = await itm.backgroundPromise;
       if (result && itm.name) result[itm.name] = rslt;
     }
+    // zero out waiter and current backgrounds since they could have been tranferred
+    asyw.at.trk.backgrounds.length = asy.at.trk.backgrounds.length = 0;
     return asyw.this;
   }
 
@@ -375,11 +379,21 @@ class Asynchro {
   }
 
   /**
-   * The number of tasks queued that are _waiting_ for execution
+   * The number of tasks queued that are _waiting_ for execution excluding {@link Asynchro.background} tasks
+   * (see {@link Asynchro.waitingBackground}).
    * @type {Integer}
    */
   get waiting() {
     return internal(this).at.trk.waiting;
+  }
+
+  /**
+   * The number of {@link Asynchro.background} tasks queued that are _waiting_ for execution. __NOTE:__ If
+   * {@link Asynchro.backgroundWaiter} is never called the count will remain indefinitely.
+   * @type {Integer}
+   */
+  get waitingBackground() {
+    return internal(this).at.trk.backgrounds.length;
   }
 
   /**
@@ -701,7 +715,7 @@ function asynchroQueue(asyi, series, throws, name, fn, args, bgErrors) {
   itm.noAwait = itm.isBackground;
   if (isBg && itm.throws !== true) setBackgroundFunction(itm, asyi.systemErrorTypes, bgErrors);
   asy.at.trk.que.push(itm);
-  asy.at.trk.waiting++;
+  if (!itm.isBackground) asy.at.trk.waiting++;
   return name;
 }
 
@@ -718,7 +732,7 @@ async function asynchro(trk, asyi) {
   var pends = [], rtn = true, hdl;
   for (let itm of trk.que) {
     hdl = await asyncHandler(trk, asyi, itm, pends); // execute the queued tasks
-    if (!itm.promise) trk.waiting--;
+    if (!itm.promise && !itm.backgroundPromise) trk.waiting--;
     if (hdl === false || (asyi !== hdl && hdl instanceof Asynchro)) { // stop
       rtn = hdl;
       break;
@@ -798,7 +812,7 @@ async function handleAsync(asyi, itm, pends, backgrounds) {
   if (!itm.noResult && itm.args && asyi && asyi.result) resolveArgs(asyi, itm);
   if (itm.series) {
     rslt = itm.fn.apply(itm.thiz, itm.args);
-    if (rslt instanceof Promise) rslt = rslt; // performance gain when not async function
+    if (rslt instanceof Promise) rslt = await rslt; // performance gain when not async function
   } else if (itm.promise) {
     rslt = await itm.promise;
     itm.promise = true;
@@ -853,7 +867,7 @@ function setBackgroundFunction(itm, systemErrorTypes, errors) {
  * @ignore
  * @param {Object} it The object to define the item metadata on
  * @param {Object} itm The item where metadata will be extracted from
- * @param {Boolean} pendPromise `true` when a promise is pending/waiting
+ * @param {Boolean} pendPromise `true` when a promise is pending
  * @param {String} [name] Instead of defining properties/values directly on `it` they will be set on a newly defined `it[name] = {}`
  */
 function defineItemMeta(it, itm, pendPromise, name) {
