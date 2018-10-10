@@ -35,14 +35,14 @@ exports.expectABC = expectABC;
 // TODO : ESM uncomment the following line...
 // export async function asyncCall(num, val, rtn, rejectIt, delay, log) {
 async function asyncCall(num, val, rtn, rejectIt, delay, log) {
-  if (log) log(`${num}. Starting`);
+  if (log) log(`${num}. Starting value = ${val}`);
   var result, err;
   try {
     result = await promisifyDelay(delay, val, rejectIt);
   } catch (e) {
     err = e;
   }
-  if (log) log(`${num}. Ended with ${err ? 'ERROR' : 'RESULT'} (delay = ${delay}): ${err && err.message ? err.message + '\n' + err.stack : result}`);
+  if (log) log(`${num}. Ended value = ${val} with ${err ? 'ERROR' : 'RESULT'} (delay = ${delay}): ${err && err.message ? err.message + '\n' + err.stack : result}`);
   if (err) throw err;
   if (rtn) return result;
 }
