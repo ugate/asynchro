@@ -5,7 +5,7 @@ const lab = exports.lab = Lab.script();
 // ESM uncomment the following lines...
 // import { expect, Lab, asyncCall, logTest, expectABC, PLAN, TASK_DELAY, TEST_TKO, ASYNC_LOGGER, LOGGER, Asynchro } from './_main.mjs';
 
-const plan = `${PLAN} System Codes`;
+const plan = `${PLAN} Branches`;
 
 // "node_modules/.bin/lab" test/branches.js -vi 1
 
@@ -121,52 +121,54 @@ lab.experiment(plan, () => {
     expect(ax.status).to.equal(Asynchro.STOPPED);
   });
 
-  lab.test(`${plan}: transfer with background waiter`, { timeout: TEST_TKO }, async (flags) => {
+  lab.test(`${plan}: 1x transfer with background waiter`, { timeout: TEST_TKO }, async (flags) => {
     const afn = asyncCall;//flags.mustCall(asyncCall, 7); // some errors will be hidden when using this: comment out to view
-    var delay = TASK_DELAY, num = 0, count = 0, countBg = 0;
+    var delay = TASK_DELAY, num = 0, cnt1 = 0, cnt2 = 0, cntBg1 = 0, cntBg2 = 0;
 
     // decrement delay in order to force the natrual order of execution is reversed, yet asyncs order should still be maintained by Asynchro
     const origResult = {};
     const ax = new Asynchro(origResult, false, ASYNC_LOGGER), verifyValue = 'Override value from test verify', verifyStopValue = 'Override value from transfer test verify';
     const axt = new Asynchro(origResult, false, ASYNC_LOGGER);
-    ax.background('one', afn, ++countBg && ++num, 'A', true, false, delay -= 10);
-    ax.series('two', afn, ++count && ++num, 'B', true, false, delay -= 10);
-    ax.parallel('three', afn, ++count && ++num, 'C', true, false, delay -= 10);
-    ax.parallel('four', afn, ++count && ++num, 'D', true, false, delay -= 10);
-    ax.parallel('five', afn, ++count && ++num, 'E', true, false, delay -= 10);
-    ax.series('six', afn, ++count && ++num, 'F', false, false, delay -= 10);
-    ax.series('seven', afn, ++count && ++num, 'G', false, false, delay -= 10);
-    ax.parallel('eight', afn, ++count && ++num, 'H', true, false, delay -= 10);
+    ax.background('one', afn, ++cntBg1 && ++num, 'A', true, false, delay -= 10);
+    ax.series('two', afn, ++cnt1 && ++num, 'B', true, false, delay -= 10);
+    ax.parallel('three', afn, ++cnt1 && ++num, 'C', true, false, delay -= 10);
+    ax.parallel('four', afn, ++cnt1 && ++num, 'D', true, false, delay -= 10);
+    ax.parallel('five', afn, ++cnt1 && ++num, 'E', true, false, delay -= 10);
+    ax.series('six', afn, ++cnt1 && ++num, 'F', false, false, delay -= 10);
+    ax.series('seven', afn, ++cnt1 && ++num, 'G', false, false, delay -= 10);
+    ax.parallel('eight', afn, ++cnt1 && ++num, 'H', true, false, delay -= 10);
     ax.verify('three', flags.mustCall(async it => {
       expect(ax.status).to.equal(Asynchro.RUNNING);
       expect(axt.status).to.equal(Asynchro.QUEUEING);
       if (it.isPending) {
-        expect(ax.waiting).to.equal(count - 1);
-        expect(ax.waitingBackground).to.equal(countBg);
+        expect(ax.waiting).to.equal(cnt1 - 1); // exclude the current task: once executed the count decrements
+        expect(ax.waitingBackground).to.equal(cntBg1);
       } else it.result = verifyValue;
     }, 2));
     ax.verify('four', flags.mustCall(async it => {
       expect(ax.status).to.equal(Asynchro.RUNNING);
       expect(axt.status).to.equal(Asynchro.QUEUEING);
       if (it.isPending) { // execute when parallel function is first called (called 2x, 1st for function call, 2nd for await on the promise)
-        axt.background('twelve', afn, ++countBg && ++num, 'L', true, false, delay -= 10);
-        axt.series('nine', afn, ++count && ++num, 'I', true, false, delay -= 10);
-        axt.parallel('ten', afn, ++count && ++num, 'J', true, true, delay -= 10);
-        axt.parallel('eleven', afn, ++count && ++num, 'K', true, false, delay -= 10);
+        axt.background('twelve', afn, ++cntBg2 && ++num, 'L', true, false, delay -= 10);
+        axt.series('nine', afn, ++cnt2 && ++num, 'I', true, false, delay -= 10);
+        axt.parallel('ten', afn, ++cnt2 && ++num, 'J', true, true, delay -= 10);
+        axt.parallel('eleven', afn, ++cnt2 && ++num, 'K', true, false, delay -= 10);
+        expect(axt.waiting).to.equal(cnt2);
+        expect(axt.waitingBackground).to.equal(cntBg2);
         return axt; // stop the queue from continuing to process/run and transfer/run the new one
       } else it.result = verifyStopValue;
     }, 2));
     expect(ax.status).to.equal(Asynchro.QUEUEING);
     expect(axt.status).to.equal(Asynchro.QUEUEING);
-    expect(ax.waiting).to.equal(count);
-    expect(ax.waitingBackground).to.equal(countBg);
+    expect(ax.waiting).to.equal(cnt1);
+    expect(ax.waitingBackground).to.equal(cntBg1);
     const rslt = await ax.run();
 
-    logTest(`${plan}: transfer with background waiter`, LOGGER, ax, rslt, ax.errors);
+    logTest(`${plan}: 1x transfer with background waiter`, LOGGER, ax, rslt, ax.errors);
     expect(ax.waiting).to.equal(0);
     expect(axt.waiting).to.equal(0);
-    expect(ax.waitingBackground).to.equal(countBg - 1);
-    expect(axt.waitingBackground).to.equal(countBg);
+    expect(ax.waitingBackground).to.equal(cntBg1);
+    expect(axt.waitingBackground).to.equal(cntBg2);
     expect(origResult).to.equal(ax.result);
     expect(origResult).to.equal(axt.result);
     expect(rslt).to.equal(ax.result);
@@ -202,81 +204,81 @@ lab.experiment(plan, () => {
     expect(abx.errors[0]).to.be.an.error('J');
   });
 
-  // lab.test(`${plan}: 2x transfer with background waiter`, { timeout: TEST_TKO }, async (flags) => {
-  //   const afn = asyncCall;//flags.mustCall(asyncCall, 7); // some errors will be hidden when using this: comment out to view
-  //   var delay = TASK_DELAY, num = 0, cnt1 = 0, cnt2 = 0, cnt3 = 0, cntBg1 = 0, cntBg2 = 0, cntBg3 = 0;
+  lab.test(`${plan}: pre-queued 2x transfers with 3x background waiters`, { timeout: TEST_TKO }, async (flags) => {
+    const afn = asyncCall;//flags.mustCall(asyncCall, 7); // some errors will be hidden when using this: comment out to view
+    var delay = TASK_DELAY, num = 0, cnt1 = 0, cnt2 = 0, cnt3 = 0, cntBg1 = 0, cntBg2 = 0, cntBg3 = 0;
 
-  //   // decrement delay in order to force the natrual order of execution is reversed, yet asyncs order should still be maintained by Asynchro
-  //   const origResult = {};
-  //   const ax = new Asynchro(origResult, false, ASYNC_LOGGER), verifyStopValue = 'Override value from transfer test verify';
-  //   const axt = new Asynchro(origResult, false, ASYNC_LOGGER);
-  //   const axt2 = new Asynchro(origResult, false, ASYNC_LOGGER);
-  //   ax.background('one', afn, ++cntBg1 && ++num, 'A', true, false, delay -= 10);
-  //   ax.series('two', afn, ++cnt1 && ++num, 'B', true, false, delay -= 10);
-  //   ax.parallel('three', afn, ++cnt1 && ++num, 'C', true, false, delay -= 10);
-  //   ax.verify('three', flags.mustCall(async it => it.isPending ? axt : !(it.result = verifyStopValue), 2));
-  //   ax.parallel('four', afn, ++cnt1 && ++num, 'D', true, false, delay -= 10);
-  //   axt.background('five', afn, ++cntBg2 && ++num, 'E', true, false, delay -= 10);
-  //   axt.series('six', afn, ++cnt2 && ++num, 'F', true, true, delay -= 10);
-  //   axt.verify('six', flags.mustCall(async it => it.error ? axt2 : null, 1));
-  //   axt.parallel('seven', afn, ++cnt2 && ++num, 'G', true, false, delay -= 10);
-  //   axt2.series('eight', afn, ++cnt3 && ++num, 'H', true, false, delay -= 10);
-  //   axt2.background('nine', afn, ++cntBg3 && ++num, 'I', true, false, delay -= 10);
-  //   axt2.series('ten', afn, ++cnt3 && ++num, 'J', true, true, delay -= 10);
-  //   expect(ax.status).to.equal(Asynchro.QUEUEING);
-  //   expect(axt.status).to.equal(Asynchro.QUEUEING);
-  //   expect(axt2.status).to.equal(Asynchro.QUEUEING);
-  //   expect(ax.waiting).to.equal(cnt1);
-  //   expect(axt.waiting).to.equal(cnt2);
-  //   expect(axt2.waiting).to.equal(cnt3);
-  //   expect(ax.waitingBackground).to.equal(cntBg1);
-  //   expect(axt.waitingBackground).to.equal(cntBg1 + cntBg2);
-  //   expect(axt2.waitingBackground).to.equal(cntBg1 + cntBg2 + cntBg3);
-  //   const rslt = await ax.run();
+    // decrement delay in order to force the natrual order of execution is reversed, yet asyncs order should still be maintained by Asynchro
+    const origResult = {};
+    const ax = new Asynchro(origResult, false, ASYNC_LOGGER), verifyStopValue = 'Override value from transfer test verify';
+    const axt = new Asynchro(origResult, false, ASYNC_LOGGER);
+    const axt2 = new Asynchro(origResult, false, ASYNC_LOGGER);
+    ax.background('one', afn, ++cntBg1 && ++num, 'A', true, false, delay -= 10);
+    ax.series('two', afn, ++cnt1 && ++num, 'B', true, false, delay -= 10);
+    ax.parallel('three', afn, ++cnt1 && ++num, 'C', true, false, delay -= 10);
+    ax.verify('three', flags.mustCall(async it => it.isPending ? axt : !(it.result = verifyStopValue), 2));
+    ax.parallel('four', afn, ++cnt1 && ++num, 'D', true, false, delay -= 10);
+    axt.background('five', afn, ++cntBg2 && ++num, 'E', true, false, delay -= 10);
+    axt.series('six', afn, ++cnt2 && ++num, 'F', true, true, delay -= 10);
+    axt.verify('six', flags.mustCall(async it => it.error ? axt2 : null, 1));
+    axt.parallel('seven', afn, ++cnt2 && ++num, 'G', true, false, delay -= 10);
+    axt2.series('eight', afn, ++cnt3 && ++num, 'H', true, false, delay -= 10);
+    axt2.background('nine', afn, ++cntBg3 && ++num, 'I', true, false, delay -= 10);
+    axt2.series('ten', afn, ++cnt3 && ++num, 'J', true, true, delay -= 10);
+    expect(ax.status).to.equal(Asynchro.QUEUEING);
+    expect(axt.status).to.equal(Asynchro.QUEUEING);
+    expect(axt2.status).to.equal(Asynchro.QUEUEING);
+    expect(ax.waiting).to.equal(cnt1);
+    expect(axt.waiting).to.equal(cnt2);
+    expect(axt2.waiting).to.equal(cnt3);
+    expect(ax.waitingBackground).to.equal(cntBg1);
+    expect(axt.waitingBackground).to.equal(cntBg2);
+    expect(axt2.waitingBackground).to.equal(cntBg3);
+    const rslt = await ax.run();
 
-  //   logTest(`${plan}: 2x transfer with background waiter`, LOGGER, ax, rslt, ax.errors);
-  //   expect(ax.waiting).to.equal(0);
-  //   expect(axt.waiting).to.equal(0);
-  //   expect(axt2.waiting).to.equal(0);
-  //   expect(ax.waitingBackground).to.equal(cntBg1);
-  //   expect(axt.waitingBackground).to.equal(cntBg1 + cntBg2);
-  //   expect(axt2.waitingBackground).to.equal(cntBg1 + cntBg2 + cntBg3);
-  //   expect(origResult).to.equal(rslt);
-  //   expect(origResult).to.equal(ax.result);
-  //   expect(origResult).to.equal(axt.result);
-  //   expect(origResult).to.equal(axt2.result);
-  //   expect(rslt.one).to.be.undefined();
-  //   expect(rslt.two).to.equal('B');
-  //   expect(rslt.three).to.equal(verifyStopValue);
-  //   expect(rslt.four).to.be.undefined();
-  //   expect(rslt.five).to.be.undefined();
-  //   expect(rslt.six).to.be.undefined();
-  //   expect(rslt.seven).to.be.undefined();
-  //   expect(rslt.eight).to.equal('H');
-  //   expect(rslt.nine).to.be.undefined();
-  //   expect(rslt.ten).to.be.undefined();
-  //   expect(ax.errors).to.be.empty();
-  //   expect(ax.status).to.equal(Asynchro.TRANSFERRED);
-  //   expect(axt.status).to.equal(Asynchro.TRANSFERRED);
-  //   expect(axt2.status).to.equal(Asynchro.FAILED);
-  //   expect(axt2.errors.length).to.equal(2);
-  //   expect(axt.errors[0]).to.be.an.error('F');
-  //   expect(axt.errors[1]).to.be.an.error('J');
+    logTest(`${plan}: pre-queued 2x transfers with 3x background waiters`, LOGGER, ax, rslt, ax.errors);
+    expect(ax.waiting).to.equal(0);
+    expect(axt.waiting).to.equal(0);
+    expect(axt2.waiting).to.equal(0);
+    expect(ax.waitingBackground).to.equal(cntBg1);
+    expect(axt.waitingBackground).to.equal(cntBg2);
+    expect(axt2.waitingBackground).to.equal(cntBg3);
+    expect(origResult).to.equal(rslt);
+    expect(origResult).to.equal(ax.result);
+    expect(origResult).to.equal(axt.result);
+    expect(origResult).to.equal(axt2.result);
+    expect(rslt.one).to.be.undefined();
+    expect(rslt.two).to.equal('B');
+    expect(rslt.three).to.equal(verifyStopValue);
+    expect(rslt.four).to.be.undefined();
+    expect(rslt.five).to.be.undefined();
+    expect(rslt.six).to.be.undefined();
+    expect(rslt.seven).to.be.undefined();
+    expect(rslt.eight).to.equal('H');
+    expect(rslt.nine).to.be.undefined();
+    expect(rslt.ten).to.be.undefined();
+    expect(ax.errors).to.be.empty();
+    expect(ax.status).to.equal(Asynchro.TRANSFERRED);
+    expect(axt.status).to.equal(Asynchro.TRANSFERRED);
+    expect(axt2.status).to.equal(Asynchro.FAILED);
+    expect(axt2.errors.length).to.equal(2);
+    expect(axt.errors[0]).to.be.an.error('F');
+    expect(axt.errors[1]).to.be.an.error('J');
     
-  //   const abx = await ax.backgroundWaiter();
-  //   expect(abx).to.equal(axt2);
-  //   expect(ax.waiting).to.equal(0);
-  //   expect(axt.waiting).to.equal(0);
-  //   expect(abx.waiting).to.equal(0);
-  //   expect(ax.waitingBackground).to.equal(0);
-  //   expect(axt.waitingBackground).to.equal(0);
-  //   expect(abx.waitingBackground).to.equal(0);
-  //   expect(rslt).to.equal(abx.result);
-  //   expect(rslt.one).to.equal('A');
-  //   expect(rslt.five).to.equal('E');
-  //   expect(rslt.nine).to.equal('I');
-  //   expect(abx.errors.length).to.equal(2);
-  //   expect(abx.errors[0]).to.be.an.error('F');
-  //   expect(abx.errors[1]).to.be.an.error('J');
-  // });
+    const abx = await ax.backgroundWaiter();
+    expect(abx).to.equal(axt2);
+    expect(ax.waiting).to.equal(0);
+    expect(axt.waiting).to.equal(0);
+    expect(abx.waiting).to.equal(0);
+    expect(ax.waitingBackground).to.equal(0);
+    expect(axt.waitingBackground).to.equal(0);
+    expect(abx.waitingBackground).to.equal(0);
+    expect(rslt).to.equal(abx.result);
+    expect(rslt.one).to.equal('A');
+    expect(rslt.five).to.equal('E');
+    expect(rslt.nine).to.equal('I');
+    expect(abx.errors.length).to.equal(2);
+    expect(abx.errors[0]).to.be.an.error('F');
+    expect(abx.errors[1]).to.be.an.error('J');
+  });
 });
