@@ -248,7 +248,6 @@ class Asynchro {
       asyn.at.trk.errors = errs.length ? (nerrs.length && errs.concat(nerrs)) || errs : nerrs;
       asyn.at.trk.messages = msgs.length ? (nmsgs.length && msgs.concat(nmsgs)) || msgs : nmsgs;
       asyn.at.trk.backgrounds = bgs.length ? (nbgs.length && [...new Set(bgs.concat(nbgs))]) || bgs.slice() : nbgs;
-      //asy.at.trk.backgrounds.length = 0; // backgrounds have been transferred
       if (asyn.at.trk.rslt !== asy.at.trk.rslt) merge(asyn.at.trk.rslt, asy.at.trk.rslt, { deep: true });
       asy.at.status = Asynchro.TRANSFERRED;
       if (asy.at.endHandler) asy.at.endHandler.call(asy.this, asyn.this);
@@ -715,7 +714,8 @@ function asynchroQueue(asyi, series, throws, name, fn, args, bgErrors) {
   itm.noAwait = itm.isBackground;
   if (isBg && itm.throws !== true) setBackgroundFunction(itm, asyi.systemErrorTypes, bgErrors);
   asy.at.trk.que.push(itm);
-  if (!itm.isBackground) asy.at.trk.waiting++;
+  if (itm.isBackground) asy.at.trk.backgrounds.push(itm);
+  else asy.at.trk.waiting++;
   return name;
 }
 
@@ -760,10 +760,10 @@ async function asynchro(trk, asyi) {
 async function asyncHandler(trk, asyi, itm, pends) { // return false or another Asynchro instance should stop iteration
   var rtn = true, msg;
   const it = {}, type = itm.series ? 'series' : itm.isBackground ? 'background' : 'parallel';
-  if (itm.throws === true && itm.noAwait) handleAsync(asyi, itm, pends, trk.backgrounds);
-  else if (itm.throws === true) it.result = await handleAsync(asyi, itm, pends, trk.backgrounds);
+  if (itm.throws === true && itm.noAwait) handleAsync(asyi, itm, pends);
+  else if (itm.throws === true) it.result = await handleAsync(asyi, itm, pends);
   else try {
-    it.result = await handleAsync(asyi, itm, pends, trk.backgrounds);
+    it.result = await handleAsync(asyi, itm, pends);
   } catch (err) {
     defineItemMeta(err, itm, itm.promise instanceof Promise, itm.errorMetaName);
     if (itm.throws) throwsError(itm.throws, err, true, asyi.systemErrorTypes);
@@ -804,10 +804,9 @@ async function asyncHandler(trk, asyi, itm, pends) { // return false or another 
  * @param {Asynchro} asyi The `Asynchro` instance
  * @param {Object} itm The queued `async` item from {@link asynchroQueue}
  * @param {Object[]} pends The pending parallel/concurrent items- each originating from {@link asynchroQueue}
- * @param {Promise[]} [backgrounds] Where background promises are kept
  * @returns {*} The result from the function execution or `undefined` when the `item.promise` has been set/generated
  */
-async function handleAsync(asyi, itm, pends, backgrounds) {
+async function handleAsync(asyi, itm, pends) {
   var rslt;
   if (!itm.noResult && itm.args && asyi && asyi.result) resolveArgs(asyi, itm);
   if (itm.series) {
@@ -825,10 +824,7 @@ async function handleAsync(asyi, itm, pends, backgrounds) {
       throw new Error(msg);
     }
     if (itm.isBackground) { // run in background, don't wait for promise
-      if (backgrounds) {
-        itm.backgroundPromise = itm.promise;
-        backgrounds.push(itm);
-      }
+      itm.backgroundPromise = itm.promise;
       itm.promise = false;
     } else pends.push(itm);
   }

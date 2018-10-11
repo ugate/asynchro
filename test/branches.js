@@ -156,17 +156,19 @@ lab.experiment(plan, () => {
         return axt; // stop the queue from continuing to process/run and transfer/run the new one
       } else it.result = verifyStopValue;
     }, 2));
-    expect(ax.waiting).to.equal(count);
     expect(ax.status).to.equal(Asynchro.QUEUEING);
     expect(axt.status).to.equal(Asynchro.QUEUEING);
+    expect(ax.waiting).to.equal(count);
+    expect(ax.waitingBackground).to.equal(countBg);
     const rslt = await ax.run();
 
     logTest(`${plan}: transfer with background waiter`, LOGGER, ax, rslt, ax.errors);
     expect(ax.waiting).to.equal(0);
     expect(axt.waiting).to.equal(0);
-    expect(ax.waitingBackground).to.equal(1);
-    expect(axt.waitingBackground).to.equal(2);
+    expect(ax.waitingBackground).to.equal(countBg - 1);
+    expect(axt.waitingBackground).to.equal(countBg);
     expect(origResult).to.equal(ax.result);
+    expect(origResult).to.equal(axt.result);
     expect(rslt).to.equal(ax.result);
     expect(rslt).to.equal(axt.result);
     expect(rslt.one).to.be.undefined();
@@ -183,20 +185,98 @@ lab.experiment(plan, () => {
     expect(rslt.twelve).to.be.undefined();
     expect(ax.errors).to.be.empty();
     expect(ax.status).to.equal(Asynchro.TRANSFERRED);
+    expect(axt.status).to.equal(Asynchro.FAILED);
     expect(axt.errors.length).to.equal(1);
     expect(axt.errors[0]).to.be.an.error('J');
-    expect(axt.status).to.equal(Asynchro.FAILED);
     
     const abx = await ax.backgroundWaiter();
     expect(abx).to.equal(axt);
-    expect(ax.waitingBackground).to.equal(0);
-    expect(abx.waitingBackground).to.equal(0);
     expect(ax.waiting).to.equal(0);
     expect(abx.waiting).to.equal(0);
+    expect(ax.waitingBackground).to.equal(0);
+    expect(abx.waitingBackground).to.equal(0);
     expect(rslt).to.equal(abx.result);
     expect(rslt.one).to.equal('A');
     expect(rslt.twelve).to.equal('L');
     expect(abx.errors.length).to.equal(1);
     expect(abx.errors[0]).to.be.an.error('J');
   });
+
+  // lab.test(`${plan}: 2x transfer with background waiter`, { timeout: TEST_TKO }, async (flags) => {
+  //   const afn = asyncCall;//flags.mustCall(asyncCall, 7); // some errors will be hidden when using this: comment out to view
+  //   var delay = TASK_DELAY, num = 0, cnt1 = 0, cnt2 = 0, cnt3 = 0, cntBg1 = 0, cntBg2 = 0, cntBg3 = 0;
+
+  //   // decrement delay in order to force the natrual order of execution is reversed, yet asyncs order should still be maintained by Asynchro
+  //   const origResult = {};
+  //   const ax = new Asynchro(origResult, false, ASYNC_LOGGER), verifyStopValue = 'Override value from transfer test verify';
+  //   const axt = new Asynchro(origResult, false, ASYNC_LOGGER);
+  //   const axt2 = new Asynchro(origResult, false, ASYNC_LOGGER);
+  //   ax.background('one', afn, ++cntBg1 && ++num, 'A', true, false, delay -= 10);
+  //   ax.series('two', afn, ++cnt1 && ++num, 'B', true, false, delay -= 10);
+  //   ax.parallel('three', afn, ++cnt1 && ++num, 'C', true, false, delay -= 10);
+  //   ax.verify('three', flags.mustCall(async it => it.isPending ? axt : !(it.result = verifyStopValue), 2));
+  //   ax.parallel('four', afn, ++cnt1 && ++num, 'D', true, false, delay -= 10);
+  //   axt.background('five', afn, ++cntBg2 && ++num, 'E', true, false, delay -= 10);
+  //   axt.series('six', afn, ++cnt2 && ++num, 'F', true, true, delay -= 10);
+  //   axt.verify('six', flags.mustCall(async it => it.error ? axt2 : null, 1));
+  //   axt.parallel('seven', afn, ++cnt2 && ++num, 'G', true, false, delay -= 10);
+  //   axt2.series('eight', afn, ++cnt3 && ++num, 'H', true, false, delay -= 10);
+  //   axt2.background('nine', afn, ++cntBg3 && ++num, 'I', true, false, delay -= 10);
+  //   axt2.series('ten', afn, ++cnt3 && ++num, 'J', true, true, delay -= 10);
+  //   expect(ax.status).to.equal(Asynchro.QUEUEING);
+  //   expect(axt.status).to.equal(Asynchro.QUEUEING);
+  //   expect(axt2.status).to.equal(Asynchro.QUEUEING);
+  //   expect(ax.waiting).to.equal(cnt1);
+  //   expect(axt.waiting).to.equal(cnt2);
+  //   expect(axt2.waiting).to.equal(cnt3);
+  //   expect(ax.waitingBackground).to.equal(cntBg1);
+  //   expect(axt.waitingBackground).to.equal(cntBg1 + cntBg2);
+  //   expect(axt2.waitingBackground).to.equal(cntBg1 + cntBg2 + cntBg3);
+  //   const rslt = await ax.run();
+
+  //   logTest(`${plan}: 2x transfer with background waiter`, LOGGER, ax, rslt, ax.errors);
+  //   expect(ax.waiting).to.equal(0);
+  //   expect(axt.waiting).to.equal(0);
+  //   expect(axt2.waiting).to.equal(0);
+  //   expect(ax.waitingBackground).to.equal(cntBg1);
+  //   expect(axt.waitingBackground).to.equal(cntBg1 + cntBg2);
+  //   expect(axt2.waitingBackground).to.equal(cntBg1 + cntBg2 + cntBg3);
+  //   expect(origResult).to.equal(rslt);
+  //   expect(origResult).to.equal(ax.result);
+  //   expect(origResult).to.equal(axt.result);
+  //   expect(origResult).to.equal(axt2.result);
+  //   expect(rslt.one).to.be.undefined();
+  //   expect(rslt.two).to.equal('B');
+  //   expect(rslt.three).to.equal(verifyStopValue);
+  //   expect(rslt.four).to.be.undefined();
+  //   expect(rslt.five).to.be.undefined();
+  //   expect(rslt.six).to.be.undefined();
+  //   expect(rslt.seven).to.be.undefined();
+  //   expect(rslt.eight).to.equal('H');
+  //   expect(rslt.nine).to.be.undefined();
+  //   expect(rslt.ten).to.be.undefined();
+  //   expect(ax.errors).to.be.empty();
+  //   expect(ax.status).to.equal(Asynchro.TRANSFERRED);
+  //   expect(axt.status).to.equal(Asynchro.TRANSFERRED);
+  //   expect(axt2.status).to.equal(Asynchro.FAILED);
+  //   expect(axt2.errors.length).to.equal(2);
+  //   expect(axt.errors[0]).to.be.an.error('F');
+  //   expect(axt.errors[1]).to.be.an.error('J');
+    
+  //   const abx = await ax.backgroundWaiter();
+  //   expect(abx).to.equal(axt2);
+  //   expect(ax.waiting).to.equal(0);
+  //   expect(axt.waiting).to.equal(0);
+  //   expect(abx.waiting).to.equal(0);
+  //   expect(ax.waitingBackground).to.equal(0);
+  //   expect(axt.waitingBackground).to.equal(0);
+  //   expect(abx.waitingBackground).to.equal(0);
+  //   expect(rslt).to.equal(abx.result);
+  //   expect(rslt.one).to.equal('A');
+  //   expect(rslt.five).to.equal('E');
+  //   expect(rslt.nine).to.equal('I');
+  //   expect(abx.errors.length).to.equal(2);
+  //   expect(abx.errors[0]).to.be.an.error('F');
+  //   expect(abx.errors[1]).to.be.an.error('J');
+  // });
 });

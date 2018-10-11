@@ -54,9 +54,13 @@ lab.experiment(plan, () => {
     ax.background('three', multiply, 0);
     ax.background('four', multiply, 1, 2, 3, { reject: true });
     ax.background('five', multiply, 1, 0, 3, { reject: true });
+    expect(ax.waiting).to.equal(1);
+    expect(ax.waitingBackground).to.equal(4);
     var rslt = await ax.run();
 
     logTest(`${PLAN}: waiter, multiple caught errors (pending)`, LOGGER, ax, rslt);
+    expect(ax.waiting).to.equal(0);
+    expect(ax.waitingBackground).to.equal(4);
     expect(rslt).to.equal(ax.result);
     expect(rslt.one).to.be.object();
     expect(rslt.one.m1).to.equal(10);
@@ -72,6 +76,8 @@ lab.experiment(plan, () => {
   
     const abx = await ax.backgroundWaiter();
     logTest(`${PLAN}: waiter, multiple caught errors`, LOGGER, ax, rslt);
+    expect(ax.waiting).to.equal(0);
+    expect(ax.waitingBackground).to.equal(0);
     expect(rslt.one).to.be.object();
     expect(rslt.one.m1).to.equal(10);
     expect(rslt.one.m2).to.equal(40);
