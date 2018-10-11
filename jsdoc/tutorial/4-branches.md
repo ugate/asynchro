@@ -60,9 +60,39 @@ const rslt = await ax.run();
 // }
 console.log(rslt);
 ```
-Branching can occur at any given point during queue execution via the return value from [Asynchro.verify](Asynchro.html#verify). There is no _hard_ limit to the number of branches from one `Asynchro` instance to another. This leads to a simple, yet flexible logic route for defining how workflows interact between one another.
 
-When branching to/from queues that contain one or more [background tasks](tutorial-2-background.html) it's important to keep in mind that [Asynchro.backgroundWaiter](Asynchro.html#backgroundWaiter) will accumulate the subsequent results that are set as well as any errors that are caught after [Asynchro.run](Asynchro.html#run) is `await`ed for.
+#### Multiple Branches
+Branching can occur at any given point during queue execution via the return value from [Asynchro.verify](Asynchro.html#verify). There is no _hard_ limit to the number of branches from one `Asynchro` instance to another. This leads to a simple, yet flexible logic route for defining how workflows interact between one another.
+```js
+// Multiple Branching Example:
+// Asynchro instances instantiated/queued all at one time for illustrative purposes,
+// but could be instantiated/queued at verification time instead
+const ax = new Asynchro({}), valueOverride = 'Override value from axt branch "three" verify';
+const axt = new Asynchro(ax.result);
+const axt2 = new Asynchro(ax.result);
+
+ax.background('one', multiply, 1, 2, 3);
+ax.series('two', multiply, 4, 5, 6);
+ax.parallel('three', multiply, 7, 8, 9);
+// branch/transfer from "ax" to "axt" after "three" has been invoked, but not yet awaited
+ax.verify('three', async it => it.isPending ? axt : !(it.result = valueOverride));
+ax.parallel('four', multiply, 10, 11, 12); // never invoked
+
+axt.background('five', multiply, 13, 14, 15);
+axt.series('six', multiply, 16, 17, 18);
+// branch/transfer from "axt" to "axt2" after "six" has been invoked/awaited
+axt.verify('six', async it => it.error ? axt2 : null);
+axt.parallel('seven', multiply, 19, 20, 21); // never invoked
+
+axt2.series('eight', multiply, 22, 23, 24);
+axt2.background('nine', multiply, 25, 26, 27);
+axt2.series('ten', multiply, 28, 29, 30);
+
+await ax.run();
+```
+
+#### Background Tasks &amp; Branching
+As noted in the [background tasks section](tutorial-2-background.html), caught [Asynchro.errors](Asynchro.html#errors) and [Asynchro.result](Asynchro.html#result)s may continue to accumulate __after__ [Asynchro.run](Asynchro.html#run) is `await`ed for. Likewise, branching from one [Asynchro](Asynchro.html) instance to another will also have the same impact. Results are of course dependent upon the result object passed into the constructor of each [Asynchro](Asynchro.html) instance in the branch (or the optional background object that is passed into [Asynchro.backgroundWaiter](Asynchro.html#backgroundWaiter), when used).
 ```js
 const ax = new Asynchro({});
 ax.parallel('one', multiply, a, b, c); // multiply/a/b/c from previous example

@@ -32,7 +32,7 @@ try {
   console.error(err);
 }
 ``` 
-As illustrated, there are quite a few ways that an error can be either intentionally or unintentionally thrown. Another option would be to convert `function multiply` to `async function multiply`, but that would add another `Promise` wrapper that would need to be processed internally during the next iteration of the [Event Loop](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop). And that's assuming the function doesn't belong to an external module where we do not have any control over it's implementation. With all the different variations involved, it's better to keep it simple and mitigate any risk by wrapping background tasks within another `async function`. Fortunately, `asynchro` will do this for us everytime we call [Asynchro.background](Asynchro.html#background) (unless always throwing, `throws = true`). Take for instance the subsequent example:
+As illustrated, there are quite a few ways that an error can be either intentionally or unintentionally thrown. Another option would be to convert `function multiply` to `async function multiply`, but that would add another `Promise` wrapper that would need to be processed internally during the next iteration of the [Event Loop](https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop). And that's assuming the function doesn't belong to an external module where we do not have any control over it's implementation. With all the different variations involved, it's better to keep it simple and mitigate any risk by wrapping background tasks within another `async function`. Fortunately, `asynchro` will do this for us everytime we call [Asynchro.background](Asynchro.html#background) (unless always throwing: `throws = true`). Take for instance the subsequent example:
 ```js
 const ax = new Asynchro({}, false, console.log);
 ax.series('one', multiply, 1, 2, 3); // multiply from previous examples
@@ -101,5 +101,7 @@ console.log(abx.result);
 // ]
 console.log(abx.errors);
 ```
+__NOTE:__
+It's important to keep in mind that any [Asynchro.errors](Asynchro.html#errors) that are caught while invoking/`await`ing [Asynchro.background](Asynchro.html#background) tasks may continue to be added long __after__ [Asynchro.run](Asynchro.html#run) is `await`ed for. Background results are _only_ set on [Asynchro.result](Asynchro.html#result) when [Asynchro.backgroundWaiter](Asynchro.html#backgroundWaiter) is called (alternatively, a different result object could be specified during invocation).
 
 #### [Verification >>](tutorial-3-verification.html)
