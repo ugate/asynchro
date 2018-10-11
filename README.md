@@ -1,10 +1,11 @@
 # <b style="color:#FFA726">&#8669;</b> asynchro 
+##### Micro `async`/`await` Workflow Engine
 Micro lib for __parallel__/__series__/__background__ asynchronous functions using built-in ES `async/await` with __zero__ external dependencies. `Asynchro` is not just another `async` library, but rather a micro-sized workflow engine! Check out the tutorials for more details. Runs in the browser or in [Node.js](https://nodejs.org/) `npm install asynchro`.
 
 * [Tutorials](https://ugate.github.io/asynchro/tutorial-1-queue.html)
 * [API Docs](https://ugate.github.io/asynchro/Asynchro.html)
 
-### Turn _vanilla_ `async/await` boilerplate code like this...
+### Turn _vanilla_ `async/await` ~~boilerplate~~ code like this...
 ```js
 const SYSTEM_ERRORS = [ EvalError, RangeError, ReferenceError, SyntaxError, TypeError, URIError ];
 async function myWorkflow() {
