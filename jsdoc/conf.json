@@ -16,6 +16,7 @@
     "encoding": "utf8",
     "private": true,
     "recurse": true,
+    "templateProxy": "./node_modules/minami",
     "template": "./jsdoc",
     "tutorials": "./jsdoc/tutorial"
   },

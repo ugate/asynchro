@@ -12,6 +12,6 @@ exports.publish = function(taffyData, opts, tutorials) {
   env.meta = {
     package: pkg // package accessibility in templates
   };
-  opts.template = "./node_modules/minami"; // actual template
+  opts.template = opts.templateProxy; // actual template
   return Engine.publish.apply(this, arguments); // no need to customize how docs are parsed, jut the layout .tmpl files
 };
