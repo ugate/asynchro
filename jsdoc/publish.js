@@ -18,6 +18,7 @@ exports.publish = function(taffyData, opts, tutorials) {
       if (!stdout) return reject(new Error(`Unable to capture published npm versions for: ${pkg.version}`));
       try {
         const versions = JSON.parse(stdout);
+        if (!versions.includes(pkg.version)) versions.push(pkg.version); // assume latest isn't yet deployed
         env.meta = { // accessibility in templates
           package: pkg,
           versions 
