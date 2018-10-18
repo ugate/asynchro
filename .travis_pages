@@ -11,12 +11,11 @@ npm run gen-docs
 pushd $HOME
 git clone --branch=$PUBLICATION_BRANCH https://${GITHUB_TOKEN}@github.com/$TRAVIS_REPO_SLUG.git publish 2>&1 > /dev/null
 cd publish
-# recursively copy the current docs to the version directory
+# recursively copy the latest docs to the root gh-pages
+cp -r $REPO_PATH/docs/* ./
+# recursively copy the current docs to the version directory and root directory
 mkdir -p ./$NPM_PACKAGE_VERSION
-mkdir -p ./latest
 cp -r $REPO_PATH/docs/* ./$NPM_PACKAGE_VERSION
-# recursively copy the current docs to the latest
-cp -r $REPO_PATH/docs/* ./latest
 # publish to github
 git add .
 git config user.name  "Travis"

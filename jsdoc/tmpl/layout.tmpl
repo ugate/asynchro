@@ -91,7 +91,7 @@
   </a>
   <select id="versions" onchange="window.location='<?js= env.meta.package.name ?>/' + this.value">
     <?js for (let version of env.meta.versions) { ?>
-    <option value="<?js= version ?>" <?js= version === env.meta.package.version ? 'selected' : '' ?>><?js= version ?></option>
+    <option value="<?js= version === env.meta.package.version ? '' : version  ?>" <?js= version === env.meta.package.version ? 'selected' : '' ?>><?js= version ?></option>
     <?js } ?>
   </select>
   <span class="sep">|</span>
