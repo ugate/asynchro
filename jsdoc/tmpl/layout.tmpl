@@ -89,7 +89,7 @@
   <a href="index.html" id="source" title="Source Code">
     <b class="theme-color">&#8669;</b> <?js= env.meta.package.name ?>
   </a>
-  <select id="versions" onchange="window.location='<?js= env.meta.package.name ?>/' + this.value">
+  <select id="versions" onchange="window.location='/<?js= env.meta.package.name ?>/' + this.value">
     <?js for (let version of env.meta.versions) { ?>
     <option value="<?js= version === env.meta.package.version ? '' : version  ?>" <?js= version === env.meta.package.version ? 'selected' : '' ?>><?js= version ?></option>
     <?js } ?>
