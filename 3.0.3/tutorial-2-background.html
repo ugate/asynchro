@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>asynchro - documentation</title>
+
+  <script src="scripts/prettify/prettify.js"></script>
+  <script src="scripts/prettify/lang-css.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link rel="apple-touch-icon" sizes="57x57" href="apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="msapplication-TileColor" content="#BDBDBD">
+  <meta name="msapplication-TileImage" content="ms-icon-144x144.png">
+  <meta name="theme-color" content="#BDBDBD">
+
+  <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+  <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+  <style>
+  #topNav {
+    width: calc(100% - 250px);
+    height: 64px;
+    padding: 16px;
+    font-size: 32px;
+    margin-left: 250px;
+    background-color: #E0E0E0;
+  }
+  @media only screen and (max-width: 680px) and (min-width: 320px) {
+    #topNav {
+      margin-left: 0px;
+      width: 100%;
+    }
+  }
+  #versions {
+    height: 24px;
+    float: right;
+  }
+  #topNav > a {
+    text-decoration: none;
+  }
+  #topNav > a.icon {
+    height: 24px;
+    width: 24px;
+    padding: 7px;
+    vertical-align: middle;
+  }
+  .theme-color {
+    color: #FFA726;
+    text-shadow: 1px 1px 0px white;
+  }
+  </style>
+  <script>
+    window.addEventListener('load', function(event) {
+      var readme = document.querySelector('.readme > article > h1');
+      if (readme) readme.parentElement.removeChild(readme);
+    });
+  </script>
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+  <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Tutorials</li><li class="nav-item"><a href="tutorial-1-queue.html">The Queue</a></li><li class="nav-item"><a href="tutorial-2-background.html">Background Tasks</a></li><li class="nav-item"><a href="tutorial-3-verification.html">Verification</a></li><li class="nav-item"><a href="tutorial-4-branches.html">Branching</a></li><li class="nav-item"><a href="tutorial-5-conversion.html">Conversions</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Asynchro.html">Asynchro</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#.extractFuncArgs">extractFuncArgs</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#.promisifyCallback">promisifyCallback</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#.promisifyEventTarget">promisifyEventTarget</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#arg">arg</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#background">background</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#backgroundThrowsOverride">backgroundThrowsOverride</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#backgroundWaiter">backgroundWaiter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#messages">messages</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#parallel">parallel</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#parallelThrowOverride">parallelThrowOverride</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#run">run</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#series">series</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#seriesThrowOverride">seriesThrowOverride</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#throwsError">throwsError</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#verify">verify</a></span></li>
+</nav>
+
+<div id="topNav">
+  <a href="index.html" id="source" title="Source Code">
+    <b class="theme-color">&#8669;</b> asynchro
+  </a>
+  <select id="versions" onchange="window.location='asynchro/' + this.value">
+    
+    <option value="1.0.0" >1.0.0</option>
+    
+    <option value="1.0.2" >1.0.2</option>
+    
+    <option value="1.0.3" >1.0.3</option>
+    
+    <option value="1.0.4" >1.0.4</option>
+    
+    <option value="1.0.5" >1.0.5</option>
+    
+    <option value="1.0.6" >1.0.6</option>
+    
+    <option value="1.0.7" >1.0.7</option>
+    
+    <option value="1.0.8" >1.0.8</option>
+    
+    <option value="2.0.0" >2.0.0</option>
+    
+    <option value="3.0.0" >3.0.0</option>
+    
+    <option value="3.0.1" >3.0.1</option>
+    
+    <option value="3.0.2" >3.0.2</option>
+    
+  </select>
+  <span class="sep">|</span>
+  <a href="https://github.com/ugate/asynchro#readme" id="source" title="Source Code" class="icon">
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 16 16" height="24" width="24">
+      <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+    </svg>
+  </a>
+  <a href="https://www.npmjs.com/package/asynchro" id="module" title="npm" class="icon">
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24" height="24" width="24">
+      <g stroke="none" fill="#000000" transform="translate(0,24) scale(0.1,-0.1)">
+        <path d="M 0,120 0,0 l 120,0 120,0 0,120 0,120 -120,0 -120,0 z m 200,0 c 0,-73 0.23256,-80 0.23256,-80 0,0 -27.97435,0.741211 -40.61273,0.707427 C 159.61983,67.551504 160,70.949947 160,100 c 0,53 -2,60 -20,60 -18,0 -20,-7 -20,-60 l 0,-60 -40,0 -40,0 0,80 0,80 80,0 80,0 z"/>
+      </g>
+    </svg>
+  </a>
+</div>
+
+<div id="main">
+  <section>
+
+<header>
+    
+</header>
+
+<article>
+    <h3>Background Tasks</h3><p>Background tasks are <code>async</code> functions that do not require <code>await</code>ing before proceeding to subsequent tasks in the queue, but still require adherence to an <strong>Error Handling Rule</strong> (discussed in <em>Error Handling</em> section of <a href="tutorial-1-queue.html">The Queue</a>). To get a better understanding of this concept, consider the following functions.</p>
+<pre class="prettyprint source lang-js"><code>function multiply(a, b, c, obj) { // public function
+  if (!a) throw new Error(`&quot;a&quot; must be a number greater than zero, but received: ${a}`);
+  if (!b) return;
+  return multiplier(a, b, c, obj)
+}
+function multiplier(a, b, c, obj) { // private function
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (obj && obj.reject) reject(new Error('Example error after timeout'));
+      else resolve({ m1: 10 * a, m2: 20 * b, m3: 30 * (c || 0) });
+    }, 10);
+  });
+}</code></pre><p>Now lets consider the different results when invoking <code>multiply</code>.</p>
+<pre class="prettyprint source lang-js"><code>try {
+  // caught since error is thrown immediately
+  multiply(0);
+  // .catch() is required since a promise is returned
+  multiply(1, 2, 3, { reject: true }).catch((err) => {
+    console.error(err);
+  });
+  // TypeError: Cannot read property 'catch' of undefined
+  multiply(1, 0, 3, { reject: true }).catch((err) => {
+    console.error(err);
+  });
+} catch (err) {
+  console.error(err);
+}</code></pre><p>As illustrated, there are quite a few ways that an error can be either intentionally or unintentionally thrown. Another option would be to convert <code>function multiply</code> to <code>async function multiply</code>, but that would add another <code>Promise</code> wrapper that would need to be processed internally during the next iteration of the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop">Event Loop</a>. And that's assuming the function doesn't belong to an external module where we do not have any control over it's implementation. With all the different variations involved, it's better to keep it simple and mitigate any risk by wrapping background tasks within another <code>async function</code>. Fortunately, <code>asynchro</code> will do this for us everytime we call <a href="Asynchro.html#background">Asynchro.background</a> (unless always throwing: <code>throws = true</code>). Take for instance the subsequent example:</p>
+<pre class="prettyprint source lang-js"><code>const ax = new Asynchro({}, false, console.log);
+ax.series('one', multiply, 1, 2, 3); // multiply from previous examples
+ax.background('two', multiply, 4, 5, 6);
+ax.background('three', multiply, 0);
+ax.background('four', multiply, 1, 2, 3, { reject: true });
+ax.background('five', multiply, 1, 0, 3, { reject: true });
+await ax.run();
+// { one: { m1: 10, m2: 40, m3: 90 } }
+console.log(ax.result);
+// [
+//  { Error: &quot;a&quot; must be a number greater than zero, but received: 0
+//    ...
+//    Asynchro: {
+//      name: 'three',
+//      operation: 'multiply'
+//      isPending: false,
+//      isParallel: false,
+//      isBackground: true
+//    }
+//  }
+// ]
+console.log(ax.errors);</code></pre><p>Only the result for <code>one</code> is set in <a href="Asynchro.html#result">Asynchro.result</a>. And since the only error that occurred was the one that was immediately thrown when <code>multiply(0)</code> was called, it is the only one recorded yet in <a href="Asynchro.html#errors">Asynchro.errors</a>. If it is desirable to capture background results/errors that occurred after all the background tasks have been <code>await</code>ed for (either completed or caught errors) <a href="Asynchro.html#backgroundWaiter">Asynchro.backgroundWaiter</a> can be <code>await</code>ed for after <code>await</code>ing <a href="Asynchro.html#run">Asynchro.run</a>.</p>
+<pre class="prettyprint source lang-js"><code>const ax = new Asynchro({}, false, console.log);
+ax.series('one', multiply, 1, 2, 3); // multiply from previous examples
+ax.background('two', multiply, 4, 5, 6);
+ax.background('three', multiply, 0);
+ax.background('four', multiply, 1, 2, 3, { reject: true });
+ax.background('five', multiply, 1, 0, 3, { reject: true });
+await ax.run();
+// could also pass in a different result object as the 1st argument
+// NOTE: awlays use return Asynchro instance in case branching took place
+const abx = await ax.backgroundWaiter();
+// {
+//  one: { m1: 10, m2: 40, m3: 90 },
+//  two: { m1: 40, m2: 100, m3: 180 },
+//  three: undefined,
+//  four: undefined,
+//  five: undefined
+// }
+console.log(abx.result);
+// [
+//  { Error: &quot;a&quot; must be a number greater than zero, but received: 0
+//    ...
+//    Asynchro: {
+//      name: 'three',
+//      operation: 'multiply'
+//      isPending: false,
+//      isParallel: false,
+//      isBackground: true
+//    }
+//  },
+//  { Error: Example error after timeout
+//    ...
+//    Asynchro: {
+//      name: 'four',
+//      operation: 'multiply'
+//      isPending: false,
+//      isParallel: false,
+//      isBackground: true
+//    }
+//  },
+// ]
+console.log(abx.errors);</code></pre><p><strong>NOTE:</strong>
+It's important to keep in mind that any <a href="Asynchro.html#errors">Asynchro.errors</a> that are caught while invoking/<code>await</code>ing <a href="Asynchro.html#background">Asynchro.background</a> tasks may continue to be added long <strong>after</strong> <a href="Asynchro.html#run">Asynchro.run</a> is <code>await</code>ed for. Background results are <em>only</em> set on <a href="Asynchro.html#result">Asynchro.result</a> when <a href="Asynchro.html#backgroundWaiter">Asynchro.backgroundWaiter</a> is called (alternatively, a different result object could be specified during invocation).</p>
+<h4><a href="tutorial-3-verification.html">Verification &gt;&gt;</a></h4>
+</article>
+
+</section>
+
+</div>
+
+<br class="clear">
+
+<footer>
+  <b>asynchro v3.0.3</b><br/>
+  Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
