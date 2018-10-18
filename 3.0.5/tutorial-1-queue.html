@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>asynchro - documentation</title>
+
+  <script src="scripts/prettify/prettify.js"></script>
+  <script src="scripts/prettify/lang-css.js"></script>
+  <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link rel="apple-touch-icon" sizes="57x57" href="apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="manifest" href="manifest.json">
+  <meta name="msapplication-TileColor" content="#BDBDBD">
+  <meta name="msapplication-TileImage" content="ms-icon-144x144.png">
+  <meta name="theme-color" content="#BDBDBD">
+
+  <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+  <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+  <style>
+  #topNav {
+    width: calc(100% - 250px);
+    height: 64px;
+    padding: 16px;
+    font-size: 32px;
+    margin-left: 250px;
+    background-color: #E0E0E0;
+  }
+  @media only screen and (max-width: 680px) and (min-width: 320px) {
+    #topNav {
+      margin-left: 0px;
+      width: 100%;
+    }
+  }
+  #versions {
+    height: 24px;
+    float: right;
+  }
+  #topNav > a {
+    text-decoration: none;
+  }
+  #topNav > a.icon {
+    height: 24px;
+    width: 24px;
+    padding: 7px;
+    vertical-align: middle;
+  }
+  .theme-color {
+    color: #FFA726;
+    text-shadow: 1px 1px 0px white;
+  }
+  </style>
+  <script>
+    window.addEventListener('load', function(event) {
+      var readme = document.querySelector('.readme > article > h1');
+      if (readme) readme.parentElement.removeChild(readme);
+    });
+  </script>
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+  <li class="nav-link nav-home-link"><a href="index.html">Home</a></li><li class="nav-heading">Tutorials</li><li class="nav-item"><a href="tutorial-1-queue.html">The Queue</a></li><li class="nav-item"><a href="tutorial-2-background.html">Background Tasks</a></li><li class="nav-item"><a href="tutorial-3-verification.html">Verification</a></li><li class="nav-item"><a href="tutorial-4-branches.html">Branching</a></li><li class="nav-item"><a href="tutorial-5-conversion.html">Conversions</a></li><li class="nav-heading">Classes</li><li class="nav-heading"><span class="nav-item-type type-class">C</span><span class="nav-item-name"><a href="Asynchro.html">Asynchro</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#.extractFuncArgs">extractFuncArgs</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#.promisifyCallback">promisifyCallback</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#.promisifyEventTarget">promisifyEventTarget</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#arg">arg</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#background">background</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#backgroundThrowsOverride">backgroundThrowsOverride</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#backgroundWaiter">backgroundWaiter</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#messages">messages</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#parallel">parallel</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#parallelThrowOverride">parallelThrowOverride</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#run">run</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#series">series</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#seriesThrowOverride">seriesThrowOverride</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#throwsError">throwsError</a></span></li><li class="nav-item"><span class="nav-item-type type-function">F</span><span class="nav-item-name"><a href="Asynchro.html#verify">verify</a></span></li>
+</nav>
+
+<div id="topNav">
+  <a href="index.html" id="source" title="Source Code">
+    <b class="theme-color">&#8669;</b> asynchro
+  </a>
+  <select id="versions" onchange="window.location='asynchro/' + this.value">
+    
+    <option value="1.0.0" >1.0.0</option>
+    
+    <option value="1.0.2" >1.0.2</option>
+    
+    <option value="1.0.3" >1.0.3</option>
+    
+    <option value="1.0.4" >1.0.4</option>
+    
+    <option value="1.0.5" >1.0.5</option>
+    
+    <option value="1.0.6" >1.0.6</option>
+    
+    <option value="1.0.7" >1.0.7</option>
+    
+    <option value="1.0.8" >1.0.8</option>
+    
+    <option value="2.0.0" >2.0.0</option>
+    
+    <option value="3.0.0" >3.0.0</option>
+    
+    <option value="3.0.1" >3.0.1</option>
+    
+    <option value="3.0.2" >3.0.2</option>
+    
+    <option value="3.0.3" >3.0.3</option>
+    
+    <option value="3.0.4" >3.0.4</option>
+    
+  </select>
+  <span class="sep">|</span>
+  <a href="https://github.com/ugate/asynchro#readme" id="source" title="Source Code" class="icon">
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 16 16" height="24" width="24">
+      <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+    </svg>
+  </a>
+  <a href="https://www.npmjs.com/package/asynchro" id="module" title="npm" class="icon">
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24" height="24" width="24">
+      <g stroke="none" fill="#000000" transform="translate(0,24) scale(0.1,-0.1)">
+        <path d="M 0,120 0,0 l 120,0 120,0 0,120 0,120 -120,0 -120,0 z m 200,0 c 0,-73 0.23256,-80 0.23256,-80 0,0 -27.97435,0.741211 -40.61273,0.707427 C 159.61983,67.551504 160,70.949947 160,100 c 0,53 -2,60 -20,60 -18,0 -20,-7 -20,-60 l 0,-60 -40,0 -40,0 0,80 0,80 80,0 80,0 z"/>
+      </g>
+    </svg>
+  </a>
+</div>
+
+<div id="main">
+  <section>
+
+<header>
+    
+</header>
+
+<article>
+    <h3>Getting Started</h3><p>As seen in the <a href="index.html">intro examples</a>, trying to coordinate multiple <code>async</code> functions into a workflow can be convoluted and hard to follow. Parallel/Concurrent function execution requires extra steps to <code>await</code> promises returned from the previously executed async functions. In addition to this, error handling via <code>try</code>/<code>catch</code> blocks can often become a daunting process. In some instances it's desirable to catch errors, in others, throwing fatal errors is a must. And yet other cases only certain <em>types</em> of errors should be thrown. Also, async functions that need to run in the background require wrapping them within another async function in order to handle errors since <code>await</code> is not used and an error may occur during actual execution. Furthermore, additional corriagraphy logic is required for <a href="tutorial-4-branches.html">contextual workflow routing (i.e. branching)</a> that is typically offered by workflow engines.</p>
+<p><code>Asynchro</code> was developed to address these issues and other nuances encountered when working with multiple async functions. Simplicity is the core concept that keeps <code>asynchro</code> concise and intuitive without being bombarded with bloated features that will rarely, if ever, be used.</p>
+<h3>The Queue</h3><p>At the heart of <code>asynchro</code> is a queue. The queue is simply an <code>Object[]</code> that holds function execution metadata until <a href="Asynchro.html#run">Asynchro.run</a> is executed/ran. A single <em>result</em> object can be passed to the <code>Asynchro</code> constructor in order to store the results from each queued async function execution using a designated <em>name</em> as the property name in the <em>result</em> object (more on this later!). Each queued async function is ran in the order that it was queued. Although there are variations of each, there are only three types of async functions that can be queued:</p>
+<ol>
+<li><a href="Asynchro.html#series">Series</a> - async functions that are <code>await</code>ed for until the next function in the queue is invoked (can also be <em>normal</em> synchronous functions)</li>
+<li><a href="Asynchro.html#parallel">Parallel</a> - async functions that are <em>not</em> immediately <code>await</code>ed for, but rather <code>await</code>ed for after the queue is exhausted</li>
+<li><a href="Asynchro.html#background">Background</a> - like, parallel, but will <em>not</em> be <code>await</code>ed for and will still retain error handling set on the queued function (or error handling defined globally on the <code>Asynchro</code> instance itself)</li>
+</ol>
+<p>Let's review the simple workflow below:</p>
+<pre class="prettyprint source lang-js"><code>  const ax = new Asynchro({}, false, console.log);
+  ax.series('one', mySeriesFunc1, 'val1', 2, 3);
+  ax.series('two', mySeriesFunc2, 1, 2);
+  ax.parallel('three', myParallelFunc1, { a: 1, b: 2, c: 3 });
+  ax.parallel('four', myParallelFunc2);
+  ax.parallelThrowOverride('five', true, myParallelFunc3, 'always throw errors');
+  ax.series('six', mySeriesFunc3, true, false);
+  const result = await ax.run();
+  return { result, errors: ax.errors };</code></pre><p>The <code>Asynchro</code> constructor is called by passing a <em>result</em> object as it's 1<sup>st</sup> argument where all of the results of each queued async function will be stored. For instance, the final results returned from <a href="Asynchro.html#run">Asynchro.run</a> (or accessed by <a href="Asynchro.html#result">Asynchro.result</a>) would consist of the following <strong>assuming no errors are thrown</strong>:</p>
+<pre class="prettyprint source lang-js"><code>// Asynchro.result
+{
+  one: 'return string from mySeriesFunc1',
+  two: { myString: 'mySeriesFunc2 returned an object' }
+  three: 'results can be anything',
+  four: '...another result',
+  five: true,
+  six: 123
+}</code></pre><p>Each argument passed after the async function will be passed in order to that function. For example, <code>mySeriesFunc1</code>/&quot;one&quot; would receive <code>val1</code>, <code>2</code>, <code>3</code>.
+To omit an async function's return value from the final result simply use <code>null</code>, <code>false</code> or <code>undefined</code> as the <em>name</em> argument value: <code>ax.series(null, mySeriesFunc1, 'val1', 2, 3);</code>.</p>
+<h4>Passing Results During Execution</h4><p>Passing results from one async function to the next is fairly easy to follow using <a href="Asynchro.html#arg">Asynchro.arg</a>:</p>
+<pre class="prettyprint source lang-js"><code>const asyncOne = async () => {
+  // other async operations here
+  return { array: [1] };
+};
+const asyncTwo = async (array) => {
+  // other async operations here
+  const rtn = 2;
+  array.push(rtn);
+  return rtn;
+};
+const asyncThree = async (a1) => {
+  // other async operations here
+  console.log(a1); // prints out 1
+  return a1 + 2;
+};
+const asyncFour = async (array) => {
+  // other async operations here
+  array.push(4);
+};
+
+const ax = new Asynchro({});
+ax.series('one', asyncOne);
+ax.series('two', asyncTwo, ax.arg('one.array'));
+ax.series('three', asyncThree, ax.arg('one.array[0]'));
+ax.series(null, asyncFour, ax.arg('one.array'));
+const rslt = await ax.run();
+console.log(rslt); // { one: { array: [1, 2, 4] }, two: 2, three: 3 }</code></pre><p>Keep in mind that result arguments may not be available in a <em>parallel</em> async function when referencing a previously queued <em>parallel</em> async function execution (depending on how long the previous operation takes):</p>
+<pre class="prettyprint source lang-js"><code>const asyncOne = async () => {
+  // other async operations here
+  return { array: [1] };
+};
+const asyncTwo = async (array) => {
+  // other async operations here
+  array.push(2); // ERROR: one.array not yet set!
+};
+
+const ax = new Asynchro({});
+ax.parallel('one', asyncOne);
+ax.parallel(null, asyncTwo, ax.arg('one.array'));
+await ax.run();</code></pre><h4>Error Handling</h4><p>You may have noticed that the 2<sup>nd</sup> argument passed into the <code>Asynchro</code> constructor was explicitly set to <code>false</code> (which is the default value). So, no errors will be thrown but rather captured in an <code>Error[]</code> via <a href="Asynchro.html#errors">Asynchro.errors</a> unless explicitly overridden by using <a href="Asynchro.html#seriesThrowOverride">Asynchro.seriesThrowOverride</a> or <a href="Asynchro.html#parallelThrowOverride">Asynchro.parallelThrowOverride</a> as seen in example for <code>myParallelFunc3</code>/&quot;five&quot; where <code>true</code> was used. This is referred to as an <strong>Error Handling Rule</strong>. Now let's assume that there was an error while <code>await</code>ing <code>mySeriesFunc2</code>/&quot;two&quot;. The queue would <code>catch</code>/capture the error and <em>continue</em> to execute subsequent async functions in the queue. Each error will contain additional <em>metadata</em> under an <code>Asynchro</code> property that will provide more details about the error:</p>
+<pre class="prettyprint source lang-js"><code>// Asynchro.result
+{
+  one: 'return string from mySeriesFunc1',
+  three: 'results can be anything',
+  four: '...another result',
+  five: true,
+  six: 123
+}
+// Asynchro.errors
+[
+  { // the error object
+    // ... other error properties here
+    Asynchro: {
+      name: 'two',
+      operation: 'mySeriesFunc2',
+      event: false,
+      isPending: false,
+      isParallel: false,
+      isBackground: false
+    }
+  }
+]</code></pre><p>Assuming that the <strong>Error Handling Rule</strong> was set to <code>true</code>, the same error would have been thrown and would have contained the same <code>Asynchro</code> metadata. But what if we only want to throw specific errors- like &quot;system&quot; errors? <code>Asynchro</code> provides a way to define what errors are thrown and what errors are caught/captured by using an <code>Object</code> descriptor as the <strong>Error Handling Rule</strong> instead of the <code>Boolean</code> values previously discussed.
+To <em>throw</em> only &quot;system&quot; errors defined by <a href="Asynchro.html#systemErrorTypes">Asynchro.systemErrorTypes</a>, the <strong>Error Handling Rule</strong> can be set to the following <code>Object</code> descriptor:</p>
+<pre class="prettyprint source lang-js"><code>{
+  invert: false, // true to catch errors when matches are made, false/omit to throw errors when matches are made
+  matches: 'system' // only errors that are an instanceof the predefined &quot;system&quot; error classes will be thrown 
+}</code></pre><p>To <em>throw</em> all errors, but &quot;system&quot; errors defined by <a href="Asynchro.html#systemErrorTypes">Asynchro.systemErrorTypes</a>, set <code>invert = true</code>. Also, <code>matches</code> can be set to an <code>Array</code> of types/classes that will be used when checking if the <code>Error</code> is an <code>instanceof</code> any one of the defined entries:</p>
+<pre class="prettyprint source lang-js"><code>{
+  matches: [ RangeError, MyCustomError ] // only errors that are an instanceof RangeError or MyCustomError will be thrown 
+}</code></pre><p>Another way to control which errors are caught or thrown is to use an <code>Object</code> as the <code>matches</code> value. Any error that contains <em>all</em> of the properties/values defined on that <code>Object</code> will be thrown (or alternatively caught when <code>invert = true</code>):</p>
+<pre class="prettyprint source lang-js"><code>{
+  matches: { // only errors that contain someProperty1 = true and someProperty2 = false will be thrown
+    someProperty1: true,
+    someProperty2: false
+  } 
+}</code></pre><p>For convenience, <a href="Asynchro.html#throwsError">Asynchro.throwsError</a> is provided to check if the queue will throw or catch a specified <code>Error</code>/error type.</p>
+<h4><a href="tutorial-2-background.html">Background Tasks &gt;&gt;</a></h4>
+</article>
+
+</section>
+
+</div>
+
+<br class="clear">
+
+<footer>
+  <b>asynchro v3.0.5</b><br/>
+  Generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
