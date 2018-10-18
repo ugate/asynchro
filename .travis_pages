@@ -1,0 +1,25 @@
+#!/bin/bash
+PUBLICATION_BRANCH=gh-pages
+REPO_PATH=$PWD
+# current package.json version/name
+NPM_PACKAGE_VERSION=$(npm run env | sed -n 's/^npm_package_version=//p')
+# NPM_PACKAGE_NAME=$(npm run env | sed -n 's/^npm_package_name=//p')
+# get last published npm version
+# NPM_LAST_PACKAGE_VERSION=$(npm view $NPM_PACKAGE_NAME versions --json | sed -n '1h;1!{x;H;};${g;p;}' | tr '\n' ' ' | sed 's/[^0-9]*\([0-9.]*\).*/\1/')
+npm run gen-docs
+# checkout
+pushd $HOME
+git clone --branch=$PUBLICATION_BRANCH https://${GITHUB_TOKEN}@github.com/$TRAVIS_REPO_SLUG.git publish 2>&1 > /dev/null
+cd publish
+# recursively copy the current docs to the version directory
+mkdir -p ./$NPM_PACKAGE_VERSION
+cp -r $REPO_PATH/docs/* ./$NPM_PACKAGE_VERSION
+# recursively copy the current docs to the latest
+cp -r $REPO_PATH/docs/* ./latest
+# publish to github
+git add .
+git config user.name  "Travis"
+git config user.email "travis@travis-ci.org"
+git commit -m "Deploy $TRAVIS_REPO_SLUG to $PUBLICATION_BRANCH"
+git push -fq origin $PUBLICATION_BRANCH 2>&1 > /dev/null
+popd

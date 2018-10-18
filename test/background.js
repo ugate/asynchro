@@ -11,7 +11,7 @@ const plan = `${PLAN} Background`;
 
 lab.experiment(plan, () => {
 
-  lab.test(`${PLAN}: waiter, delayed error`, { timeout: TEST_TKO }, async (flags) => {
+  lab.test(`${plan}: waiter, delayed error`, { timeout: TEST_TKO }, async (flags) => {
     const afn = flags.mustCall(asyncCall, 3); // some errors will be hidden when using this: comment out to view
     var delay = TASK_DELAY, count = 0, bgIdx = -1, bgVals = [new Error('Background test error')];
 
@@ -21,7 +21,7 @@ lab.experiment(plan, () => {
     ax.parallel('three', afn, ++count, 'C', true, false, delay -= 10);
     const rslt = await ax.run();
 
-    logTest(`${PLAN}: waiter, delayed error (pending)`, LOGGER, ax, rslt, ax.errors && ax.errors[0]);
+    logTest(`${plan}: waiter, delayed error (pending)`, LOGGER, ax, rslt, ax.errors && ax.errors[0]);
     expect(rslt).to.be.object();
     expect(rslt).to.be.equal(ax.result);
     expect(rslt.one).to.equal('A');
@@ -31,7 +31,7 @@ lab.experiment(plan, () => {
     expect(ax.errors).to.be.empty();
 
     const abx = await ax.backgroundWaiter(ax.result);
-    logTest(`${PLAN}: waiter, delayed error`, LOGGER, abx, abx.result, abx.errors && abx.errors[0]);
+    logTest(`${plan}: waiter, delayed error`, LOGGER, abx, abx.result, abx.errors && abx.errors[0]);
     expect(rslt.one).to.equal('A');
     expect(rslt.hasOwnProperty('two')).to.be.true();
     expect(rslt.two).to.be.undefined();
@@ -58,7 +58,7 @@ lab.experiment(plan, () => {
     expect(ax.waitingBackground).to.equal(4);
     var rslt = await ax.run();
 
-    logTest(`${PLAN}: waiter, multiple caught errors (pending)`, LOGGER, ax, rslt);
+    logTest(`${plan}: waiter, multiple caught errors (pending)`, LOGGER, ax, rslt);
     expect(ax.waiting).to.equal(0);
     expect(ax.waitingBackground).to.equal(4);
     expect(rslt).to.equal(ax.result);
@@ -75,7 +75,7 @@ lab.experiment(plan, () => {
     expect(ax.errors[0]).to.be.error();
   
     const abx = await ax.backgroundWaiter();
-    logTest(`${PLAN}: waiter, multiple caught errors`, LOGGER, ax, rslt);
+    logTest(`${plan}: waiter, multiple caught errors`, LOGGER, ax, rslt);
     expect(ax.waiting).to.equal(0);
     expect(ax.waitingBackground).to.equal(0);
     expect(rslt.one).to.be.object();

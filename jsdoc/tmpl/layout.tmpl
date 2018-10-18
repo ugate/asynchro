@@ -44,7 +44,12 @@
   @media only screen and (max-width: 680px) and (min-width: 320px) {
     #topNav {
       margin-left: 0px;
+      width: 100%;
     }
+  }
+  #versions {
+    height: 24px;
+    float: right;
   }
   #topNav > a {
     text-decoration: none;
@@ -84,6 +89,11 @@
   <a href="index.html" id="source" title="Source Code">
     <b class="theme-color">&#8669;</b> <?js= env.meta.package.name ?>
   </a>
+  <select id="versions" onchange="window.location='<?js= env.meta.package.name ?>/' + this.value">
+    <?js for (let version of env.meta.versions) { ?>
+    <option value="<?js= version ?>" <?js= version === env.meta.package.version ? 'selected' : '' ?>><?js= version ?></option>
+    <?js } ?>
+  </select>
   <span class="sep">|</span>
   <a href="<?js= env.meta.package.homepage ?>" id="source" title="Source Code" class="icon">
     <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 16 16" height="24" width="24">
