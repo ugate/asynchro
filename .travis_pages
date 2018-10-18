@@ -13,6 +13,7 @@ git clone --branch=$PUBLICATION_BRANCH https://${GITHUB_TOKEN}@github.com/$TRAVI
 cd publish
 # recursively copy the current docs to the version directory
 mkdir -p ./$NPM_PACKAGE_VERSION
+mkdir -p ./latest
 cp -r $REPO_PATH/docs/* ./$NPM_PACKAGE_VERSION
 # recursively copy the current docs to the latest
 cp -r $REPO_PATH/docs/* ./latest
