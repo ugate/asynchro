@@ -29,7 +29,7 @@
   "bugs": {
     "url": "https://github.com/ugate/asynchro/issues"
   },
-  "homepage": "https://github.com/ugate/asynchro#readme",
+  "homepage": "https://ugate.github.io/asynchro",
   "publishConfig": {
     "access": "public"
   },
