@@ -16,6 +16,10 @@
     "encoding": "utf8",
     "private": true,
     "recurse": true,
+    "versions": {
+      "from": "3.0.0",
+      "include": "minor"
+    },
     "templateProxy": "./node_modules/minami",
     "template": "./jsdoc",
     "tutorials": "./jsdoc/tutorial"

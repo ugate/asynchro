@@ -58,7 +58,10 @@
     <b class="theme-color">&#8669;</b> <?js= env.meta.package.name ?>
   </a>
   <!-- versions.json should point to the latest list -->
-  <select id="versions" onchange="window.location='/<?js= env.meta.package.name ?>/' + this.value" data-json-url="/<?js= env.meta.package.name ?>/versions.json">
+  <select id="versions" onchange="window.location='/<?js= env.meta.package.name ?>/' + this.value" data-json-url="/<?js= env.meta.package.name ?>/versions.json"
+    data-include="<?js= (env.conf.opts.versions && env.conf.opts.versions.include) || '' ?>"
+    data-from="<?js= (env.conf.opts.versions && env.conf.opts.versions.from) || '' ?>"
+    data-version="<?js= env.meta.package.version ?>">
     <option value="" selected><?js= env.meta.package.version ?></option>
   </select>
   <span class="sep">|</span>
