@@ -16,6 +16,7 @@ exports.publish = function(taffyData, opts, tutorials) {
   const thiz = this, args = arguments;
   return new Promise((resolve, reject) => {
     env.meta = { package: pkg }; // accessibility in templates
+    exec(`git --no-pager log v0.1.2..HEAD --oneline --no-merges --grep="#[0-9]" --pretty=format:"* [%h](http://github.com/ugate/asynchro/commit/%H) %s " --reverse`)
     exec(`npm view ${pkg.name} versions --json`, async (error, stdout, stderr) => {
       try {
         const versions = (!error && !stderr && stdout) || '[]'; // may have never been published to npm before
