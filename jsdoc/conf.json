@@ -20,6 +20,11 @@
       "from": "3.0.0",
       "include": "minor"
     },
+    "changelog": {
+      "header": "## [${package.version}](${publish.moduleURL}/compare/v${publish.lastVersion}...v${package.version}) (${publish.date})",
+      "line": "* [%s](${publish.moduleURL}/commit/%H)",
+      "grep": ""
+    },
     "templateProxy": "./node_modules/minami",
     "template": "./jsdoc",
     "tutorials": "./jsdoc/tutorial"

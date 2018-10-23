@@ -24,7 +24,7 @@ deploy:
 #      all_branches: true
   - provider: script
     skip_cleanup: true
-    script: bash .travis_pages
+    script: bash ./jsdoc/travis_pages
     on:
       tags: true # only on tagging commit
       all_branches: true
