@@ -25,9 +25,9 @@
   <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
   <link type="text/css" rel="stylesheet" href="package/styles/index.css">
   <script>
-    window.addEventListener('load', function(event) {
-      var readme = document.querySelector('.readme > article > h1');
-      if (readme) readme.parentElement.removeChild(readme);
+    window.addEventListener('load', function(event) { // remove duplicate readme package headers
+      var els = document.querySelectorAll('.remove-me');//document.querySelector('.readme > article > h1');
+      for (var i = 0, ln = els && els.length; i < ln; i++) els[i].parentElement.removeChild(els[i]);
     });
   </script>
 </head>
@@ -63,10 +63,13 @@
       </g>
     </svg>
   </a>
-  <a href="<?js= env.meta.publish.moduleURL ?>" id="module" title="CHANGELOG" class="icon">
-    <svg version="1.1" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24" height="24" width="24">
-      <g stroke="none" fill="#000000" transform="translate(0,24) scale(0.1,-0.1)">
-        <path d="M 0,120 0,0 l 120,0 120,0 0,120 0,120 -120,0 -120,0 z m 200,0 c 0,-73 0.23256,-80 0.23256,-80 0,0 -27.97435,0.741211 -40.61273,0.707427 C 159.61983,67.551504 160,70.949947 160,100 c 0,53 -2,60 -20,60 -18,0 -20,-7 -20,-60 l 0,-60 -40,0 -40,0 0,80 0,80 80,0 80,0 z"/>
+  <a href="CHANGELOG.html" id="module" title="CHANGELOG" class="icon" data-root-href="<?js= env.meta.publish.moduleURL ?>/CHANGELOG.html">
+    <svg version="1.1" viewBox="0 0 64 64" height="24" width="24">
+      <g>
+        <path d="M 54.18252,31.999999 C 54.182518,44.803351 43.803352,55.182519 31,55.182519 18.196648,55.182519 7.8174806,44.803351 7.8174806,31.999999 7.8174807,19.196647 18.196648,8.8174794 31,8.8174793" style="fill:none;fill-opacity:1;stroke:#000000;stroke-width:7.63496113;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"/>
+        <path d="m 54.085982,25.760289 -7.239428,8.690708 14.478856,0 z" style="fill:#000000;fill-rule:evenodd;stroke:#000000;stroke-width:0.87262136px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"/>
+        <rect transform="matrix(0.70710678,0.70710678,-0.70710678,0.70710678,0,0)" y="-33.812084" x="39.697144" height="35" width="10" style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:10;stroke-miterlimit:4;stroke-dasharray:none"/>
+        <path style="fill:#000000;fill-rule:evenodd;stroke:#000000;stroke-width:0.54686648px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" d="M 25.311347,37.911306 32.390502,37.07782 26.144833,30.832151 Z"/>
       </g>
     </svg>
   </a>

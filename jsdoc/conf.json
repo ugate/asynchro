@@ -23,7 +23,35 @@
     "changelog": {
       "header": "## [${package.version}](${publish.moduleURL}/compare/v${publish.lastVersion}...v${package.version}) (${publish.date})",
       "line": "* [%s](${publish.moduleURL}/commit/%H)",
-      "grep": ""
+      "sections": {
+        "breaks": {
+          "grep": {
+            "regexp": "\\[BREAK\\]",
+            "ignoreCase": true,
+            "extendedRegexp": false,
+            "allMatch": false
+          },
+          "header": "__Breaking Changes:__"
+        },
+        "features": {
+          "grep": {
+            "regexp": "\\[FEATURE\\]",
+            "ignoreCase": true,
+            "extendedRegexp": false,
+            "allMatch": false
+          },
+          "header": "__Features:__"
+        },
+        "fixes": {
+          "grep": {
+            "regexp": "\\[FIX\\]",
+            "ignoreCase": true,
+            "extendedRegexp": false,
+            "allMatch": false
+          },
+          "header": "__Fixes:__"
+        }
+      }
     },
     "templateProxy": "./node_modules/minami",
     "template": "./jsdoc",

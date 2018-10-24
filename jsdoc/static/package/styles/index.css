@@ -18,6 +18,7 @@
 }
 #topNav > a {
   text-decoration: none;
+  color: inherit;
 }
 #topNav > a.icon {
   height: 24px;

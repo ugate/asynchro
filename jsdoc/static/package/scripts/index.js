@@ -1,3 +1,4 @@
+// handles loading of versions.json and populates the version drop-down select
 window.addEventListener('load', function loadVersions(event) {
   var sel = document.querySelector('#versions');
   if (!sel) return;
