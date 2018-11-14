@@ -1,5 +1,5 @@
-# deploy from dev/local machine via (which will create git tag):
-# npm version patch -m "%s release"
+# When a tagged commit is pushed the documentation pages and npm module are published/deployed:
+# npm version patch -m "%s Release"
 language: node_js
 node_js:
   - "10"
@@ -10,27 +10,18 @@ branches:
 script:
 # - printenv
   - "npm test"
-#before_deploy:
-#  - "npm run gen-docs"
 deploy:
-#  - provider: pages
-#    skip-cleanup: true
-#    github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
-#    keep-history: true
-#    target-branch: gh-pages
-#    local-dir: docs
-#    on:
-#      tags: true # only on tagging commit
-#      all_branches: true
   - provider: script
     skip_cleanup: true
-    script: bash ./jsdoc/travis_pages
+    script: npm run jsdocp-deploy
     on:
       tags: true # only on tagging commit
-      all_branches: true
+      branch:
+        - /v(\d+\.)?(\d+\.)?(\*|\d+)$/
   - provider: npm
     email: "ugate.public@gmail.com"
     api_key: $NPM_TOKEN  # Set in the settings page of your repository, as a secure variable
     on:
       tags: true # only on tagging commit
-      all_branches: true
+      branch:
+        - /v(\d+\.)?(\d+\.)?(\*|\d+)$/

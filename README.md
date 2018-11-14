@@ -1,6 +1,6 @@
 <b class="remove-me">
   
-# <b style="color:#FFA726">&#8669;</b> asynchro [![Build Status](https://travis-ci.com/ugate/asynchro.svg?branch=master)](https://travis-ci.com/ugate/asynchro)
+# ![](https://raw.githubusercontent.com/ugate/asynchro/master/asynchro/static/favicon-32x32.png) asynchro [![Build Status](https://travis-ci.com/ugate/asynchro.svg?branch=master)](https://travis-ci.com/ugate/asynchro)
 
 </b>
 

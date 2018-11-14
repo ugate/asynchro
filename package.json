@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "lab -t 70 -v",
-    "gen-docs": "jsdoc -c jsdoc/conf.json --verbose"
+    "jsdocp": "jsdocp ./jsdocp/jsdoc.json",
+    "jsdocp-deploy": "jsdocp -D ./jsdocp/jsdoc.json"
   },
   "repository": {
     "type": "git",
@@ -37,6 +38,7 @@
   "devDependencies": {
     "code": "^5.2.0",
     "jsdoc": "^3.5.5",
+    "jsdocp": "^0.1.2",
     "lab": "^16.1.0",
     "minami": "^1.2.3"
   },
