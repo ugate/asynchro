@@ -1,4 +1,4 @@
-<b class="remove-me">
+<b class="jsdocp-remove-me">
   
 # ![](https://raw.githubusercontent.com/ugate/asynchro/master/jsdocp/static/favicon-32x32.png) asynchro [![Build Status](https://travis-ci.com/ugate/asynchro.svg?branch=master)](https://travis-ci.com/ugate/asynchro)
 
