@@ -37,7 +37,7 @@
   "dependencies": {},
   "devDependencies": {
     "code": "^5.2.3",
-    "jsdocp": "^0.2.4",
+    "jsdocp": "^1.0.0",
     "lab": "^18.0.0",
     "minami": "^1.2.3"
   },
