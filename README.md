@@ -2,7 +2,7 @@
   
 # ![](https://raw.githubusercontent.com/ugate/asynchro/master/jsdocp/static/favicon-32x32.png) asynchro
 
-[![Build Status](https://img.shields.io/travis/ugate/asynchro/master.svg?style=flat-square)](https://travis-ci.com/ugate/asynchro)
+[![Build Status](https://img.shields.io/travis/com/ugate/asynchro/master.svg?style=flat-square)](https://travis-ci.com/ugate/asynchro)
 [![Dependency Status](https://img.shields.io/david/ugate/asynchro.svg?style=flat-square)](https://david-dm.org/ugate/asynchro)
 [![Dev Dependency Status](https://img.shields.io/david/dev/ugate/asynchro.svg?style=flat-square)](https://david-dm.org/ugate/asynchro?type=dev)
 
