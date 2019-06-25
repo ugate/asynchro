@@ -5,9 +5,9 @@
 // generate jsdoc:
 // npm run gen-docs
 
-const { expect } = require('code');
+const { expect } = require('@hapi/code');
 exports.expect = expect;
-exports.Lab = require('lab');
+exports.Lab = require('@hapi/lab');
 const { Asynchro } = require('../index.js');
 exports.Asynchro = Asynchro;
 exports.EventEmitter = require('events');
