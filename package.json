@@ -36,8 +36,8 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@hapi/code": "^5.3.1",
-    "@hapi/lab": "^19.1.0",
+    "@hapi/code": "^7.0.0",
+    "@hapi/lab": "^21.0.0",
     "jsdocp": "^1.0.2",
     "minami": "^1.2.3"
   },
