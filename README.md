@@ -98,6 +98,8 @@ async function myWorkflow2(rslt, promises, log) {
 
 ### ... into this:
 ```js
+// import * as Asynchro frrom "asynchro";
+// const Asynchro = require('asynchro');
 async function myWorkflow() {
   const ax = new Asynchro({}, false, console.log);
   ax.series('one', mySeriesFunc1, 'val1', 2, 3);

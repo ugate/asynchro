@@ -8,7 +8,7 @@
 const { expect } = require('@hapi/code');
 exports.expect = expect;
 exports.Lab = require('@hapi/lab');
-const { Asynchro } = require('../index.js');
+const Asynchro = require('../index.js');
 exports.Asynchro = Asynchro;
 exports.EventEmitter = require('events');
 exports.PLAN = Asynchro.name.split(' ')[0];
@@ -20,7 +20,7 @@ exports.asyncCall = asyncCall;
 exports.logTest = logTest;
 exports.expectABC = expectABC;
 // TODO : ESM uncomment the following lines...
-// import { Asynchro } from '../index.mjs';
+// import * as Asynchro from '../index.mjs';
 // import { expect } from 'code';
 // export { Lab } from 'lab';
 // export { expect } from expect;

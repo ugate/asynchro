@@ -675,7 +675,7 @@ class Asynchro {
 }
 
 // TODO : ESM remove the following line...
-exports.Asynchro = Asynchro;
+module.exports = Asynchro;
 
 /**
  * Queues a promise for **series/paralel** relative to other promises in the queue
