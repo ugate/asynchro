@@ -7,7 +7,9 @@
     "test": "test"
   },
   "scripts": {
-    "test": "lab -t 70 -v",
+    "test": "lab -v -c --coverage-exclude lib -t 72 -e prod",
+    "testing": "lab -v -c --coverage-exclude lib -t 72 -e test",
+    "test-debug": "lab -v -c --coverage-exclude lib -t 72 -e dev",
     "jsdocp": "jsdocp ./jsdocp/jsdoc.json",
     "jsdocp-deploy": "jsdocp -D ./jsdocp/jsdoc.json"
   },
@@ -36,9 +38,9 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@hapi/code": "^7.0.0",
-    "@hapi/lab": "^21.0.0",
-    "jsdocp": "^1.0.2",
+    "@hapi/code": "^8.0.1",
+    "@hapi/lab": "^22.0.3",
+    "jsdocp": "^1.0.3",
     "minami": "^1.2.3"
   },
   "files": [
