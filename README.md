@@ -98,7 +98,7 @@ async function myWorkflow2(rslt, promises, log) {
 
 ### ... into this:
 ```js
-// import * as Asynchro frrom "asynchro";
+// import * as Asynchro from "asynchro";
 // const Asynchro = require('asynchro');
 async function myWorkflow() {
   const ax = new Asynchro({}, false, console.log);
