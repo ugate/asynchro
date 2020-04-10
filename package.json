@@ -40,7 +40,7 @@
   "devDependencies": {
     "@hapi/code": "^8.0.1",
     "@hapi/lab": "^22.0.4",
-    "jsdocp": "^1.0.3",
+    "jsdocp": "^1.2.0",
     "minami": "^1.2.3"
   },
   "files": [
